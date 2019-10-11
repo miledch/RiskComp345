@@ -29,6 +29,6 @@ public:
 	void reinforce();
 	void attack();
 	void fortify();
-	void run();
+	static void run();
 };
 
