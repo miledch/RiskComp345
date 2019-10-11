@@ -123,7 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MapDriver.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MapLoader.h" />
   </ItemGroup>
   <ItemGroup>

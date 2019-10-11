@@ -13,6 +13,6 @@ public:
 class MapLoaderDriver
 {
 public:
-	int RunMapLoaderDriver();
+	static int RunMapLoaderDriver();
 };
 

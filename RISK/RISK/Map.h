@@ -74,5 +74,6 @@ public:
 class MapDriver
 {
 public:
-	int RunMapDriver();
+	static int RunMapDriver();
 };
+
