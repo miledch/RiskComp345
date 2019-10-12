@@ -7,9 +7,8 @@ public:
 	Dice_Rolling_Facility();
 	~Dice_Rolling_Facility();
 
-	//int* roll();
-	vector<int> roll();
-	vector<int> get_percentage();
+	vector<int> roll(); // Method that returns a container to store the numbers rolled from dice
+	vector<int> get_percentage(); // Returns container that the percentage that each number was rolled
 
 	int* face; // array to keep count of number of times that each side was rolled
 	int* count; // the total number of dice that was rolled for this facility
@@ -18,6 +17,6 @@ public:
 class DiceDriver
 {
 public:
-	static void run();
+	static void run(); // Basically the driver method
 };
 
