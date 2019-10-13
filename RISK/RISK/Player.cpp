@@ -1,44 +1,79 @@
 #include "Player.h"
 
-Player::Player() 
-{
+// Default constructor
+Player::Player() {}
 
-}
-
-Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, hand h)
+// Parameterized constructor
+Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
 {
 	this->countries = c;
 	this->dice = d;
-	this 
+	this->h = h;
 }
 
+// Destructor
 Player::~Player() 
 {	
 	for (vector<Country>::iterator it = countries->begin(); it != countries->end(); ++it)
 	{
 		it->deleteCountry();
 	}
+	delete h;
+	h = NULL;
+	delete dice;
+	dice =NULL;
 
 }
 
+// Get player's dice
 Dice_Rolling_Facility* Player::getDice() 
 {
 	return this->dice;
 }
 
+// Get player's hand of cards
+Hand* Player::getHand() 
+{
+	return this->h;
+}
+
+// Get player's vector of countries
+vector<Country>* Player::getCountries() 
+{
+	return this->countries;
+}
+
+// Change the set of player's countries
+void Player::changeCountries(vector<Country>* c)
+{
+	this->countries = c;
+}
+
+// Change the hand of cards
+void Player::changeHand(Hand* hd) 
+{
+	this->h = hd;
+}
+
+// Print player's countries
 void Player::printCountries() 
 {
-	
+	if (countries->empty() == true) 
+	{
+		cout << "This player has no countries!\n";
+	}
+	else 
+	{
+		for (int i = 0; i < countries->size(); i++) {
+			Country c = countries->at(i);
+			c.printCountry();
+			
+		}
+	}
 }
 
 void Player::reinforce() 
 {
-	// number of cards given = # of countries / 3, rounded down.
-	//  If the player owns all the countries of an
-	//entire continent, the player is given an amount of armies corresponding to the continent’s control value.Finally, if
-	//	the player owns three cards of different sorts or the same sorts, he can exchange them for armies.The number of
-	//	armies a player will get for cards is first 5, then increases by 5 every time any player does so(i.e. 5, 10, 15, …).In
-	//	any case, the minimal number of reinforcement armies is 3.
 	cout << "I'm reinforcing!\n";
 }
 

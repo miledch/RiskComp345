@@ -3,6 +3,7 @@ using namespace std;
 #include "Dice.h"
 #include "Map.h"
 #include "Player.h"
+#include "Cards.h"
 
 int main()
 {
@@ -12,8 +13,8 @@ int main()
 	cout << "\n";
 	DiceDriver::run();
 	cout << "\n";
-	Player::run();
+	PlayerDriver::run();
 	cout << "\n";
-	// insert Card::run() here
+	CardDriver::run();
 	return 0;
 }

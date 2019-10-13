@@ -16,19 +16,27 @@ class Player {
 private:
 	vector<Country>* countries;
 	Dice_Rolling_Facility* dice;
-	hand* h;
+	Hand* h;
 
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, hand* g);
-	void addCountries();
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	void changeCountries(vector<Country>* c);
 	~Player();
-	//void changeCountries();
 	Dice_Rolling_Facility* getDice();
+	Hand* getHand();
+	vector<Country>* getCountries();
+	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();
 	void attack();
 	void fortify();
+	static void run();
+};
+
+class PlayerDriver 
+{
+public:
 	static void run();
 };
 
