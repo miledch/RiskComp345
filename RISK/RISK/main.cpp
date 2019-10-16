@@ -1,5 +1,4 @@
 #include <iostream>
-using namespace std;
 #include "Dice.h"
 #include "Map.h"
 #include "Player.h"
