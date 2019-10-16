@@ -47,6 +47,18 @@ vector<int> Dice_Rolling_Facility::get_percentage() {
 	return percentage;
 }
 
+int* Dice_Rolling_Facility::getCount() const {
+	return count;
+}
+
+void Dice_Rolling_Facility::setCount(int count) {
+	*(*this).count = count; // is this right
+}
+
+int* Dice_Rolling_Facility::getFace() const {
+	return face;
+}
+
 
 Dice_Rolling_Facility::~Dice_Rolling_Facility()
 {

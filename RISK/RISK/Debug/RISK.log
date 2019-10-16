@@ -12,10 +12,13 @@ C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(37,2
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(42,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(56,22): warning C4018: '<': signed/unsigned mismatch
   main.cpp
+  Map.cpp
+  MapDriver.cpp
+  MapLoader.cpp
+  MapLoaderDriver.cpp
   Player.cpp
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(61,22): warning C4018: '<': signed/unsigned mismatch
   PlayerDriver.cpp
   Generating Code...
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(67,21): warning C4018: '<': signed/unsigned mismatch
-  LINK : C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\Debug\RISK.exe not found or not built by the last incremental link; performing full link
   RISK.vcxproj -> C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\Debug\RISK.exe
