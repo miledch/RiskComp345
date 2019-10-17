@@ -47,21 +47,17 @@ vector<int> Dice_Rolling_Facility::get_percentage() {
 	return percentage;
 }
 
-int* Dice_Rolling_Facility::getCount() const {
-	return count;
+int Dice_Rolling_Facility::getCount() const {
+	return *count; // returns (copied) value, not pointer or reference
 }
 
-void Dice_Rolling_Facility::setCount(int count) {
-	*(*this).count = count; // is this right
-}
-
-int* Dice_Rolling_Facility::getFace() const {
-	return face;
+const int* Dice_Rolling_Facility::getFace() const {
+	return face; // returns a pointer to the actual array, but it is const so that we can't change the values
 }
 
 
 Dice_Rolling_Facility::~Dice_Rolling_Facility()
 {
-	delete this->face; // How to properly delete 'face'? (it's an array)
+	delete this->face;
 	delete this->count;
 }

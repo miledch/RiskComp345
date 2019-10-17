@@ -10,9 +10,8 @@ public:
 	vector<int> roll(); // Method that returns a container to store the numbers rolled from dice
 	vector<int> get_percentage(); // Returns container that the percentage that each number was rolled
 
-	int* getCount() const;
-	void setCount(int);
-	int* getFace() const;
+	int getCount() const; // Returns copy of count
+	const int* getFace() const; // Returns pointer to the face array but is const so we can't change values
 
 private:
 	int* face; // array to keep count of number of times that each side was rolled
