@@ -24,3 +24,9 @@ RISK/RISK/Debug/vc142.idb
 RISK/RISK/Debug/vc142.pdb
 RISK/RISK/RISK.vcxproj
 RISK/RISK/RISK.vcxproj.filters
+RISK/.vs/RISK/v16/.suo
+RISK/.vs/RISK/v16/Browse.VC.db
+*.db
+*.vcxproj
+*.ipch
+*.ipch

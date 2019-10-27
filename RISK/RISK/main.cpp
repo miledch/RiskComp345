@@ -3,17 +3,10 @@
 #include "Map.h"
 #include "Player.h"
 #include "Cards.h"
+#include "GameEngine.h"
 
 int main()
 {
-	MapDriver::RunMapDriver();
-	cout << "\n";
-	MapLoaderDriver::RunMapLoaderDriver();
-	cout << "\n";
-	DiceDriver::run();
-	cout << "\n";
-	PlayerDriver::run();
-	cout << "\n";
-	CardDriver::run();
+	GameEngine::initiate();
 	return 0;
 }
