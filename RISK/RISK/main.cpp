@@ -7,6 +7,6 @@
 
 int main()
 {
-	GameEngine g = GameEngine::initiate();
+	GameEngine g;
 	return 0;
 }

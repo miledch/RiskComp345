@@ -48,20 +48,7 @@ Deck::Deck(const int& numberOfCountries)
 	this->generateCards(numberOfCountries);
 	this->initiateDeck();
 }
-Deck::Deck(const Deck& deck2)
-{
-	allCards = list<Card>(deck2.allCards);
-	deckCards = list<Card*>(deck2.deckCards);
-	numOfExchanges = int(deck2.numOfExchanges);
-}
-Deck& Deck::operator=(const Deck& rhs)
-{
-	allCards = rhs.allCards;
-	deckCards = rhs.deckCards;
-	numOfExchanges = rhs.numOfExchanges;
 
-	return *this;
-}
 // create the Deck with fair equal number of each ArmyType 
 void Deck::generateCards(const int& numberOfCountries)
 {
@@ -155,16 +142,7 @@ Hand::Hand()
 {
 	gameDeckPtr = new Deck(0);
 }
-Hand::Hand(const Hand& hand2)
-{
-	gameDeckPtr = new Deck(*hand2.gameDeckPtr);
-}
-Hand& Hand::operator=(const Hand& rhs)
-{
-	*gameDeckPtr = *(rhs.gameDeckPtr);
 
-	return *this;
-}
 //draw a pointer cards from the gameDeck and isnsert it in the hand(list of card pointers)
 void Hand::draw()
 {

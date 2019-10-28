@@ -5,15 +5,24 @@ class GameEngine
 {
 public:
 	GameEngine();
-	GameEngine(Map* map, int numOfPlayers, int numOfCountries);
+	GameEngine(const GameEngine& game2);
+	GameEngine& operator=(const GameEngine& rhs);
 
-	static GameEngine& initiate();
+	//// Getters: Return the actual pointers but return them as const so you can't change the values ////
+	const Map* getMap() const;
+	const vector<Player>* getPlayers() const;
+	const Deck* getDeck() const;
+	const string* getMapPath() const;
+	const int* getNumOfPlayers() const;
 
-	//~GameEngine();
+	~GameEngine();
 
 private:
 	Map* map;
 	vector<Player>* players;
 	Deck* deck;
+
+	string* mapPath; // This is needed for the copy constructor
+	int* numOfPlayers; // This is needed for the copy constructor
 };
 
