@@ -14,14 +14,14 @@ GameEngine::GameEngine(Map* map, int numOfPlayers, int numOfCountries)
 	this->map = map;
 	deck = new Deck(numOfCountries);
 
-	players = new vector<Player>();
+	players = new vector<Player>(numOfPlayers);
 
 	for (int i = 0; i < numOfPlayers; i++) {
-		players->push_back(Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck)));
+		(*players)[i] = Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck));
 	}
 }
 
-GameEngine GameEngine::initiate()
+GameEngine& GameEngine::initiate()
 {
 	cout << "Welcome to the Command Line Risk Game!\n" << endl;
 
@@ -67,15 +67,16 @@ GameEngine GameEngine::initiate()
 
 	int numOfCountries = map->getCountries()->size(); // Get the number of countries in the map
 
-	return GameEngine(map, numOfPlayers, numOfCountries); // Create GameEngine object using constructor and return it
+	static GameEngine game = GameEngine(map, numOfPlayers, numOfCountries); // Create GameEngine object using constructor and return it
+	return game;
 }
 
-GameEngine::~GameEngine()
-{
-	delete map;
-	map = NULL;
-	delete players;
-	players = NULL;
-	delete deck;
-	deck = NULL;
-}
+//GameEngine::~GameEngine()
+//{
+//	delete map;
+//	map = NULL;
+//	delete players;
+//	players = NULL;
+//	delete deck;
+//	deck = NULL;
+//}

@@ -5,7 +5,9 @@ class Dice_Rolling_Facility
 {
 public:
 	Dice_Rolling_Facility();
+	Dice_Rolling_Facility(const Dice_Rolling_Facility& dice2);
 	~Dice_Rolling_Facility();
+	Dice_Rolling_Facility& operator=(const Dice_Rolling_Facility& rhs);
 
 	vector<int> roll(); // Method that returns a container to store the numbers rolled from dice
 	vector<int> get_percentage(); // Returns container that the percentage that each number was rolled

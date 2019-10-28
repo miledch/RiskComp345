@@ -151,6 +151,30 @@ Country::Country(int id, string name, int continent)
 	numberArmies = new int(0);// when a country is created, a player hasn't put his armies on it yet
 }
 
+Country::Country(const Country& country2)
+{
+	countryID = new int(*country2.countryID);
+	countryName = new string(*country2.countryName);
+	countryContinent = new int(*country2.countryContinent);
+	neighbors = new list<int>(*country2.neighbors);
+	playerOwned = new string(*country2.playerOwned);
+	numberArmies = new int(*country2.numberArmies);
+}
+
+Country& Country::operator=(const Country& rhs)
+{
+	if (this != &rhs) {
+		*countryID = *(rhs.countryID);
+		*countryName = *(rhs.countryName);
+		*countryContinent = *(rhs.countryContinent);
+		*neighbors = *(rhs.neighbors);
+		*playerOwned = *(rhs.playerOwned);
+		*numberArmies = *(rhs.numberArmies);
+	}
+
+	return *this;
+}
+
 void Country::displayNeighborsList()
 {
 	cout << "neighbors of country " << *getCountryID() << ": " << *getCountryName() << " are countries ";

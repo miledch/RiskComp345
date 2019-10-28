@@ -43,6 +43,8 @@ private:
 	list<int>* neighbors;
 public:
 	Country(int, string, int);
+	Country(const Country& country2);
+	Country& operator=(const Country& rhs);
 	void displayNeighborsList();
 	void add_edge(string borders);
 	int* getCountryID();

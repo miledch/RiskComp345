@@ -1,7 +1,12 @@
 #include "Player.h"
 
 // Default constructor
-Player::Player() {}
+Player::Player() 
+{
+	countries = new vector<Country>();
+	dice = new Dice_Rolling_Facility();
+	h = new Hand(*(new Deck(0)));
+}
 
 // Parameterized constructor
 Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
@@ -9,6 +14,23 @@ Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
 	this->countries = c;
 	this->dice = d;
 	this->h = h;
+}
+
+Player::Player(const Player& p2)
+{
+	this->countries = new vector<Country>(*p2.countries);
+	this->dice = new Dice_Rolling_Facility(*p2.dice);
+	this->h = new Hand(*p2.h);
+}
+
+Player& Player::operator=(const Player& rhs)
+{
+	if (this != &rhs) {
+		*(this->countries) = *(rhs.countries);
+		*(this->dice) = *(rhs.dice);
+		*(this->h) = *(rhs.h);
+	}
+	return *this;
 }
 
 // Destructor

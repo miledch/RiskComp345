@@ -14,6 +14,15 @@ Dice_Rolling_Facility::Dice_Rolling_Facility()
 	count = new int(0);
 }
 
+Dice_Rolling_Facility::Dice_Rolling_Facility(const Dice_Rolling_Facility& dice2)
+{
+	face = new int[6];
+	for (int i = 0; i < 6; i++) {
+		face[i] = dice2.face[i];
+	}
+	count = new int(*dice2.count);
+}
+
 vector<int> Dice_Rolling_Facility::roll() {
 	cout << "How many dice do you want to roll (1-3)?" << endl;
 	int number;
@@ -62,4 +71,16 @@ Dice_Rolling_Facility::~Dice_Rolling_Facility()
 	delete this->count;
 	face = NULL;
 	count = NULL;
+}
+
+Dice_Rolling_Facility& Dice_Rolling_Facility::operator=(const Dice_Rolling_Facility& rhs)
+{
+	if (this != &rhs) {
+		for (int i = 0; i < 6; i++) {
+			face[i] = rhs.face[i];
+		}
+
+		*count = *(rhs.count);
+	}
+	return *this;
 }

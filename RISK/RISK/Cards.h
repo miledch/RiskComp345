@@ -31,6 +31,8 @@ private:
 
 public:
 	Deck(const int&);
+	Deck(const Deck& deck2);
+	Deck& operator=(const Deck& rhs);
 	Card* draw();
 	void displayCardsDistribution();
 	void exchange(const array<Card*, 3>&);
@@ -39,6 +41,9 @@ public:
 class Hand {
 public:
 	Hand(Deck&);
+	Hand();
+	Hand(const Hand& hand2);
+	Hand& operator=(const Hand& rhs);
 	void draw();
 	bool hasExchange() const;
 	void displayExchangeOptions() const;
