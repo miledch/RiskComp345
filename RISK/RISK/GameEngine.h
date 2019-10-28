@@ -7,7 +7,7 @@ public:
 	GameEngine();
 	GameEngine(Map* map, int numOfPlayers, int numOfCountries);
 
-	static void initiate();
+	static GameEngine initiate();
 
 	~GameEngine();
 

@@ -3,14 +3,9 @@
 
 using std::ifstream;
 
-int MapLoader::LoadMap(Map& map)
+int MapLoader::LoadMap(Map& map, string mapName)
 {
-	cout << "Please pass in the name of the map you would like to load: ";
-	mapName = new string();
-	cin >> *mapName;
-
-	*mapName = "maps/" + *mapName;
-	ifstream mapFile(*mapName);
+	ifstream mapFile(mapName);
 
 	if (mapFile.fail())
 	{
@@ -94,7 +89,5 @@ int MapLoader::LoadMap(Map& map)
 
 MapLoader::~MapLoader()
 {
-	delete mapName;
-	mapName = NULL;
 }
 

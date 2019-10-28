@@ -14,9 +14,14 @@ int MapLoaderDriver::RunMapLoaderDriver()
 
 	int mapStatus = 0;
 
+	string path;
+
 	do
 	{
-		mapStatus = mapLoader.LoadMap(map);
+		cout << "Please pass in the name of the map you would like to load:" << endl;
+		cin >> path;
+		path = "maps/" + path;
+		mapStatus = mapLoader.LoadMap(map, path);
 	} 
 	while (mapStatus == 0);
 	

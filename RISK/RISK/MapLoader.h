@@ -5,8 +5,7 @@
 class MapLoader
 {
 public:
-	string* mapName;
-	int LoadMap(Map& map);
+	int LoadMap(Map& map, string mapName);
 	~MapLoader();
 };
 

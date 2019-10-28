@@ -60,4 +60,6 @@ Dice_Rolling_Facility::~Dice_Rolling_Facility()
 {
 	delete this->face;
 	delete this->count;
+	face = NULL;
+	count = NULL;
 }
