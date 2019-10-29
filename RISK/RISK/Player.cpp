@@ -109,3 +109,24 @@ void Player::fortify()
 	cout << "I'm fortifying!\n";
 }
 
+int Player::getArmyByExchangingCards()
+{
+	return h->getNumberOfExchanges() * 5;
+}
+
+int Player::getArmyByCountriesOwned() {
+	int armyAwarded = this->countries->size();
+	if (armyAwarded >= 3)
+		return armyAwarded;
+	else
+		return 3;
+}
+
+int Player::getArmyBycontienetOwned()
+{
+	int awardArmies = 0;
+	for (vector<Continent>::iterator it = continents->begin(); it != continents->end(); ++it) {
+		awardArmies = +*(it->getContinentControlExtraArmies());
+	}
+	return awardArmies;
+}

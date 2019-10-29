@@ -33,6 +33,9 @@ public:
 	void reinforce();
 	void attack();
 	void fortify();
+	int getArmyByCountriesOwned();
+	int getArmyBycontienetOwned();
+	int getArmyByExchangingCards();
 	static void run();
 };
 

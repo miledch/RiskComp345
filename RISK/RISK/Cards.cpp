@@ -307,3 +307,15 @@ void Hand::addExchangeOptionsOfDifferentCards(const array<int, 3> & typesCount)
 		}
 	}
 }
+
+int Deck::getNumOfExchanges()
+{
+	return numOfExchanges;
+}
+
+int Hand::getNumberOfExchanges()
+{
+	return gameDeckPtr->getNumOfExchanges();
+}
+
+
