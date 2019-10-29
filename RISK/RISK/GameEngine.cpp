@@ -49,10 +49,10 @@ GameEngine::GameEngine()
 
 	deck = new Deck(numOfCountries);
 
-	players = new vector<Player>(*numOfPlayers);
+	players = new vector<Player>();
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		(*players)[i] = Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck));
+		players->push_back(Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck)));
 	}
 }
 
