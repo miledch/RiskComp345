@@ -60,7 +60,7 @@ Hand* Player::getHand()
 }
 
 // Get player's vector of countries
-vector<Country>* Player::getCountries() 
+vector<Country>* Player::getCountries() const
 {
 	return this->countries;
 }
@@ -101,7 +101,21 @@ void Player::reinforce()
 
 void Player::attack() 
 {
-	cout << "I'm attacking!\n";
+	int playerDecision = 0;
+	while (playerDecision != 1)
+	{
+		cout << "Do you want to attack adjacent territories ?" << endl;
+		cout << "Press 1 for yes or 2 for no: ";
+		cin >> playerDecision;
+		if (playerDecision == 2)
+			return;
+	}
+
+	cout << "\nSelect which countries you want to attack from by entering the country ID" << endl << endl;
+	printCountries();
+
+
+
 }
 
 void Player::fortify() 

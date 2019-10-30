@@ -7,6 +7,11 @@
 
 int main()
 {
-	GameEngine g;
+	PlayerDriver::run2();
+
+	
+	
+	
+
 	return 0;
 }

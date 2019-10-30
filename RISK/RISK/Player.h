@@ -27,18 +27,18 @@ public:
 	~Player();
 	Dice_Rolling_Facility* getDice();
 	Hand* getHand();
-	vector<Country>* getCountries();
+	vector<Country>* getCountries() const;
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();
 	void attack();
 	void fortify();
-	static void run();
 };
 
 class PlayerDriver 
 {
 public:
 	static void run();
+	static void run2();
 };
 
