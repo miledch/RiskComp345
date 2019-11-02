@@ -45,9 +45,10 @@ public:
 	void draw();
 	bool hasExchange() const;
 	void displayExchangeOptions() const;
-	void exchange();
+	bool exchange();
 	void printCards();
 	int getNumberOfExchanges();
+	int getNumHandCards();
 	
 private:
 	void eraseExchangeOptions();

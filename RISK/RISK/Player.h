@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include "Map.h"
 #include "Dice.h"
 #include "MapLoader.h"
@@ -14,13 +15,16 @@ using namespace std;
 
 class Player {
 private:
+	vector<Continent>* continents;
 	vector<Country>* countries;
 	Dice_Rolling_Facility* dice;
-	Hand* h;
+	Hand*  h;
+	
 
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);//collection of coutries, dice, and hands are properties of a player. they must be initialized inside the player object, instead
+	//of passing them as parameters. the player object should expect to recieve a map or a game engine that has a deck.
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
 	void changeCountries(vector<Country>* c);
@@ -31,17 +35,26 @@ public:
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();
-	void attack();
-	void fortify();
 	int getArmyByCountriesOwned();
 	int getArmyBycontienetOwned();
 	int getArmyByExchangingCards();
-	static void run();
+	void placingArmy(int&);
+	void attack();
+	void fortify();
+	Country& chosingCountrySource();
+	list<Country*> ownedNieghbourCountry(Country&);
+	bool hasOwnedNieghbourCountry(Country&);
+	Country* chooseTargetCountry(list<Country*>);
+	Country* getCountryById(int);
+	Country* get(list<Country*>, int);
+	void movingArmy(Country*,Country*);
 };
 
 class PlayerDriver 
 {
 public:
 	static void run();
+	static void runReinforcement();
+	static void runFortification();
 };
 
