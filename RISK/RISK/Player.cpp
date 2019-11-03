@@ -144,7 +144,7 @@ Country& Player::chosingCountrySource()
 list<Country*> Player::ownedNieghbourCountry(Country& source)
 {
 	list<int>* neighboursID = source.getNeighbors();
-	list<int>* myCountriesIds;
+	list<int>* myCountriesIds = new list<int>;
 	for (vector<Country>::iterator it = countries->begin(); it != countries->end(); it++)
 	{
 		myCountriesIds->push_back(*it->getCountryID());
@@ -200,11 +200,11 @@ Country* Player::getCountryById(int id)
 
 Country* Player::get(list<Country*> l, int index)
 {
-	list<int>::iterator it = l->begin();
+	list<Country*>::iterator it = l.begin();
 	for (int i = 0; i < index; i++) {
 		++it;
 	}
-	return getCountryById(*it);
+	return getCountryById(*(*it)->getCountryID());
 }
 
 void Player::movingArmy(Country* source, Country* target)
