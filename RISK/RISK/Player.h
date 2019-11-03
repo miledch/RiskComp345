@@ -18,10 +18,6 @@ private:
 	Dice_Rolling_Facility* dice;
 	Hand* h;
 	Map *map; // player needs visibility to the map
-
-public:
-	Player();
-	Player(, vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
 	string* name; // A player needs a name
 	int* availableArmies;
 

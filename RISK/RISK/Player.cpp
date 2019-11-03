@@ -11,18 +11,19 @@ Player::Player()
 }
 
 // Parameterized constructor
-Player::Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
+Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
 {
-	this->map = map;
 	this->countries = c;
 	this->dice = d;
 	this->h = h;
 	this->name = new string("DefaultPlayer");
 	this->availableArmies = new int(0);
+	map = nullptr;
 }
 
-Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
+Player::Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
 {
+	this->map = map;
 	this->countries = c;
 	this->dice = d;
 	this->h = h;

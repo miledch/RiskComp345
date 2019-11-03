@@ -93,8 +93,8 @@ void PlayerDriver::runAttackPhase()
 	}
 
 	//Creation of a Players object
-	Player player1(&map, &P1_countries, new Dice_Rolling_Facility(), new Hand());
-	Player player2(&map, &P2_countries, new Dice_Rolling_Facility(), new Hand());
+	Player player1(&map, &P1_countries, new Dice_Rolling_Facility(), new Hand(), new string("Player 1"));
+	Player player2(&map, &P2_countries, new Dice_Rolling_Facility(), new Hand(), new string("Player 2"));
 	
 	player1.attack();
 

@@ -1,5 +1,2 @@
-﻿  PlayerDriver.cpp
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(47,11): warning C4018: '>': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(61,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  main.cpp
   RISK.vcxproj -> C:\Users\miled\Documents\GitHub\RISK\Debug\RISK.exe
