@@ -8,5 +8,7 @@
 int main()
 {
 	GameEngine g;
+	g.randomizeOrder();
+	g.assignCountries();
 	return 0;
 }

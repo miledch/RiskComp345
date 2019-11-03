@@ -25,7 +25,15 @@ GameEngine::GameEngine()
 
 	int n;
 	cin >> n;
+	if (cin.fail()) {
+		cin.clear();
+		cin.ignore(256, '\n');
+	}
 	while (n > availableMaps.size() || n < 1) {
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
 		cout << "Please choose a valid number" << endl;
 		cin >> n;
 	}
@@ -52,7 +60,7 @@ GameEngine::GameEngine()
 	players = new vector<Player>();
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		players->push_back(Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck)));
+		players->push_back(Player(new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
 	}
 }
 
@@ -86,27 +94,64 @@ GameEngine& GameEngine::operator=(const GameEngine& rhs)
 	return *this;
 }
 
-const Map* GameEngine::getMap() const
+void GameEngine::randomizeOrder()
+{
+	random_device rd;
+	auto randomEngine = default_random_engine{ rd() };
+	shuffle(begin(*players), end(*players), randomEngine);
+}
+
+void GameEngine::assignCountries()
+{
+	random_device rd;
+	auto randomEngine = default_random_engine{ rd() };
+
+	list<Country> countries = *(map->getCountries()); // Get list of the countries
+
+	vector<int> randomIndex(countries.size()); // Vector same size as list of countries
+	for (int i = 0; i < map->getCountries()->size(); i++) {
+		randomIndex[i] = i; // Initialize from 0 to length-1 of list of countries
+	}
+	// Then shuffle all the indexes
+	shuffle(begin(randomIndex), end(randomIndex), randomEngine);
+
+	list<Country>::iterator it = countries.begin(); // Point iterator to the beginning of list
+	int j = 0;
+
+	for (int i = 0; i < countries.size(); i++, j++) {
+		if (j == *numOfPlayers) {
+			j = 0; // Once j surpasses the player count, set it back to 0 (round-robin)
+			cout << endl;
+		}
+
+		it = countries.begin(); // Set iterator to the beginning at each iteration
+		(advance(it, randomIndex[i])); // Advance in the list to the ith element ('i' was randomized before)
+		(*players)[j].getCountries()->push_back(*it);
+		cout << *(it->getCountryName()) << " has been assigned to " << *(*players)[j].getName() << endl;
+	}
+}
+
+Map* GameEngine::getMap() const
 {
 	return map;
 }
 
-const vector<Player>* GameEngine::getPlayers() const
+vector<Player>* GameEngine::getPlayers() const
 {
 	return players;
 }
 
-const Deck* GameEngine::getDeck() const
+Deck* GameEngine::getDeck() const
 {
 	return deck;
 }
 
-const string* GameEngine::getMapPath() const
+string* GameEngine::getMapPath() const
 {
 	return mapPath;
 }
 
-const int* GameEngine::getNumOfPlayers() const
+int* GameEngine::getNumOfPlayers() const
 {
 	return numOfPlayers;
 }
@@ -119,4 +164,8 @@ GameEngine::~GameEngine()
 	players = NULL;
 	delete deck;
 	deck = NULL;
+	delete mapPath;
+	mapPath = NULL;
+	delete numOfPlayers;
+	numOfPlayers = NULL;
 }

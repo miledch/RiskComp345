@@ -18,9 +18,12 @@ private:
 	Dice_Rolling_Facility* dice;
 	Hand* h;
 
+	string* name;
+
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h);
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name);
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
 	void changeCountries(vector<Country>* c);
@@ -28,6 +31,7 @@ public:
 	Dice_Rolling_Facility* getDice();
 	Hand* getHand();
 	vector<Country>* getCountries();
+	string* getName();
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();

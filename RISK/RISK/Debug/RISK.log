@@ -1,27 +1,8 @@
-﻿  Cards.cpp
-  CardsDriver.cpp
-  Dice.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(36,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  DiceDriver.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(51,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(13,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(18,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(25,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(30,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(42,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(56,22): warning C4018: '<': signed/unsigned mismatch
-  GameEngine.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(61,22): warning C4018: '<': signed/unsigned mismatch
+﻿  GameEngine.cpp
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(32,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
   main.cpp
-  Map.cpp
-  MapDriver.cpp
-  MapLoader.cpp
-  MapLoaderDriver.cpp
-  Player.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(28,11): warning C4018: '>': signed/unsigned mismatch
-  PlayerDriver.cpp
   Generating Code...
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(89,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(121,20): warning C4018: '<': signed/unsigned mismatch
   RISK.vcxproj -> C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\Debug\RISK.exe
