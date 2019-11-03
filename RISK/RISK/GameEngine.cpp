@@ -111,6 +111,16 @@ const int* GameEngine::getNumOfPlayers() const
 	return numOfPlayers;
 }
 
+void GameEngine::runGame() {
+	while (true) {
+		for (int i = 0; i < (*players).size(); i++) {
+			(*players)[i].reinforce();
+			(*players)[i].attack();
+			(*players)[i].fortify();
+		}
+	}
+}
+
 GameEngine::~GameEngine()
 {
 	delete map;

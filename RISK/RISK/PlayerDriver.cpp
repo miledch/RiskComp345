@@ -28,11 +28,7 @@ void PlayerDriver::runReinforcement()
 	Country c4(4, "iraq4", 1);
 	Country c5(5, "iraq5", 1);
 
-	Country c4(4, "syria1", 1);
-	Country c5(5, "syria2", 1);
-	Country c3(3, "Syira3", 1);
-	Country c4(4, "Syria4", 1);
-	Country c5(5, "Syria5", 1);
+
 
 	c1.increaseArmy(10);
 	c2.increaseArmy(11);
@@ -52,7 +48,7 @@ void PlayerDriver::runReinforcement()
 	Player p(v, new Dice_Rolling_Facility(), new Hand(*(new Deck(num))));
 
 	cout << p.getArmyByExchangingCards() << endl;
-	cout << p.getArmyBycontienetOwned() << endl;
+	cout << p.getArmyByContinentsOwned() << endl;
 	cout << p.getArmyByCountriesOwned() << endl;
 	p.reinforce();
 

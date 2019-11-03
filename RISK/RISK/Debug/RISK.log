@@ -1,2 +1,27 @@
-﻿  main.cpp
-  RISK.vcxproj -> C:\Users\moaya\Documents\GitHub\RiskComp345\RISK\Debug\RISK.exe
+﻿  GameEngine.cpp
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Player.cpp
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(28,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(135,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(180,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): error C2819: type 'std::list<Country *,std::allocator<_Ty>>' does not have an overloaded member 'operator ->'
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): error C2819:         with
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): error C2819:         [
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): error C2819:             _Ty=Country *
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): error C2819:         ]
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.h(45): message : see declaration of 'std::list<Country *,std::allocator<_Ty>>'
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.h(45): message :         with
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.h(45): message :         [
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.h(45): message :             _Ty=Country *
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.h(45): message :         ]
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,28): message : did you intend to use '.' instead?
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,35): error C2232: '->std::list<Country *,std::allocator<_Ty>>::begin': left operand has 'class' type, use '.'
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,35): error C2232:         with
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,35): error C2232:         [
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,35): error C2232:             _Ty=Country *
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(203,35): error C2232:         ]
+  PlayerDriver.cpp
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(288,21): warning C4018: '<=': signed/unsigned mismatch
+  Generating Code...
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\PlayerDriver.cpp(46,25): warning C4101: 'd': unreferenced local variable

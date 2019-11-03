@@ -14,6 +14,7 @@ public:
 	const Deck* getDeck() const;
 	const string* getMapPath() const;
 	const int* getNumOfPlayers() const;
+	void runGame();
 
 	~GameEngine();
 

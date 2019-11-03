@@ -18,8 +18,8 @@ private:
 	vector<Continent>* continents;
 	vector<Country>* countries;
 	Dice_Rolling_Facility* dice;
-	Hand*  h;
-	
+	Hand* h;
+
 
 public:
 	Player();
@@ -36,25 +36,27 @@ public:
 	void printCountries();
 	void reinforce();
 	int getArmyByCountriesOwned();
-	int getArmyBycontienetOwned();
+	int getArmyByContinentsOwned();
 	int getArmyByExchangingCards();
-	void placingArmy(int&);
+	void placingArmy(int& id);
 	void attack();
 	void fortify();
 	Country& chosingCountrySource();
-	list<Country*> ownedNieghbourCountry(Country&);
-	bool hasOwnedNieghbourCountry(Country&);
-	Country* chooseTargetCountry(list<Country*>);
-	Country* getCountryById(int);
-	Country* get(list<Country*>, int);
-	void movingArmy(Country*,Country*);
+	list<Country*> ownedNieghbourCountry(Country& c);
+	bool hasOwnedNieghbourCountry(Country& c);
+	Country* chooseTargetCountry(list<Country*> cl);
+	Country* getCountryById(int id);
+	Country* get(list<Country*> cl, int id);
+	void movingArmy(Country* c1, Country* c2);
+	void addCountry(Country c);
+	void addContinent(Continent c);
+
 };
 
-class PlayerDriver 
+class PlayerDriver
 {
 public:
 	static void run();
 	static void runReinforcement();
 	static void runFortification();
 };
-
