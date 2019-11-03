@@ -1,12 +1,12 @@
 #include <iostream>
 #include "Dice.h"
-#include <ctime>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
 Dice_Rolling_Facility::Dice_Rolling_Facility()
 {
+	srand(time(NULL));
 	face = new int[6]; // face is to keep count of the number that was rolled
 	for (int i = 0; i < 6; i++) {
 		face[i] = 0; // Initialize all the slots to zero since we haven't rolled the die yet
@@ -33,7 +33,7 @@ vector<int> Dice_Rolling_Facility::roll() {
 	}
 
 	vector<int> container(number); // This is the vector that we are going to return that will contain the nummbers
-	srand(time(NULL));
+	//srand(time(NULL)); // instead seed in the constructor
 	for (int i = 0; i < number; i++) {
 		container[i] = rand() % 6 + 1; // Generate the random numbers (1-3 times)
 		(*this).face[container[i]-1]++; // keep count of the number that was rolled
@@ -42,6 +42,21 @@ vector<int> Dice_Rolling_Facility::roll() {
 
 	sort(container.begin(), container.end(), greater<int>()); //sort from big to small
 	
+	return container; // returns the sorted vector
+}
+
+vector<int> Dice_Rolling_Facility::roll(int diceNbr) 
+{
+	vector<int> container(diceNbr); // This is the vector that we are going to return that will contain the nummbers
+	for (int i = 0; i < diceNbr; i++) 
+	{
+		container[i] = rand() % 6 + 1; // Generate the random numbers (1-3 times)
+		(*this).face[container[i] - 1]++; // keep count of the number that was rolled
+		(*(*this).count)++;
+	}
+
+	sort(container.begin(), container.end()); //sort from SMALL to BIG
+
 	return container; // returns the sorted vector
 }
 

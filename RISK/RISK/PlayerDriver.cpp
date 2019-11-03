@@ -42,9 +42,11 @@ void PlayerDriver::run2()
 	}
 
 	int n;
+	cout << ">";
 	cin >> n;
 	while (n > availableMaps.size() || n < 1) {
 		cout << "Please choose a valid number" << endl;
+		cout << ">";
 		cin >> n;
 	}
 
@@ -57,40 +59,49 @@ void PlayerDriver::run2()
 
 
 	srand(time(NULL));
-	// choose 5 random countries
-	int arr[5];
+	// choose 5 random countries for player 1
+	int arrP1[5];
 	for (size_t i = 0; i < 5 ; i++)
 	{
-		arr[i] = rand() % map.getCountries()->size() + 1;
-		cout << arr[i] << endl;
+		arrP1[i] = rand() % map.getCountries()->size() + 1;
 	}
 
-	vector<Country> countries;
+	vector<Country> P1_countries;
+	vector<Country> P2_countries;
 
+	// Assign the 5 countries to Player 1 and the rest of the countries to Player 2
 	list<Country>::iterator c_it;
 	int counter = 1;
 	for (c_it = map.getCountries()->begin(); c_it != map.getCountries()->end(); ++c_it, counter++)
 	{
-		for (int x : arr)
+		int nbrArmies = rand() % 10 + 1; // between 1 & 10 armies assigned randomly for each countries
+		P2_countries.push_back(*c_it);
+		c_it->setCountryPlayerOwned("PLAYER 2 - DEFENDER");
+		c_it->setCountryNumberArmies(nbrArmies);
+		for (int x : arrP1)
 		{
 			if (counter == x)
 			{
-				countries.push_back(*c_it);
+				c_it->setCountryPlayerOwned("PLAYER 1 - ATTACKER");
+				c_it->setCountryNumberArmies(nbrArmies);
+				P1_countries.push_back(*c_it);
+				
+				P2_countries.pop_back();
+				break;
 			}
 		}
 	}
 
-	vector<Country>::iterator it;
-	for (it = countries.begin(); it != countries.end(); ++it)
-	{
-		cout << "COUNTRY ID: " << *it->getCountryID() << "	" << *it->getCountryName() << endl;
-	}
+	//Creation of a Players object
+	Player player1(&map, &P1_countries, new Dice_Rolling_Facility(), new Hand());
+	Player player2(&map, &P2_countries, new Dice_Rolling_Facility(), new Hand());
+	
+	player1.attack();
 	
 
 	
 
 
 
-	Player player;
-	player.attack();
+	
 }

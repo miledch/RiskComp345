@@ -17,10 +17,10 @@ private:
 	vector<Country>* countries;
 	Dice_Rolling_Facility* dice;
 	Hand* h;
-
+	Map* map; // player needs visibility to the map
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
 	void changeCountries(vector<Country>* c);
