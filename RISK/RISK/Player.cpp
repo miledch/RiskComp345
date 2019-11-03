@@ -3,6 +3,7 @@
 // Default constructor
 Player::Player() 
 {
+	map = new Map();
 	countries = new vector<Country>();
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
