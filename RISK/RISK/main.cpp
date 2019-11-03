@@ -10,5 +10,6 @@ int main()
 	GameEngine g;
 	g.randomizeOrder();
 	g.assignCountries();
+	g.assignArmies();
 	return 0;
 }

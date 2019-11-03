@@ -131,6 +131,69 @@ void GameEngine::assignCountries()
 	}
 }
 
+void GameEngine::assignArmies()
+{
+	int A; // # of armies per player
+
+	switch (*numOfPlayers) {
+	case 2:
+		A = 40;
+		break;
+	case 3:
+		A = 35;
+		break;
+	case 4:
+		A = 30;
+		break;
+	case 5:
+		A = 25;
+		break;
+	case 6:
+		A = 20;
+	}
+
+	for (int i = 0; i < *numOfPlayers; i++) {
+		(*players)[i].setAvailableArmies(A);
+	}
+
+	for (int i = 0; i < (*players).size(); i++) {
+		for (int j = 0; j < (*(*players)[i].getCountries()).size(); j++) {
+			(*(*(*players)[i].getCountries())[j].getCountryNumberArmies())++;
+			(*(*players)[i].getAvailableArmies())--;
+		}
+	}
+
+	int countryChosenIdx;
+	int maxAvailableArmies = A - ceil(((double)(map->getCountries()->size()) / *numOfPlayers)); // 'ceil' to get the max value
+
+	for (int k = 0; k < maxAvailableArmies; k++) {
+		for (int i = 0; i < *numOfPlayers; i++) {
+
+			if ((*players)[i].getAvailableArmies() == 0) {
+				continue;
+			}
+
+			cout << endl;
+			cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
+			for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
+				cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j].getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j].getCountryNumberArmies()) << ")" << endl;
+			}
+
+			cin >> countryChosenIdx;
+
+			while (countryChosenIdx < 1 || countryChosenIdx >(*players)[i].getCountries()->size()) {
+				cout << "Please enter a valid number" << endl;
+				cin >> countryChosenIdx;
+			}
+
+			(*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryNumberArmies())++;
+			(*(*players)[i].getAvailableArmies())--;
+
+			cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryNumberArmies()) << ")" << endl;
+		}
+	}
+}
+
 Map* GameEngine::getMap() const
 {
 	return map;

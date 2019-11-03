@@ -18,7 +18,8 @@ private:
 	Dice_Rolling_Facility* dice;
 	Hand* h;
 
-	string* name;
+	string* name; // A player needs a name
+	int* availableArmies;
 
 public:
 	Player();
@@ -32,6 +33,8 @@ public:
 	Hand* getHand();
 	vector<Country>* getCountries();
 	string* getName();
+	int* getAvailableArmies();
+	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();

@@ -7,6 +7,7 @@ Player::Player()
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
+	availableArmies = new int(0);
 }
 
 // Parameterized constructor
@@ -16,6 +17,7 @@ Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
 	this->dice = d;
 	this->h = h;
 	this->name = new string("DefaultPlayer");
+	this->availableArmies = new int(0);
 }
 
 Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
@@ -24,6 +26,7 @@ Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* na
 	this->dice = d;
 	this->h = h;
 	this->name = name;
+	this->availableArmies = new int(0);
 }
 
 Player::Player(const Player& p2)
@@ -32,6 +35,7 @@ Player::Player(const Player& p2)
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
 	this->h = new Hand(*p2.h);
 	this->name = new string(*p2.name);
+	this->availableArmies = new int(*p2.availableArmies);
 }
 
 Player& Player::operator=(const Player& rhs)
@@ -41,6 +45,7 @@ Player& Player::operator=(const Player& rhs)
 		*(this->dice) = *(rhs.dice);
 		*(this->h) = *(rhs.h);
 		*(this->name) = *(rhs.name);
+		*(this->availableArmies) = *(rhs.availableArmies);
 	}
 	return *this;
 }
@@ -58,6 +63,8 @@ Player::~Player()
 	dice =NULL;
 	delete name;
 	name = NULL;
+	delete availableArmies;
+	availableArmies = NULL;
 
 }
 
@@ -82,6 +89,16 @@ vector<Country>* Player::getCountries()
 string* Player::getName()
 {
 	return name;
+}
+
+int* Player::getAvailableArmies()
+{
+	return availableArmies;
+}
+
+void Player::setAvailableArmies(int armies)
+{
+	*(this->availableArmies) = armies;
 }
 
 // Change the set of player's countries
