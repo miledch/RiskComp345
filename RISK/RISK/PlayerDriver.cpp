@@ -20,7 +20,7 @@ void PlayerDriver::run()
 
 }
 
-void PlayerDriver::run2()
+void PlayerDriver::runAttackPhase()
 {
 	cout << "Welcome to the Command Line Risk Game!\n" << endl;
 
@@ -74,7 +74,7 @@ void PlayerDriver::run2()
 	int counter = 1;
 	for (c_it = map.getCountries()->begin(); c_it != map.getCountries()->end(); ++c_it, counter++)
 	{
-		int nbrArmies = rand() % 10 + 1; // between 1 & 10 armies assigned randomly for each countries
+		int nbrArmies = rand() % 5 + 1; // between 1 & 6 armies assigned randomly for each countries
 		P2_countries.push_back(*c_it);
 		c_it->setCountryPlayerOwned("PLAYER 2 - DEFENDER");
 		c_it->setCountryNumberArmies(nbrArmies);
@@ -97,11 +97,5 @@ void PlayerDriver::run2()
 	Player player2(&map, &P2_countries, new Dice_Rolling_Facility(), new Hand());
 	
 	player1.attack();
-	
 
-	
-
-
-
-	
 }

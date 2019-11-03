@@ -106,19 +106,22 @@ void Player::reinforce()
 	cout << "I'm reinforcing!\n";
 }
 
-void Player::attack() 
+void Player::attack()
 {
 	int playerDecision = 0;
-	while (playerDecision != 1)
+	while (playerDecision != 2)
 	{
 		cout << "\nDo you want to attack adjacent territories ?" << endl;
 		cout << "Press 1 for yes or 2 for no: ";
 		cout << ">";
 		cin >> playerDecision;
-		if (playerDecision == 2)
-			return;
+		if (playerDecision == 1)
+			attackPhase();
 	}
+}
 
+void Player::attackPhase()
+{
 	Country* attackCountry = NULL;
 	Country* targetedCountry = NULL;
 
@@ -167,7 +170,7 @@ void Player::attack()
 		}
 	}
 
-	cout << "\nChoose a coutry to attack !" << endl;
+	cout << "\nChoose a country to attack !" << endl;
 	cout << "Neighboring countries of country " << countrySelected << " are:" << endl << endl;
 
 	list<int>::iterator l_it;
@@ -337,11 +340,11 @@ void Player::attack()
 	{
 		cout << *vecInt_it << " ";
 	}
-
+	cout << endl;
 
 	//Match up the highest attack die with the highest defender die, and match the second highest attack die with the second
 	//highest defender die. If there is only one attack die, only match up the highest attack die with the defender die
-	const int loopNbr = attackerRoll.size();
+	const int loopNbr = std::min(attackerNbrDice, defenderNbrDice);
 	for (size_t i = 0; i < loopNbr; i++)
 	{
 		// because attackerRoll is in ascending order, the back() returns the highest roll
@@ -352,18 +355,77 @@ void Player::attack()
 		if(defenderRoll.size() > 1)
 			defenderRoll.pop_back();
 
+		cout << "\nBecause " << *attackCountry->getCountryPlayerOwned() << " rolled " << attack << " and "
+			<< *targetedCountry->getCountryPlayerOwned() << " rolled " << defense << endl;
 		//Remove one of your opponent’s army from the defending territory if the attack die is higher to its corresponding defense die.
 		if (attack > defense)
 		{
-			targetedCountry->setCountryNumberArmies(--(* countriesIt->getCountryNumberArmies()));
+			targetedCountry->setCountryNumberArmies(--(*targetedCountry->getCountryNumberArmies()));
+			cout << "Country " << *targetedCountry->getCountryName() << " from " << *targetedCountry->getCountryPlayerOwned()
+				<< " lost one army and is now at " << *targetedCountry->getCountryNumberArmies() << endl;
 		}
 		else // if dices are equal or defense > attack
 		{
 			attackCountry->setCountryNumberArmies(--(*attackCountry->getCountryNumberArmies()));
+			cout << "Country " << *attackCountry->getCountryName() << " from " << *attackCountry->getCountryPlayerOwned()
+				<< " lost one army and is now at " << *attackCountry->getCountryNumberArmies() << endl;
 		}
 
+		// check if the attack country ran out of armies
+		if (*attackCountry->getCountryNumberArmies() == 0)
+		{
+			cout << "The aggressor " << *attackCountry->getCountryPlayerOwned() << " has been defeated and lost country "
+				<< *attackCountry->getCountryName() << endl;
+			// player removes his attack country from his list of countries using our index
+			countries->erase(countries->begin() + index);
+			// remove this country from the map
+			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
+			{
+				if (*countriesIt->getCountryID() == *attackCountry->getCountryID())
+				{
+					countriesIt->setCountryPlayerOwned("NULL");
+					countriesIt->setCountryNumberArmies(0);
+					break;
+				}
+			}
+		}
+		else if (*targetedCountry->getCountryNumberArmies() == 0)
+		{
+			cout << "Targeted  " << *targetedCountry->getCountryPlayerOwned() << " has been defeated and lost country "
+				<< *targetedCountry->getCountryName() << endl;
+			// player now owns the targeted countries
+			countries->push_back(*targetedCountry);
+			// modify the map object
+			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
+			{
+				if (*countriesIt->getCountryID() == attackSelection)
+				{
+					countriesIt->setCountryPlayerOwned(*attackCountry->getCountryPlayerOwned());
+					// player must now decide how many armies to move to the new country
+					int nbrArmies;
+					validSelection = false;
+					do
+					{
+						cout << "\nIn order to move armies to the conquered country, select a number between 1 and "
+							<< (*attackCountry->getCountryNumberArmies() - 1) << endl;
+						cout << ">";
+						cin >> nbrArmies;
+						if (nbrArmies > 1 && nbrArmies < *attackCountry->getCountryNumberArmies())
+							validSelection = true;
+						else
+							cout << "\nPlease enter a valid number" << endl;
+					} 
+					while (!validSelection);
+
+					countriesIt->setCountryNumberArmies(nbrArmies);
+					break;
+				}
+			}
+		}
 	}
 
+	attackCountry = nullptr;
+	targetedCountry = nullptr;
 
 
 }

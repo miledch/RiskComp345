@@ -33,7 +33,6 @@ vector<int> Dice_Rolling_Facility::roll() {
 	}
 
 	vector<int> container(number); // This is the vector that we are going to return that will contain the nummbers
-	//srand(time(NULL)); // instead seed in the constructor
 	for (int i = 0; i < number; i++) {
 		container[i] = rand() % 6 + 1; // Generate the random numbers (1-3 times)
 		(*this).face[container[i]-1]++; // keep count of the number that was rolled

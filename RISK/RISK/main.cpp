@@ -7,7 +7,7 @@
 
 int main()
 {
-	PlayerDriver::run2();
+	PlayerDriver::runAttackPhase();
 
 	
 	

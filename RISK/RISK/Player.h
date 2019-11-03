@@ -32,6 +32,7 @@ public:
 	void printCountries();
 	void reinforce();
 	void attack();
+	void attackPhase();
 	void fortify();
 };
 
@@ -39,6 +40,6 @@ class PlayerDriver
 {
 public:
 	static void run();
-	static void run2();
+	static void runAttackPhase();
 };
 
