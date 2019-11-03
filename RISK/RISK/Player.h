@@ -17,10 +17,18 @@ private:
 	vector<Country>* countries;
 	Dice_Rolling_Facility* dice;
 	Hand* h;
-	Map* map; // player needs visibility to the map
+	Map *map; // player needs visibility to the map
+
 public:
 	Player();
-	Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	Player(, vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);
+	string* name; // A player needs a name
+	int* availableArmies;
+
+public:
+	Player();
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h);
+	Player(Map *map, vector<Country> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
 	void changeCountries(vector<Country>* c);
@@ -28,6 +36,9 @@ public:
 	Dice_Rolling_Facility* getDice();
 	Hand* getHand();
 	vector<Country>* getCountries() const;
+	string* getName();
+	int* getAvailableArmies();
+	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();
