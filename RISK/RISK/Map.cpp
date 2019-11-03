@@ -1,3 +1,4 @@
+
 #include "Map.h"
 
 Map::Map()
@@ -227,9 +228,19 @@ string* Country::getCountryPlayerOwned()
 	return playerOwned;
 }
 
+void Country::setCountryPlayerOwned(string playerName)
+{
+	playerOwned = new string(playerName);
+}
+
 int* Country::getCountryNumberArmies()
 {
 	return numberArmies;
+}
+
+void Country::setCountryNumberArmies(int armies)
+{
+	numberArmies = new int(armies);
 }
 
 list<int>* Country::getNeighbors()

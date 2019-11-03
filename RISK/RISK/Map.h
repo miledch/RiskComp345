@@ -53,7 +53,9 @@ public:
 	string* getCountryName();
 	int* getCountryContinent();
 	string* getCountryPlayerOwned();
+	void setCountryPlayerOwned(string playerName);
 	int* getCountryNumberArmies();
+	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
 	void increaseArmy(int);
 	void decreaseArmy(int);
