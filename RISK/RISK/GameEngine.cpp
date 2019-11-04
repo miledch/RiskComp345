@@ -127,6 +127,7 @@ void GameEngine::assignCountries()
 		it = countries.begin(); // Set iterator to the beginning at each iteration
 		(advance(it, randomIndex[i])); // Advance in the list to the ith element ('i' was randomized before)
 		(*players)[j].getCountries()->push_back(*it);
+		it->setCountryPlayerOwned(*((*players)[j].getName()));
 		cout << *(it->getCountryName()) << " has been assigned to " << *(*players)[j].getName() << endl;
 	}
 }
@@ -220,13 +221,34 @@ int* GameEngine::getNumOfPlayers() const
 }
 
 void GameEngine::runGame() {
+	string winner;
 	while (true) {
+		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
+			bool ownsAllCountries = true;
 			(*players)[i].reinforce();
 			(*players)[i].attack();
 			(*players)[i].fortify();
+
+			ownsAllCountries = true;
+
+			for (Country country : *(map->getCountries())) {
+				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+					ownsAllCountries = false;
+					break;
+				}
+			}
+			if (ownsAllCountries == true) {
+				winner = *((*players)[i].getName());
+				finished = true;
+				break;
+			}
+		}
+		if (finished) {
+				break;
 		}
 	}
+	cout << "Player " << winner << "owns all the countries and wins the game!" << endl;
 }
 
 GameEngine::~GameEngine()
