@@ -145,7 +145,6 @@ void Map::RunConnectedSubgraph(int continentID)
 							neighbor = neighbor - nbrCountries;
 							g.addEdge(index, --neighbor);
 						}
-							
 					}
 				}
 			}

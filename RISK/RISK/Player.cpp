@@ -447,7 +447,7 @@ void Player::attackPhase()
 							<< (*attackCountry->getCountryNumberArmies() - 1) << endl;
 						cout << ">";
 						cin >> nbrArmies;
-						if (nbrArmies > 1 && nbrArmies < *attackCountry->getCountryNumberArmies())
+						if (nbrArmies > 0 && nbrArmies < *attackCountry->getCountryNumberArmies())
 							validSelection = true;
 						else
 							cout << "\nPlease enter a valid number" << endl;
