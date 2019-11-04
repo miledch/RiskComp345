@@ -4,7 +4,7 @@
 class GameEngine
 {
 public:
-	GameEngine();
+	GameEngine(); // The constructor is itself the 'Game Start' initializer
 	GameEngine(const GameEngine& game2);
 	GameEngine& operator=(const GameEngine& rhs);
 
