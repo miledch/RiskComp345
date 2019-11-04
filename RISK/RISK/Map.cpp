@@ -1,4 +1,3 @@
-
 #include "Map.h"
 
 Map::Map()
@@ -176,7 +175,6 @@ Country& Country::operator=(const Country& rhs)
 		*playerOwned = *(rhs.playerOwned);
 		*numberArmies = *(rhs.numberArmies);
 	}
-
 	return *this;
 }
 
@@ -228,19 +226,9 @@ string* Country::getCountryPlayerOwned()
 	return playerOwned;
 }
 
-void Country::setCountryPlayerOwned(string playerName)
-{
-	playerOwned = new string(playerName);
-}
-
 int* Country::getCountryNumberArmies()
 {
 	return numberArmies;
-}
-
-void Country::setCountryNumberArmies(int armies)
-{
-	numberArmies = new int(armies);
 }
 
 list<int>* Country::getNeighbors()
@@ -250,12 +238,12 @@ list<int>* Country::getNeighbors()
 
 void Country::increaseArmy(int add)
 {
-	this->numberArmies = this->numberArmies + add;
+	*this->numberArmies += add;
 }
 
 void Country::decreaseArmy(int minus)
 {
-	this->numberArmies = this->numberArmies + minus;
+	*this->numberArmies = *(this->numberArmies) - minus;
 }
 
 // deletion of pointers member class

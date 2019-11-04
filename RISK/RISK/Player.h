@@ -15,56 +15,52 @@ using namespace std;
 
 class Player {
 private:
-	vector<Continent>* continents;
-	vector<Country>* countries;
-	Dice_Rolling_Facility* dice;
-	Hand* h;
-	Map *map; // player needs visibility to the map
-	string* name; // A player needs a name
-	int* availableArmies;
+	vector<Continent> testContinents;
+	vector<Country> testCounties;
 
+	vector<Continent>* continents{ &testContinents };
+	vector<Country>* countries{ &testCounties };
+	Dice_Rolling_Facility* dice;
+	Hand*  h;
+	
 
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h);
-	Player(Map *map, vector<Country> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
+	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* g);//collection of coutries, dice, and hands are properties of a player. they must be initialized inside the player object, instead
+	//of passing them as parameters. the player object should expect to recieve a map or a game engine that has a deck.
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
 	void changeCountries(vector<Country>* c);
 	~Player();
 	Dice_Rolling_Facility* getDice();
 	Hand* getHand();
-	vector<Country>* getCountries() const;
-	string* getName();
-	int* getAvailableArmies();
-	void setAvailableArmies(int armies);
+	void initializeHand(Hand*);
+	vector<Country>* getCountries();
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();
 	int getArmyByCountriesOwned();
-	int getArmyByContinentsOwned();
+	int getArmyBycontienetOwned();
 	int getArmyByExchangingCards();
-	void placingArmy(int& id);
+	void placingArmy(int&);
 	void attack();
-	void attackPhase();
 	void fortify();
 	Country& chosingCountrySource();
-	list<Country*> ownedNieghbourCountry(Country& c);
-	bool hasOwnedNieghbourCountry(Country& c);
-	Country* chooseTargetCountry(list<Country*> cl);
-	Country* getCountryById(int id);
-	Country* get(list<Country*> cl, int id);
-	void movingArmy(Country* c1, Country* c2);
-	void addCountry(Country c);
-	void addContinent(Continent c);
-
+	list<Country*> ownedNieghbourCountry(Country&);
+	bool hasOwnedNieghbourCountry(Country&);
+	Country* chooseTargetCountry(list<Country*>);
+	Country* getCountryById(int);
+	Country* get(list<Country*>, int);
+	void movingArmy(Country*,Country*);
+	void addCountry(Country);
+	void addContinent(Continent);
 };
 
-class PlayerDriver
+class PlayerDriver 
 {
 public:
 	static void run();
 	static void runReinforcement();
 	static void runFortification();
-	static void runAttackPhase();
 };
+

@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 #include "Player.h"
-#include <algorithm>
-#include <random>
 class GameEngine
 {
 public:
@@ -10,18 +8,12 @@ public:
 	GameEngine(const GameEngine& game2);
 	GameEngine& operator=(const GameEngine& rhs);
 
-	void randomizeOrder(); // Shuffle the vector of players to randomize the order of play
-	void assignCountries(); // Randomly assign countries to players in round-robin fashion
-	void assignArmies(); // Players assign armies to their countries in round-robin fashion
-
-	void runGame();
-
-	//// Getters ////
-	Map* getMap() const;
-	vector<Player>* getPlayers() const;
-	Deck* getDeck() const;
-	string* getMapPath() const;
-	int* getNumOfPlayers() const;
+	//// Getters: Return the actual pointers but return them as const so you can't change the values ////
+	const Map* getMap() const;
+	const vector<Player>* getPlayers() const;
+	const Deck* getDeck() const;
+	const string* getMapPath() const;
+	const int* getNumOfPlayers() const;
 
 	~GameEngine();
 

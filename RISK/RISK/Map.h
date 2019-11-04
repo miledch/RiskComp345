@@ -35,12 +35,17 @@ public:
 class Country
 {
 private:
-	int* countryID;
-	string* countryName;
-	int* countryContinent;
-	string* playerOwned;
-	int* numberArmies;
-	list<int>* neighbors;
+	int ID;
+	int* countryID = &ID;
+	string name;
+	string* countryName = &name;
+	int contienent;
+	int* countryContinent = &contienent;
+	string owner;
+	string* playerOwned = &owner;
+	int* numberArmies = new int(0);
+	list<int> nei;
+	list<int>* neighbors = &nei;
 
 public:
 	Country();
@@ -53,9 +58,7 @@ public:
 	string* getCountryName();
 	int* getCountryContinent();
 	string* getCountryPlayerOwned();
-	void setCountryPlayerOwned(string playerName);
 	int* getCountryNumberArmies();
-	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
 	void increaseArmy(int);
 	void decreaseArmy(int);
