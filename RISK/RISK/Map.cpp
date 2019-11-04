@@ -1,5 +1,6 @@
 
 #include "Map.h"
+#include <list>
 
 Map::Map()
 {
@@ -29,99 +30,135 @@ list<Continent>* Map::getcontinents()
 	return continents;
 }
 
+
+Graph::Graph(int countries)
+{
+	numCountries = countries;
+	adjLists = new list<int>[countries];
+	visited = new bool[countries];
+	for (size_t i = 0; i < countries; i++)
+	{
+		visited[i] = false;
+	}
+}
+
+void Graph::addEdge(int src, int dest)
+{
+	adjLists[src].push_front(dest);
+}
+
+bool Graph::checkVisited()
+{
+	for (size_t i = 0; i < numCountries; i++)
+	{
+		cout << "visited[" << i << "] " << visited[i] << endl;
+		if (!visited[i])
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void Graph::DFS(int country)
+{
+	visited[country] = true;
+	list<int> adjList = adjLists[country];
+
+	list<int>::iterator i;
+	for (i = adjList.begin(); i != adjList.end(); ++i)
+	{
+		if (!visited[*i])
+		{
+			DFS(*i);
+		}
+	}
+}
+
 void Map::ConnectedGraph()
 {
-	// create an array of bool the size of the number of countries
-	bool* pArray = new bool[getCountries()->size()];
+	Graph g(countries->size());
 
-	// Lambda function, return true if every elem of pArray is true
-	auto GraphIsConnected = [](bool* ptrArr, int arrSize)
+	list<Country>::iterator c_it;
+	list<int>::iterator nei_it;
+	for (c_it = countries->begin(); c_it != countries->end(); ++c_it)
 	{
-		for (int i = 0; i < arrSize; i++)
+		for (nei_it = c_it->getNeighbors()->begin(); nei_it != c_it->getNeighbors()->end(); ++nei_it)
 		{
-			if (ptrArr[i] == false)
-				return false;
+			int country = *c_it->getCountryID();
+			int neighbor = *nei_it;
+			g.addEdge(--country, --neighbor);
 		}
-		// if every element of ptrArr is true, the graph is connected
-		return true;
-	};
-	
-	int countriesSize = getCountries()->size();
-	// initialise each value of the array to false
-	for (int i = 0; i < countriesSize; i++)
-	{
-		pArray[i] = false;
 	}
 
-	// while the array is not completely true at every index, keep looping through each neighbors. For example in the case of 42 countries
-	// countryID goes from 1 to 42, pArray of size 42 is 0 to 41.
-	// Therefore each neighbor found will tick the --ID index of the pArray. For example, country 1 has neighbors 3, 8, 18
-	// pArray[2], pArray[7] & pArray[17] will be ticked to true.
-	bool graphConnected = false;
-	list<Country>::iterator c_it; 
-	list<int>::iterator n_it; // neighbors iterator
-	for (c_it = getCountries()->begin(); c_it != getCountries()->end(); ++c_it)
-	{
-		if (!graphConnected)
-		{
-			for (n_it = c_it->getNeighbors()->begin(); n_it != c_it->getNeighbors()->end(); ++n_it)
-			{
-				pArray[--*n_it] = true;
-			}
-			graphConnected = GraphIsConnected(pArray, getCountries()->size());
-		}
-		else if (graphConnected)
-		{
-			cout << "The map is a connected graph." << endl << endl;
-			return;
-		}
-	}	
-	cout << "The map is not a connected graph." << endl << endl;
+	g.DFS(0);// checking DFS starting from country 0
+
+	if(g.checkVisited())
+		cout << "\nCountries are part of a connected graph\n" << endl;
+	else
+		std::cerr << "\nThe map selected is not a connected graph\n" << endl;
 }
 
 void Map::ConnectedSubgraph()
 {
-	// create an array of bool the size of the number of continents
-	bool* pArray = new bool[getcontinents()->size()];
-
-	// Lambda function, return true if every elem of pArray is true
-	auto SubgraphIsConnected = [](bool* ptrArr, int arrSize)
+	for (size_t i = 1; i <= continents->size(); i++)
 	{
-		for (int i = 0; i < arrSize; i++)
-		{
-			if (ptrArr[i] == false)
-				return false;
-		}
-		// if every element of ptrArr is true, the graph is connected
-		return true;
-	};
-
-	int continentsSize = getcontinents()->size();
-	// initialise each value of the array to false
-	for (int i = 0; i < continentsSize; i++)
-	{
-		pArray[i] = false;
+		RunConnectedSubgraph(i);
 	}
-
-	bool subgraphConnected = false;
-	list<Country>::iterator c_it;
-	int value;
-	for (c_it = getCountries()->begin(); c_it != getCountries()->end(); ++c_it)
-	{
-		if (!subgraphConnected)
-		{
-			value = *(c_it->getCountryContinent());
-			pArray[--value] = true;
-			subgraphConnected = SubgraphIsConnected(pArray, getcontinents()->size());
-		}
-		else if (subgraphConnected)
-		{
-			cout << "Continents are connected subgraphs." << endl << endl;
-			return;
-		}
-	}
-	cout << "Continents is not a connected subgraphs." << endl << endl;
 }
+
+void Map::RunConnectedSubgraph(int continentID)
+{
+	// need to create a graph of countries for each continents
+	list<Country>* countriesPerContinent = new list<Country>();
+
+	list<Country>::iterator c_it;
+	for (c_it = countries->begin(); c_it != countries->end(); ++c_it)
+	{
+		if (*c_it->getCountryContinent() == continentID)
+		{
+			countriesPerContinent->push_back(*c_it);
+		}
+	}
+	
+	int nbrCountries = countriesPerContinent->size();
+	Graph g(nbrCountries);
+
+	list<int>::iterator nei_it;
+	list<Country>::iterator countries_it;
+	for (c_it = countriesPerContinent->begin(); c_it != countriesPerContinent->end(); ++c_it)
+	{
+		for (nei_it = c_it->getNeighbors()->begin(); nei_it != c_it->getNeighbors()->end(); ++nei_it)
+		{
+			for (countries_it = countries->begin(); countries_it != countries->end(); ++countries_it)
+			{
+				if (*countries_it->getCountryID() == *nei_it)
+				{
+					if (*countries_it->getCountryContinent() == continentID)
+					{
+						int index = std::distance(countriesPerContinent->begin(), c_it);
+						int neighbor = *nei_it;
+						if (continentID == 1)
+							g.addEdge(index, --neighbor);
+						else
+						{
+							neighbor = neighbor - nbrCountries;
+							g.addEdge(index, --neighbor);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	g.DFS(0);// checking DFS starting from country 0
+
+	if(g.checkVisited())
+		cout << "\Subgraph " << continentID << " is a connected subgraph." << endl << endl;
+	else
+		std::cerr << "\Subgraph " << continentID << " is not a connected subgraph." << endl << endl;
+}
+
 
 Map::~Map()
 {
@@ -142,10 +179,6 @@ Map::~Map()
 	}
 	delete countries;
 	delete continents;
-}
-
-Country::Country()
-{
 }
 
 Country::Country(int id, string name, int continent)
@@ -248,16 +281,6 @@ list<int>* Country::getNeighbors()
 	return neighbors;
 }
 
-void Country::increaseArmy(int add)
-{
-	this->numberArmies = this->numberArmies + add;
-}
-
-void Country::decreaseArmy(int minus)
-{
-	this->numberArmies = this->numberArmies + minus;
-}
-
 // deletion of pointers member class
 void Country::deleteCountry()
 {
@@ -272,8 +295,6 @@ void Country::printCountry()
 	cout << "Country ID: " << *getCountryID() << ", Country name: " << *getCountryName() << ", belong to continent: " << *getCountryContinent()
 		<< ", belong to player: " << *getCountryPlayerOwned() << ", with number of armies: " << *getCountryNumberArmies();
 }
-
-
 
 Country::~Country()
 {

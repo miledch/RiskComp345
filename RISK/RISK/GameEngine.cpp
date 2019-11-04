@@ -60,7 +60,7 @@ GameEngine::GameEngine()
 	players = new vector<Player>();
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
+		players->push_back(Player(map, new vector<Country>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
 	}
 }
 
@@ -99,10 +99,6 @@ void GameEngine::randomizeOrder()
 	random_device rd;
 	auto randomEngine = default_random_engine{ rd() };
 	shuffle(begin(*players), end(*players), randomEngine);
-	cout << "The order of the play is: " << endl;
-	for (int i = 0; i < (*players).size(); i++) {
-
-	}
 }
 
 void GameEngine::assignCountries()
@@ -110,28 +106,27 @@ void GameEngine::assignCountries()
 	random_device rd;
 	auto randomEngine = default_random_engine{ rd() };
 
-	list<Country>* countries = map->getCountries(); // Get list of the countries
+	list<Country> countries = *(map->getCountries()); // Get list of the countries
 
-	vector<int> randomIndex(countries->size()); // Vector same size as list of countries
+	vector<int> randomIndex(countries.size()); // Vector same size as list of countries
 	for (int i = 0; i < map->getCountries()->size(); i++) {
 		randomIndex[i] = i; // Initialize from 0 to length-1 of list of countries
 	}
 	// Then shuffle all the indexes
 	shuffle(begin(randomIndex), end(randomIndex), randomEngine);
 
-	list<Country>::iterator it = countries->begin(); // Point iterator to the beginning of list
+	list<Country>::iterator it = countries.begin(); // Point iterator to the beginning of list
 	int j = 0;
 
-	for (int i = 0; i < countries->size(); i++, j++) {
+	for (int i = 0; i < countries.size(); i++, j++) {
 		if (j == *numOfPlayers) {
 			j = 0; // Once j surpasses the player count, set it back to 0 (round-robin)
 			cout << endl;
 		}
 
-		it = countries->begin(); // Set iterator to the beginning at each iteration
+		it = countries.begin(); // Set iterator to the beginning at each iteration
 		(advance(it, randomIndex[i])); // Advance in the list to the ith element ('i' was randomized before)
-		(*players)[j].getCountries()->push_back(&(*it));
-		it->setCountryPlayerOwned(*((*players)[j].getName()));
+		(*players)[j].getCountries()->push_back(*it);
 		cout << *(it->getCountryName()) << " has been assigned to " << *(*players)[j].getName() << endl;
 	}
 }
@@ -163,7 +158,7 @@ void GameEngine::assignArmies()
 
 	for (int i = 0; i < (*players).size(); i++) {
 		for (int j = 0; j < (*(*players)[i].getCountries()).size(); j++) {
-			(*(*(*players)[i].getCountries())[j]->getCountryNumberArmies())++;
+			(*(*(*players)[i].getCountries())[j].getCountryNumberArmies())++;
 			(*(*players)[i].getAvailableArmies())--;
 		}
 	}
@@ -181,7 +176,7 @@ void GameEngine::assignArmies()
 			cout << endl;
 			cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
 			for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
-				cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
+				cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j].getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j].getCountryNumberArmies()) << ")" << endl;
 			}
 
 			cin >> countryChosenIdx;
@@ -191,10 +186,10 @@ void GameEngine::assignArmies()
 				cin >> countryChosenIdx;
 			}
 
-			(*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies())++;
+			(*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryNumberArmies())++;
 			(*(*players)[i].getAvailableArmies())--;
 
-			cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies()) << ")" << endl;
+			cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1].getCountryNumberArmies()) << ")" << endl;
 		}
 	}
 }
@@ -230,9 +225,9 @@ void GameEngine::runGame() {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
-			//(*players)[i].reinforce();
+			(*players)[i].reinforce();
 			(*players)[i].attack();
-			//(*players)[i].fortify();
+			(*players)[i].fortify();
 
 			ownsAllCountries = true;
 

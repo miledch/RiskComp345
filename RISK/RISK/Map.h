@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <vector>
 
 using std::cout;
 using std::endl;
@@ -28,7 +27,8 @@ public:
 	list<Country>* getCountries();
 	list<Continent>* getcontinents();
 	void ConnectedGraph(); // for countries
-	void ConnectedSubgraph();  // for contiennts
+	void ConnectedSubgraph();
+	void RunConnectedSubgraph(int continentID);  // for contiennts
 	~Map();
 };
 
@@ -40,10 +40,9 @@ private:
 	int* countryContinent;
 	string* playerOwned;
 	int* numberArmies;
-	list<int>* neighbors;
 
+	list<int>* neighbors;
 public:
-	Country();
 	Country(int, string, int);
 	Country(const Country& country2);
 	Country& operator=(const Country& rhs);
@@ -57,12 +56,8 @@ public:
 	int* getCountryNumberArmies();
 	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
-	void increaseArmy(int);
-	void decreaseArmy(int);
 	void deleteCountry();
-	void printCountintry();
 	void printCountry();
-	
 
 	~Country();
 };
@@ -78,8 +73,23 @@ public:
 	int* getContinentID();
 	string* getContinentName();
 	int* getContinentControlExtraArmies();
-	~Continent(); 
+	~Continent();
 };
+
+// this class is used for the Depth First search in connectedGraph
+class Graph
+{
+	int numCountries;
+	list<int>* adjLists;
+	bool* visited;
+
+public:
+	Graph(int V);
+	void addEdge(int src, int dest);
+	void DFS(int vertex);
+	bool checkVisited();
+};
+
 
 class MapDriver
 {

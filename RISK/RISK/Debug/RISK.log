@@ -1,0 +1,32 @@
+﻿  GameEngine.cpp
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(32,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(121,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(159,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(160,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(167,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(178,22): warning C4018: '<': signed/unsigned mismatch
+  Map.cpp
+C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(184,52): warning C4018: '>': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(39,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(149,11): warning C4129: 'S': unrecognized character escape sequence
+  MapDriver.cpp
+  MapLoader.cpp
+  MapLoaderDriver.cpp
+  Player.cpp
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(151,16): warning C4129: 'S': unrecognized character escape sequence
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(132,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(292,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(299,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(341,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(348,24): warning C4018: '<=': signed/unsigned mismatch
+  PlayerDriver.cpp
+C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(385,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(39,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(47,11): warning C4018: '>': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
+C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(61,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  RISK.vcxproj -> C:\Users\miled\Documents\GitHub\RISK\Debug\RISK.exe

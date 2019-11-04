@@ -1,11 +1,9 @@
 #include "Player.h"
 
 // Default constructor
-Player::Player()
+Player::Player() 
 {
-	map = new Map();
-	countries = new vector<Country*>();
-	continents = new vector<Continent>();
+	countries = new vector<Country>();
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
@@ -13,17 +11,17 @@ Player::Player()
 }
 
 // Parameterized constructor
-//Player::Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h)
-//{
-//	this->countries = c;
-//	this->dice = d;
-//	this->h = h;
-//	this->name = new string("DefaultPlayer");
-//	this->availableArmies = new int(0);
-//	map = nullptr;
-//}
+Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
+{
+	this->countries = c;
+	this->dice = d;
+	this->h = h;
+	this->name = new string("DefaultPlayer");
+	this->availableArmies = new int(0);
+	map = nullptr;
+}
 
-Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
+Player::Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
 {
 	this->map = map;
 	this->countries = c;
@@ -31,18 +29,16 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->h = h;
 	this->name = name;
 	this->availableArmies = new int(0);
-	this->continents = new vector<Continent>();
 }
 
 Player::Player(const Player& p2)
 {
 	this->map = new Map(*p2.map);
-	this->countries = new vector<Country*>(*p2.countries);
+	this->countries = new vector<Country>(*p2.countries);
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
 	this->h = new Hand(*p2.h);
 	this->name = new string(*p2.name);
 	this->availableArmies = new int(*p2.availableArmies);
-	this->continents = new vector<Continent>(*p2.continents);
 }
 
 Player& Player::operator=(const Player& rhs)
@@ -55,22 +51,21 @@ Player& Player::operator=(const Player& rhs)
 		*(this->h) = *(rhs.h);
 		*(this->name) = *(rhs.name);
 		*(this->availableArmies) = *(rhs.availableArmies);
-		*(this->continents) = *(rhs.continents);
 	}
 	return *this;
 }
 
 // Destructor
-Player::~Player()
-{
-	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it)
+Player::~Player() 
+{	
+	for (vector<Country>::iterator it = countries->begin(); it != countries->end(); ++it)
 	{
-		(*it)->deleteCountry();
+		it->deleteCountry();
 	}
 	//delete map;
 	//map = NULL;
-	//delete h;
-	//h = NULL;
+	delete h;
+	h = NULL;
 	delete dice;
 	dice =NULL;
 	delete name;
@@ -81,19 +76,19 @@ Player::~Player()
 }
 
 // Get player's dice
-Dice_Rolling_Facility* Player::getDice()
+Dice_Rolling_Facility* Player::getDice() 
 {
 	return this->dice;
 }
 
 // Get player's hand of cards
-Hand* Player::getHand()
+Hand* Player::getHand() 
 {
 	return this->h;
 }
 
 // Get player's vector of countries
-vector<Country*>* Player::getCountries() const
+vector<Country>* Player::getCountries() const
 {
 	return this->countries;
 }
@@ -114,46 +109,38 @@ void Player::setAvailableArmies(int armies)
 }
 
 // Change the set of player's countries
-void Player::changeCountries(vector<Country*>* c)
+void Player::changeCountries(vector<Country>* c)
 {
 	this->countries = c;
 }
 
 // Change the hand of cards
-void Player::changeHand(Hand* hd)
+void Player::changeHand(Hand* hd) 
 {
 	this->h = hd;
 }
 
 // Print player's countries
-void Player::printCountries()
+void Player::printCountries() 
 {
-	if (countries->empty() == true)
+	if (countries->empty() == true) 
 	{
 		cout << "This player has no countries!\n";
 	}
-	else
+	else 
 	{
-		for (unsigned int i = 0; i < countries->size(); i++) {
-			Country c = *(countries->at(i));
-			cout << c.getCountryName() << endl;
+		for (int i = 0; i < countries->size(); i++) 
+		{
+			Country c = countries->at(i);
+			c.printCountry();
+			cout << endl;
 		}
-		// for (int i = 0; i < countries->size(); i++) 
-		// {
-		// 	Country c = countries->at(i);
-		// 	c.printCountry();
-		// 	cout << endl;
-		// }
 	}
 }
 
-void Player::reinforce()
+void Player::reinforce() 
 {
 	cout << "I'm reinforcing!\n";
-	int availableArmies{ 0 };
-	availableArmies = getArmyByCountriesOwned() + getArmyByContinentsOwned() + getArmyByExchangingCards();
-	cout << "Total # of arnies rewarded is " << availableArmies << "." << endl;
-	placingArmy(availableArmies);
 }
 
 void Player::attack()
@@ -177,7 +164,7 @@ void Player::attackPhase()
 
 	int countrySelected;
 	bool validSelection = false;
-	vector<Country*>::iterator it;
+	vector<Country>::iterator it;
 	//The player selects one of its countries to attack from, The attacking country must have at least 2 armies on it
 	do
 	{
@@ -185,20 +172,20 @@ void Player::attackPhase()
 
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*((*it)->getCountryNumberArmies()) >= 2)
+			if (*(it->getCountryNumberArmies()) >= 2)
 			{
-				cout << *(*it)->getCountryID() << "\tCountry " << *(*it)->getCountryName() << " has " << *(*it)->getCountryNumberArmies() << " armies available" << endl;
+				cout << *it->getCountryID() << "\tCountry " << *it->getCountryName() << " has " << *it->getCountryNumberArmies() << " armies available" << endl;
 			}
 		}
 		cout << ">";
 		cin >> countrySelected;
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*(*it)->getCountryNumberArmies() >= 2)
+			if (*it->getCountryNumberArmies() >= 2)
 			{
-				if (countrySelected == *(*it)->getCountryID())
+				if (countrySelected == *it->getCountryID())
 				{
-					attackCountry = &(*(*it));
+					attackCountry = &(*it);
 					validSelection = true;
 				}
 					
@@ -213,7 +200,7 @@ void Player::attackPhase()
 	int index;
 	for (it = countries->begin(); it != countries->end(); ++it)
 	{
-		if (*(*it)->getCountryID() == countrySelected)
+		if (*it->getCountryID() == countrySelected)
 		{
 			index = std::distance(countries->begin(), it);
 			break;
@@ -281,8 +268,8 @@ void Player::attackPhase()
 	}
 
 	// The attacker is allowed 1 to 3 dice, with the maximum number of dice being the number of armies on the attacking country, minus one.
-	cout << "\nAttacker country " << *countries->at(index)->getCountryID() << " " << *countries->at(index)->getCountryName() <<
-		" is owned by " << *countries->at(index)->getCountryPlayerOwned() << endl;
+	cout << "\nAttacker country " << *countries->at(index).getCountryID() << " " << *countries->at(index).getCountryName() <<
+		" is owned by " << *countries->at(index).getCountryPlayerOwned() << endl;
 	cout << "Please select your number of dice to roll for your attack!" << endl;
 	int attackerNbrDice;
 	validSelection = false;
@@ -444,7 +431,7 @@ void Player::attackPhase()
 			cout << "Targeted  " << *targetedCountry->getCountryPlayerOwned() << " has been defeated and lost country "
 				<< *targetedCountry->getCountryName() << endl;
 			// player now owns the targeted countries
-			countries->push_back(targetedCountry);
+			countries->push_back(*targetedCountry);
 			// modify the map object
 			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 			{
@@ -480,7 +467,7 @@ void Player::attackPhase()
 
 }
 
-void Player::fortify()
+void Player::fortify() 
 {
 	cout << "I'm fortifying!\n";
 	Country* source = &(chosingCountrySource());
