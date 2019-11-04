@@ -460,7 +460,7 @@ void Player::attackPhase()
 							<< (*attackCountry->getCountryNumberArmies() - 1) << endl;
 						cout << ">";
 						cin >> nbrArmies;
-						if (nbrArmies > 1 && nbrArmies < *attackCountry->getCountryNumberArmies())
+						if (nbrArmies > 0 && nbrArmies < *attackCountry->getCountryNumberArmies())
 							validSelection = true;
 						else
 							cout << "\nPlease enter a valid number" << endl;
@@ -646,7 +646,7 @@ void Player::placingArmy(int& rewardedArmy)
 		cout << "Please select the country number you want to reinfore:" << endl;
 		for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
 			int i = std::distance(countries->begin(), it);
-			cout << i << ". " << (*it)->getCountryName() << " with " << (*it)->getCountryNumberArmies() << "  troops." << endl;
+			cout << i << ". " << *(*it)->getCountryName() << " with " << *(*it)->getCountryNumberArmies() << "  troops." << endl;
 		}
 		unsigned int in;
 		cin >> in;

@@ -230,9 +230,9 @@ void GameEngine::runGame() {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
-			(*players)[i].reinforce();
+			//(*players)[i].reinforce();
 			(*players)[i].attack();
-			(*players)[i].fortify();
+			//(*players)[i].fortify();
 
 			ownsAllCountries = true;
 
