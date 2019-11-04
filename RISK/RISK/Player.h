@@ -16,7 +16,8 @@ using namespace std;
 class Player {
 private:
 	vector<Continent>* continents;
-	vector<Country>* countries;
+	vector<Country*>* countries; // Vector contains pointer to countries so that players
+								 // don't contain copies of Country objects from the map but point to the countries themselves
 	Dice_Rolling_Facility* dice;
 	Hand* h;
 	Map *map; // player needs visibility to the map
@@ -26,15 +27,15 @@ private:
 
 public:
 	Player();
-	Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h);
-	Player(Map *map, vector<Country> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
+	//Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h);
+	Player(Map *map, vector<Country*> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
-	void changeCountries(vector<Country>* c);
+	void changeCountries(vector<Country*>* c);
 	~Player();
 	Dice_Rolling_Facility* getDice();
 	Hand* getHand();
-	vector<Country>* getCountries() const;
+	vector<Country*>* getCountries() const;
 	string* getName();
 	int* getAvailableArmies();
 	void setAvailableArmies(int armies);
@@ -55,7 +56,7 @@ public:
 	Country* getCountryById(int id);
 	Country* get(list<Country*> cl, int id);
 	void movingArmy(Country* c1, Country* c2);
-	void addCountry(Country c);
+	void addCountry(Country* c);
 	void addContinent(Continent c);
 
 };
