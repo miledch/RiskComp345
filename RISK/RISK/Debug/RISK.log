@@ -1,2 +1,6 @@
-﻿  main.cpp
+﻿  Map.cpp
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(39,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(158,11): warning C4129: 'S': unrecognized character escape sequence
+C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(160,16): warning C4129: 'S': unrecognized character escape sequence
   RISK.vcxproj -> C:\Users\miled\Documents\GitHub\RISK\Debug\RISK.exe

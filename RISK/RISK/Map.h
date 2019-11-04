@@ -27,7 +27,8 @@ public:
 	list<Country>* getCountries();
 	list<Continent>* getcontinents();
 	void ConnectedGraph(); // for countries
-	void ConnectedSubgraph();  // for contiennts
+	void ConnectedSubgraph();
+	void RunConnectedSubgraph(int continentID);  // for contiennts
 	~Map();
 };
 
@@ -74,6 +75,21 @@ public:
 	int* getContinentControlExtraArmies();
 	~Continent();
 };
+
+// this class is used for the Depth First search in connectedGraph
+class Graph
+{
+	int numCountries;
+	list<int>* adjLists;
+	bool* visited;
+
+public:
+	Graph(int V);
+	void addEdge(int src, int dest);
+	void DFS(int vertex);
+	bool checkVisited();
+};
+
 
 class MapDriver
 {
