@@ -28,8 +28,10 @@ private:
 	int numOfExchanges{ 0 };
 	void generateCards(const int&);
 	void initiateDeck();
+	
 
 public:
+	int getNumOfExchanges();
 	Deck(const int&);
 	Card* draw();
 	void displayCardsDistribution();
@@ -43,9 +45,11 @@ public:
 	void draw();
 	bool hasExchange() const;
 	void displayExchangeOptions() const;
-	void exchange();
+	bool exchange();
 	void printCards();
-
+	int getNumberOfExchanges();
+	int getNumHandCards();
+	
 private:
 	void eraseExchangeOptions();
 	void addExchangeOptionsOfSameCards(const array<int, 3>&);

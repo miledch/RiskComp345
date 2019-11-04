@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -39,9 +40,10 @@ private:
 	int* countryContinent;
 	string* playerOwned;
 	int* numberArmies;
-
 	list<int>* neighbors;
+
 public:
+	Country();
 	Country(int, string, int);
 	Country(const Country& country2);
 	Country& operator=(const Country& rhs);
@@ -51,10 +53,16 @@ public:
 	string* getCountryName();
 	int* getCountryContinent();
 	string* getCountryPlayerOwned();
+	void setCountryPlayerOwned(string playerName);
 	int* getCountryNumberArmies();
+	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
+	void increaseArmy(int);
+	void decreaseArmy(int);
 	void deleteCountry();
+	void printCountintry();
 	void printCountry();
+	
 
 	~Country();
 };
@@ -70,7 +78,7 @@ public:
 	int* getContinentID();
 	string* getContinentName();
 	int* getContinentControlExtraArmies();
-	~Continent();
+	~Continent(); 
 };
 
 class MapDriver

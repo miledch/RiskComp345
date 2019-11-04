@@ -1,3 +1,4 @@
+
 #include "Map.h"
 
 Map::Map()
@@ -143,6 +144,10 @@ Map::~Map()
 	delete continents;
 }
 
+Country::Country()
+{
+}
+
 Country::Country(int id, string name, int continent)
 	:countryID(new int(id)), countryName(new string (name)), countryContinent(new int (continent))
 {
@@ -223,14 +228,34 @@ string* Country::getCountryPlayerOwned()
 	return playerOwned;
 }
 
+void Country::setCountryPlayerOwned(string playerName)
+{
+	playerOwned = new string(playerName);
+}
+
 int* Country::getCountryNumberArmies()
 {
 	return numberArmies;
 }
 
+void Country::setCountryNumberArmies(int armies)
+{
+	numberArmies = new int(armies);
+}
+
 list<int>* Country::getNeighbors()
 {
 	return neighbors;
+}
+
+void Country::increaseArmy(int add)
+{
+	this->numberArmies = this->numberArmies + add;
+}
+
+void Country::decreaseArmy(int minus)
+{
+	this->numberArmies = this->numberArmies + minus;
 }
 
 // deletion of pointers member class
@@ -247,6 +272,8 @@ void Country::printCountry()
 	cout << "Country ID: " << *getCountryID() << ", Country name: " << *getCountryName() << ", belong to continent: " << *getCountryContinent()
 		<< ", belong to player: " << *getCountryPlayerOwned() << ", with number of armies: " << *getCountryNumberArmies();
 }
+
+
 
 Country::~Country()
 {
