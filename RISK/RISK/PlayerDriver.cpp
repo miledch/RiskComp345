@@ -24,7 +24,7 @@ void PlayerDriver::runReinforcement()
 {
 	Map testMap;
 
-	string mapFilename{ "C:\\Users\\moaya\\Documents\\GitHub\\RiskComp345\\RISK\\RISK\\maps\\ameroki.map" };
+	string mapFilename{ "maps/ameroki.map" };
 	MapLoader mapLoaderTest;
 
 	mapLoaderTest.LoadMap(testMap, mapFilename);
