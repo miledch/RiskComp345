@@ -21,6 +21,8 @@ public:
 	string* getMapPath() const;
 	int* getNumOfPlayers() const;
 
+	void runGame();
+
 	~GameEngine();
 
 private:

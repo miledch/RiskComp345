@@ -43,6 +43,7 @@ private:
 
 	list<int>* neighbors;
 public:
+	Country();
 	Country(int, string, int);
 	Country(const Country& country2);
 	Country& operator=(const Country& rhs);
@@ -58,6 +59,8 @@ public:
 	list<int>* getNeighbors();
 	void deleteCountry();
 	void printCountry();
+	void decreaseArmy(int);
+	void increaseArmy(int);
 
 	~Country();
 };

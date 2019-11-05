@@ -211,7 +211,7 @@ void Hand::displayExchangeOptions() const
 	}
 }
 // exchange the a set of 3 cards in Amrys
-void Hand::exchange()
+bool Hand::exchange()
 {
 	this->displayExchangeOptions();
 
@@ -230,9 +230,11 @@ void Hand::exchange()
 			this->handCards.remove((*optionIt)[t]);
 		}
 		this->updateExchangeOptions();
+		return true;
 	}
 	else {
 		cout << "(" << optionId << ") is an invalid exchange #";
+		return false;
 	}
 }
 // prints the cards in the hand
@@ -306,4 +308,19 @@ void Hand::addExchangeOptionsOfDifferentCards(const array<int, 3> & typesCount)
 			++cardInHand;
 		}
 	}
+}
+
+int Deck::getNumOfExchanges()
+{
+	return numOfExchanges;
+}
+
+int Hand::getNumberOfExchanges()
+{
+	return gameDeckPtr->getNumOfExchanges();
+}
+
+int Hand::getNumHandCards()
+{
+	return handCards.size();
 }

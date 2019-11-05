@@ -181,6 +181,10 @@ Map::~Map()
 	delete continents;
 }
 
+Country::Country()
+{
+}
+
 Country::Country(int id, string name, int continent)
 	:countryID(new int(id)), countryName(new string (name)), countryContinent(new int (continent))
 {
@@ -294,6 +298,16 @@ void Country::printCountry()
 {
 	cout << "Country ID: " << *getCountryID() << ", Country name: " << *getCountryName() << ", belong to continent: " << *getCountryContinent()
 		<< ", belong to player: " << *getCountryPlayerOwned() << ", with number of armies: " << *getCountryNumberArmies();
+}
+
+void Country::increaseArmy(int add)
+{
+	*this->numberArmies += add;
+}
+
+void Country::decreaseArmy(int min)
+{
+	*this->numberArmies -= min;
 }
 
 Country::~Country()

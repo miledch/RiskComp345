@@ -3,7 +3,7 @@
 // Default constructor
 Player::Player() 
 {
-	countries = new vector<Country>();
+	countries = new vector<Country*>();
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
@@ -11,7 +11,7 @@ Player::Player()
 }
 
 // Parameterized constructor
-Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
+Player::Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h)
 {
 	this->countries = c;
 	this->dice = d;
@@ -21,7 +21,7 @@ Player::Player(vector<Country>* c, Dice_Rolling_Facility* d, Hand* h)
 	map = nullptr;
 }
 
-Player::Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
+Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
 {
 	this->map = map;
 	this->countries = c;
@@ -34,7 +34,7 @@ Player::Player(Map* map, vector<Country>* c, Dice_Rolling_Facility* d, Hand* h, 
 Player::Player(const Player& p2)
 {
 	this->map = new Map(*p2.map);
-	this->countries = new vector<Country>(*p2.countries);
+	this->countries = new vector<Country*>(*p2.countries);
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
 	this->h = new Hand(*p2.h);
 	this->name = new string(*p2.name);
@@ -58,9 +58,9 @@ Player& Player::operator=(const Player& rhs)
 // Destructor
 Player::~Player() 
 {	
-	for (vector<Country>::iterator it = countries->begin(); it != countries->end(); ++it)
+	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it)
 	{
-		it->deleteCountry();
+		(*it)->deleteCountry();
 	}
 	//delete map;
 	//map = NULL;
@@ -88,7 +88,7 @@ Hand* Player::getHand()
 }
 
 // Get player's vector of countries
-vector<Country>* Player::getCountries() const
+vector<Country*>* Player::getCountries() const
 {
 	return this->countries;
 }
@@ -109,7 +109,7 @@ void Player::setAvailableArmies(int armies)
 }
 
 // Change the set of player's countries
-void Player::changeCountries(vector<Country>* c)
+void Player::changeCountries(vector<Country*>* c)
 {
 	this->countries = c;
 }
@@ -131,7 +131,7 @@ void Player::printCountries()
 	{
 		for (int i = 0; i < countries->size(); i++) 
 		{
-			Country c = countries->at(i);
+			Country c = *(countries->at(i));
 			c.printCountry();
 			cout << endl;
 		}
@@ -164,7 +164,7 @@ void Player::attackPhase()
 
 	int countrySelected;
 	bool validSelection = false;
-	vector<Country>::iterator it;
+	vector<Country*>::iterator it;
 	//The player selects one of its countries to attack from, The attacking country must have at least 2 armies on it
 	do
 	{
@@ -172,20 +172,20 @@ void Player::attackPhase()
 
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*(it->getCountryNumberArmies()) >= 2)
+			if (*((*it)->getCountryNumberArmies()) >= 2)
 			{
-				cout << *it->getCountryID() << "\tCountry " << *it->getCountryName() << " has " << *it->getCountryNumberArmies() << " armies available" << endl;
+				cout << *(*it)->getCountryID() << "\tCountry " << *(*it)->getCountryName() << " has " << *(*it)->getCountryNumberArmies() << " armies available" << endl;
 			}
 		}
 		cout << ">";
 		cin >> countrySelected;
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*it->getCountryNumberArmies() >= 2)
+			if (*(*it)->getCountryNumberArmies() >= 2)
 			{
-				if (countrySelected == *it->getCountryID())
+				if (countrySelected == *(*it)->getCountryID())
 				{
-					attackCountry = &(*it);
+					attackCountry = &(*(*it));
 					validSelection = true;
 				}
 					
@@ -200,7 +200,7 @@ void Player::attackPhase()
 	int index;
 	for (it = countries->begin(); it != countries->end(); ++it)
 	{
-		if (*it->getCountryID() == countrySelected)
+		if (*(*it)->getCountryID() == countrySelected)
 		{
 			index = std::distance(countries->begin(), it);
 			break;
@@ -268,8 +268,8 @@ void Player::attackPhase()
 	}
 
 	// The attacker is allowed 1 to 3 dice, with the maximum number of dice being the number of armies on the attacking country, minus one.
-	cout << "\nAttacker country " << *countries->at(index).getCountryID() << " " << *countries->at(index).getCountryName() <<
-		" is owned by " << *countries->at(index).getCountryPlayerOwned() << endl;
+	cout << "\nAttacker country " << *countries->at(index)->getCountryID() << " " << *countries->at(index)->getCountryName() <<
+		" is owned by " << *countries->at(index)->getCountryPlayerOwned() << endl;
 	cout << "Please select your number of dice to roll for your attack!" << endl;
 	int attackerNbrDice;
 	validSelection = false;
@@ -431,7 +431,7 @@ void Player::attackPhase()
 			cout << "Targeted  " << *targetedCountry->getCountryPlayerOwned() << " has been defeated and lost country "
 				<< *targetedCountry->getCountryName() << endl;
 			// player now owns the targeted countries
-			countries->push_back(*targetedCountry);
+			countries->push_back(targetedCountry);
 			// modify the map object
 			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 			{
@@ -628,7 +628,7 @@ void Player::placingArmy(int& rewardedArmy)
 	cout << "Placing the Army...." << endl;
 	while (rewardedArmy != 0)
 	{
-		Country chosenCountry;
+		Country* chosenCountry = new Country();
 		cout << "you have " << rewardedArmy << "to place." << endl;
 		cout << "Please select the country number you want to reinfore:" << endl;
 		for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
@@ -638,15 +638,15 @@ void Player::placingArmy(int& rewardedArmy)
 		unsigned int in;
 		cin >> in;
 		if (in >= 1 && in <= countries->size()) {
-			chosenCountry = *(countries->at(in));
+			chosenCountry = countries->at(in);
 		}
 		else {
 			cout << "invalid input." << endl;
 		}
-		cout << "choose number of army to place in " << chosenCountry.getCountryName() << "." << endl;
+		cout << "choose number of army to place in " << chosenCountry->getCountryName() << "." << endl;
 		cin >> in;
 		if (in >= 1 && in <= rewardedArmy) {
-			chosenCountry.increaseArmy(in);
+			chosenCountry->increaseArmy(in);
 			rewardedArmy = rewardedArmy - in;
 		}
 		else {
