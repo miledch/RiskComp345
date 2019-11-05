@@ -9,12 +9,13 @@ int main()
 {
 
 
-	PlayerDriver::runFortification();
-	PlayerDriver::runReinforcement();
+	/*PlayerDriver::runFortification();
+	PlayerDriver::runReinforcement();*/
 	GameEngine g;
 	g.randomizeOrder();
 	g.assignCountries();
 	g.assignArmies();
+	g.runGame();
 	PlayerDriver::runAttackPhase();
 
 

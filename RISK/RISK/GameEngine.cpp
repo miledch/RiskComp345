@@ -60,7 +60,7 @@ GameEngine::GameEngine()
 	players = new vector<Player>();
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
+		players->push_back(Player(map, new vector<Continent>(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
 	}
 }
 

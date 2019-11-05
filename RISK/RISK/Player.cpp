@@ -32,9 +32,21 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->availableArmies = new int(0);
 }
 
+Player::Player(Map* map, vector<Continent>* continents, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
+{
+	this->map = map;
+	this->continents = continents;
+	this->countries = c;
+	this->dice = d;
+	this->h = h;
+	this->name = name;
+	this->availableArmies = new int(0);
+}
+
 Player::Player(const Player& p2)
 {
 	this->map = new Map(*p2.map);
+	this->continents = new vector<Continent>(*p2.continents);
 	this->countries = new vector<Country*>(*p2.countries);
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
 	this->h = new Hand(*p2.h);
@@ -47,6 +59,7 @@ Player& Player::operator=(const Player& rhs)
 	if (this != &rhs) 
 	{
 		*(this->map) = *(rhs.map);
+		*(this->continents) = *(rhs.continents);
 		*(this->countries) = *(rhs.countries);
 		*(this->dice) = *(rhs.dice);
 		*(this->h) = *(rhs.h);
