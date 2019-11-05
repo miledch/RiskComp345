@@ -22,40 +22,108 @@ void PlayerDriver::run()
 
 void PlayerDriver::runReinforcement()
 {
-	int num = 10;
-	
+	Map testMap;
+
+	string mapFilename{ "C:\\Users\\moaya\\Documents\\GitHub\\RiskComp345\\RISK\\RISK\\maps\\ameroki.map" };
+	MapLoader mapLoaderTest;
+
+	mapLoaderTest.LoadMap(testMap, mapFilename);
+
+	Deck deck(testMap.getCountries()->size());
+
+	cout << testMap.getCountries()->size() << endl;
+
+	list<Country>* cu = testMap.getCountries();
+	list<Continent>* co = testMap.getcontinents();
+	Player p1;
+	cout << cu->size() << endl;
+	int  i = 0;
+	for (list<Country>::iterator it = cu->begin(); it != cu->end(); it++) {
+		i++;
+		if (i % 2 == 0) {
+			it->increaseArmy(10);
+			p1.addCountry(&*it);
+		}
+	}
+
+	i = 0;
+	for (list<Continent>::iterator it = co->begin(); it != co->end(); it++) {
+		if (i < 2) {
+			i++;
+			p1.addContinent(*it);
+		}
+	}
 
 
-	Country c1(1, "iraq1", 1);
-	Country c2(2, "iraq2", 1);
-	Country c3(3, "iraq3", 1);
-	Country c4(4, "iraq4", 1);
-	Country c5(5, "iraq5", 1);
+	Dice_Rolling_Facility d1;
+	Hand h1(deck);
+	h1.draw();
+	h1.draw();
+	h1.draw();
+	h1.draw();
+	h1.draw();
+
+	/*p1.initializeHand(h1);
+	cout << h1.getNumHandCards() << endl;
+	cout << p1.getArmyByContinentsOwned() << endl;
+	cout << p1.getArmyByCountriesOwned() << endl;
+	cout << p1.getArmyByExchangingCards() << endl;*/
 
 
+	p1.fortify();
+}
 
-	c1.increaseArmy(10);
-	c2.increaseArmy(11);
-	c3.increaseArmy(12);
-	c4.increaseArmy(13);
-	c5.increaseArmy(14);
+void PlayerDriver::runFortification()
+{
+	Map testMap;
 
-	vector<Country*>* v = new vector<Country*>();
-	v->push_back(&c1);
-	v->push_back(&c2);
-	v->push_back(&c3);
-	v->push_back(&c4);
-	v->push_back(&c5);
+	string mapFilename{ "C:\\Users\\moaya\\Documents\\GitHub\\RiskComp345\\RISK\\RISK\\maps\\ameroki.map" };
+	MapLoader mapLoaderTest;
 
-	Dice_Rolling_Facility* d;
+	mapLoaderTest.LoadMap(testMap, mapFilename);
 
-	Player p(new Map(), v, new Dice_Rolling_Facility(), new Hand(*(new Deck(num))), new string("Default"));
+	Deck deck(testMap.getCountries()->size());
 
-	cout << p.getArmyByExchangingCards() << endl;
-	cout << p.getArmyByContinentsOwned() << endl;
-	cout << p.getArmyByCountriesOwned() << endl;
-	p.reinforce();
+	cout << testMap.getCountries()->size() << endl;
 
+	list<Country>* cu = testMap.getCountries();
+	list<Continent>* co = testMap.getcontinents();
+	Player p1;
+
+	int  i = 0;
+	for (list<Country>::iterator it = cu->begin(); it != cu->end(); it++) {
+		i++;
+		if (i % 2 == 0) {
+			it->increaseArmy(10);
+			p1.addCountry(&*it);
+		}
+	}
+
+	i = 0;
+	for (list<Continent>::iterator it = co->begin(); it != co->end(); it++) {
+		if (i < 2) {
+			i++;
+			p1.addContinent(*it);
+		}
+	}
+
+
+	Dice_Rolling_Facility d1;
+	Hand h1(deck);
+	h1.draw();
+	h1.draw();
+	h1.draw();
+	h1.draw();
+	h1.draw();
+
+	/*p1.initializeHand(h1);
+	cout << h1.getNumHandCards() << endl;
+	cout << p1.getArmyByContinentsOwned() << endl;
+	cout << p1.getArmyByCountriesOwned() << endl;
+	cout << p1.getArmyByExchangingCards() << endl;*/
+
+
+	p1.reinforce();
 }
 
 void PlayerDriver::runAttackPhase()

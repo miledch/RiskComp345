@@ -142,6 +142,8 @@ Map::~Map()
 	}
 	delete countries;
 	delete continents;
+	countries = nullptr;
+	continents = nullptr;
 }
 
 Country::Country()
@@ -250,12 +252,12 @@ list<int>* Country::getNeighbors()
 
 void Country::increaseArmy(int add)
 {
-	this->numberArmies = this->numberArmies + add;
+	*this->numberArmies += add;
 }
 
 void Country::decreaseArmy(int minus)
 {
-	this->numberArmies = this->numberArmies + minus;
+	*this->numberArmies -= minus;
 }
 
 // deletion of pointers member class

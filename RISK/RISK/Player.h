@@ -49,15 +49,16 @@ public:
 	void attack();
 	void attackPhase();
 	void fortify();
-	Country& chosingCountrySource();
-	list<Country*> ownedNieghbourCountry(Country& c);
+	Country* chosingCountrySource();
+	vector<Country*> ownedNieghbourCountry(Country& c);
 	bool hasOwnedNieghbourCountry(Country& c);
-	Country* chooseTargetCountry(list<Country*> cl);
+	Country* chooseTargetCountry(vector<Country*> cl);
 	Country* getCountryById(int id);
 	Country* get(list<Country*> cl, int id);
 	void movingArmy(Country* c1, Country* c2);
 	void addCountry(Country* c);
 	void addContinent(Continent c);
+	void initializeHand(Hand&);
 
 };
 

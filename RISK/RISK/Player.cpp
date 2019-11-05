@@ -63,10 +63,10 @@ Player& Player::operator=(const Player& rhs)
 // Destructor
 Player::~Player()
 {
-	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it)
-	{
-		(*it)->deleteCountry();
-	}
+	//for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it)
+	//{
+	//	(*it)->deleteCountry();
+	//}
 	//delete map;
 	//map = NULL;
 	//delete h;
@@ -146,7 +146,7 @@ void Player::printCountries()
 		// }
 	}
 }
-
+// allow player to add more arrmy in his countries at the beginning of the player turn; 
 void Player::reinforce()
 {
 	cout << "I'm reinforcing!\n";
@@ -255,7 +255,7 @@ void Player::attackPhase()
 		}
 		if (!validSelection)
 		{
-			cout << "Please enter a valid country ID" << endl;
+			cout << "Please enter a valid country ID \n" << endl;
 			for (l_it = attackCountry->getNeighbors()->begin(); l_it != attackCountry->getNeighbors()->end(); ++l_it)
 			{
 				for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
@@ -479,42 +479,49 @@ void Player::attackPhase()
 
 
 }
-
+//moving army from a contry to a neighbour counrty
 void Player::fortify()
 {
 	cout << "I'm fortifying!\n";
-	Country* source = &(chosingCountrySource());
-	list<Country*> possibleTargets = ownedNieghbourCountry(*source);
-	Country* target = chooseTargetCountry(possibleTargets);
+	Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)
+	vector<Country*> possibleTargets = ownedNieghbourCountry(*source); 
+	Country* target = chooseTargetCountry(possibleTargets);// choosing the nighbouring country
 	movingArmy(source, target);
 }
-
-Country& Player::chosingCountrySource()
+// chosing the country that you want take army from
+Country* Player::chosingCountrySource()
 {
 	bool t = true;
 	vector<Country*> possibleSource;
-	cout << "Please select the country number you want to take troops from :" << endl;
+	cout << "\nPlease select the country number you want to take troops from :\n" << endl;
+	bool check = true;
 	do {
 		int i = 0;
+		// for loop to print out the country that a player has and has a neighbour country belong to him
 		for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
-			if (*((*it)->getCountryNumberArmies()) > 1 || hasOwnedNieghbourCountry(*(*it))) {
-				Country* ptrCountry = &*(*it);
-				possibleSource.push_back(ptrCountry);
-				cout << ++i << ". " << *((*it)->getCountryName()) << " with " << *((*it)->getCountryNumberArmies()) << "  troops." << endl;
+			if ( *(*it)->getCountryNumberArmies() > 1 && hasOwnedNieghbourCountry(**it)) {
+				if (check) {
+					Country* ptrCountry = &*(*it);
+					possibleSource.push_back(ptrCountry);
+				}
+				cout << ++i << ". " << (*(*it)->getCountryName()) << " with " << (*(*it)->getCountryNumberArmies()) << "  troops." << endl;
 			}
 		}
+		check = false;
 		int in;
 		cin >> in;
-		if (in > 0 && in < possibleSource.size()) {
+		// to check if the  is between 1 and the number of possible counties that can be part of the reinforcement
+		if (in > 0 && in <= possibleSource.size()) {
 			t = false;
-			return *(possibleSource.at(in - 1));
+			return (possibleSource.at(in - 1));
 		}
 		else
 			cout << "invalid input.\n" << "try again:" << endl;
 	} while (t);
 }
 
-list<Country*> Player::ownedNieghbourCountry(Country& source)
+// return the nighbouring country(s) that i can transfer some army to 
+vector<Country*> Player::ownedNieghbourCountry(Country& source)
 {
 	list<int>* neighboursID = source.getNeighbors();
 	list<int>* myCountriesIds = new list<int>;
@@ -525,40 +532,43 @@ list<Country*> Player::ownedNieghbourCountry(Country& source)
 	neighboursID->sort();
 	myCountriesIds->sort();
 	list<int> out;
+	//taking the intersection between the list of my counties iDs and the list of neibours IDs 
+	//and the result is IDs of country(s) that are neigbours owned and i can transfer troop to
 	set_intersection(neighboursID->begin(), neighboursID->end(), myCountriesIds->begin(), myCountriesIds->end(), back_inserter(out));
-	list<Country*> myNeighboursPtr;
+	vector<Country*> myNeighboursPtr;
 	for (list<int>::iterator it = out.begin(); it != out.end(); it++) {
 		Country* CountryPtr = getCountryById(*it);
 		myNeighboursPtr.push_back(CountryPtr);
 	}
 	return myNeighboursPtr;
 }
-
+// check if country has a country belong to same player
 bool Player::hasOwnedNieghbourCountry(Country& c)
 {
-	list<Country*> ownedNieghbour = ownedNieghbourCountry(c);
+	vector<Country*> ownedNieghbour = ownedNieghbourCountry(c);
 	return (ownedNieghbour.size() > 0);
 }
-Country* Player::chooseTargetCountry(list<Country*> targets)
+//choosing the target country
+Country* Player::chooseTargetCountry(vector<Country*> targets)
 {
 	bool t = true;
-	cout << "Please select the country number you want to move troops to :" << endl;
+	cout << "\nPlease select the country's number you want to move troops to :\n" << endl;
 	do {
 		int i = 0;
-		for (list<Country*>::iterator it = targets.begin(); it != targets.end(); ++it) {
-			cout << ++i << ". " << (*it)->getCountryName() << " with " << (*it)->getCountryNumberArmies() << "  troops." << endl;
+		for (vector<Country*>::iterator it = targets.begin(); it != targets.end(); ++it) {
+			cout << ++i << ". " << *(*it)->getCountryName() << " with " << *(*it)->getCountryNumberArmies() << "  troops." << endl;
 		}
 		int in;
 		cin >> in;
-		if (in > 0 && in < targets.size()) {
+		if (in > 0 && in <= targets.size()) {
 			t = false;
-			return get(targets, (in - 1));
+			return targets.at(in - 1);
 		}
 		else
 			cout << "invalid input.\n" << "try again:" << endl;
 	} while (t);
 }
-
+//get the country by the ID it has 
 Country* Player::getCountryById(int id)
 {
 	vector<Country*>::iterator it;
@@ -570,32 +580,43 @@ Country* Player::getCountryById(int id)
 	Country* c = &*(*it);
 	return c;
 }
-
+// get method to get pointer to a country at specific index 
 Country* Player::get(list<Country*> l, int index)
 {
-	list<Country*>::iterator it = l.begin();
-	for (int i = 0; i < index; i++) {
-		++it;
+	int i = 0;
+	list<Country*>::iterator it;
+	for (it = l.begin(); it != l.end(); it++) {
+		it++;
+		if (index == i)
+			break;
 	}
-	return getCountryById(*(*it)->getCountryID());
+	return *it;
 }
-
+// moves a number of armies from one country to another
 void Player::movingArmy(Country* source, Country* target)
 {
-	cout << "you have " << source->getCountryNumberArmies() << "in" << source->getCountryName() << ".\n";
-	cout << "you have " << target->getCountryNumberArmies() << "in" << target->getCountryName() << ".\n";
-	cout << "how many you want to move from " << source->getCountryName() << " to " << target->getCountryName() << " ." << endl;
+	bool check = true;
+	while(check){
+	cout << "\nyou have " << *source->getCountryNumberArmies() << " in " << *source->getCountryName() << ".\n";
+	cout << "you have " << *target->getCountryNumberArmies() << " in " << *target->getCountryName() << ".\n";
+	cout << "how many you want to move from " << *source->getCountryName() << " to " << *target->getCountryName() << " ." << endl;
 	int in;
 	cin >> in;
 	if (in >= 0 && in < (*source->getCountryNumberArmies() - 1)) {
+		check = false;
 		source->decreaseArmy(in);
 		target->increaseArmy(in);
 	}
-	cout << "Now you have " << source->getCountryNumberArmies() << "in" << source->getCountryName() << ".\n";
-	cout << "and you have " << target->getCountryNumberArmies() << "in" << target->getCountryName() << ".\n";
+	else {
+		cout << "you should leave at least one army in" << *source->getCountryName() << endl;
+		continue;
+	}
+	cout << "Now you have " << *source->getCountryNumberArmies() << " in " << *source->getCountryName() << ".\n";
+	cout << "and you have " << *target->getCountryNumberArmies() << " in " << *target->getCountryName() << ".\n\n";
+	}
 }
 
-
+//calculate the number of armies that a players gets if he exchanges 3 set of matched cards
 int Player::getArmyByExchangingCards()
 {
 	int rewardedArmies{ 0 };
@@ -635,31 +656,36 @@ int Player::getArmyByExchangingCards()
 	}
 	return rewardedArmies;
 }
-
+//placing all the armies that have been rewarded to the player at the beginning of his turn
 void Player::placingArmy(int& rewardedArmy)
 {
-	cout << "Placing the Army...." << endl;
+	cout << "\nPlacing the Army....\n" << endl;
 	while (rewardedArmy != 0)
 	{
-		Country chosenCountry;
-		cout << "you have " << rewardedArmy << "to place." << endl;
-		cout << "Please select the country number you want to reinfore:" << endl;
-		for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
-			int i = std::distance(countries->begin(), it);
-			cout << i << ". " << (*it)->getCountryName() << " with " << (*it)->getCountryNumberArmies() << "  troops." << endl;
-		}
-		unsigned int in;
-		cin >> in;
-		if (in >= 1 && in <= countries->size()) {
-			chosenCountry = *(countries->at(in));
-		}
-		else {
-			cout << "invalid input." << endl;
-		}
-		cout << "choose number of army to place in " << chosenCountry.getCountryName() << "." << endl;
+		int in;
+		bool check = true;
+		Country* chosenCountry = new Country();
+		cout << "you have " << rewardedArmy << " army(s) to place." << endl;
+		do {
+			cout << "\nPlease select the country's number you want to reinfore:\n" << endl;
+			for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
+				int i = distance(countries->begin(), it);
+				cout << ++i << ". " << *(*it)->getCountryName() << " with " << *(*it)->getCountryNumberArmies() << "  troops." << endl;
+			}
+			cin >> in;
+			if (in >= 1 && in <= countries->size()) {
+				check = false;
+				chosenCountry = countries->at(in - 1);
+			}
+			else {
+				cout << "invalid input." << endl;
+			}
+		} while (check);
+
+		cout << "choose number of army to place in " << *(chosenCountry->getCountryName()) << "." << endl;
 		cin >> in;
 		if (in >= 1 && in <= rewardedArmy) {
-			chosenCountry.increaseArmy(in);
+			chosenCountry->increaseArmy(in);
 			rewardedArmy = rewardedArmy - in;
 		}
 		else {
@@ -667,7 +693,7 @@ void Player::placingArmy(int& rewardedArmy)
 		}
 	}
 }
-
+//calculate the number of armies that a players get according to the number of countries he has
 int Player::getArmyByCountriesOwned() {
 
 	unsigned int countryCount{ this->countries->size() };
@@ -684,21 +710,29 @@ int Player::getArmyByCountriesOwned() {
 
 	return rewardedArmies;
 }
-
+//calculate the number of armies that a players get according to the number of contienet he has
 int Player::getArmyByContinentsOwned() {
 	int rewardedArmies = 0;
 	for (vector<Continent>::iterator it = continents->begin(); it != continents->end(); it++) {
-		cout << it->getContinentControlExtraArmies() << " # of Army Awarded for occuping " << it->getContinentName() << " Continent." << endl;
+		cout << *it->getContinentControlExtraArmies() << " # of Army Awarded for occuping " << *it->getContinentName() << " Continent." << endl;
 		rewardedArmies += *(it->getContinentControlExtraArmies());
 	}
 	return rewardedArmies;
 }
 
+
+
+//used to test the code for assignment 2
 void Player::addCountry(Country* c) {
 	this->countries->push_back(c);
 }
-
+//used to test the code for assignment 2
 void Player::addContinent(Continent c) {
 	this->continents->push_back(c);
+}
+//used to test the code for assignment 2
+void Player::initializeHand(Hand& hand)
+{
+	*(this->h) = hand;
 }
 
