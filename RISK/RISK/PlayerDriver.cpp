@@ -70,7 +70,7 @@ void PlayerDriver::runReinforcement()
 	cout << p1.getArmyByExchangingCards() << endl;*/
 
 
-	p1.fortify();
+	p1.reinforce();
 }
 
 void PlayerDriver::runFortification()
@@ -123,7 +123,7 @@ void PlayerDriver::runFortification()
 	cout << p1.getArmyByExchangingCards() << endl;*/
 
 
-	p1.reinforce();
+	p1.fortify();
 }
 
 void PlayerDriver::runAttackPhase()

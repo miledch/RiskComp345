@@ -63,5 +63,7 @@ class PlayerDriver
 public:
 	static void run();
 	static void runAttackPhase();
+	static void runFortification();
+	static void runReinforcement();
 };
 

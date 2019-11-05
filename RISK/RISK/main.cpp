@@ -8,7 +8,7 @@
 int main()
 {
 
-
+	PlayerDriver::runFortification();
 	PlayerDriver::runReinforcement();
 	GameEngine g;
 	g.randomizeOrder();

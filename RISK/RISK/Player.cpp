@@ -1,8 +1,9 @@
 #include "Player.h"
 
 // Default constructor
-Player::Player() 
+Player::Player()
 {
+	continents = new vector<Continent>();
 	countries = new vector<Country*>();
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
@@ -661,7 +662,7 @@ void Player::placingArmy(int& rewardedArmy)
 		Country* chosenCountry = new Country();
 		cout << "you have " << rewardedArmy << " army(s) to place." << endl;
 		do {
-			cout << "\nPlease select the country's number you want to reinfore:\n" << endl;
+			cout << "\nPlease select the country's number you want to reinforce:\n" << endl;
 			for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); ++it) {
 				int i = distance(countries->begin(), it);
 				cout << ++i << ". " << *(*it)->getCountryName() << " with " << *(*it)->getCountryNumberArmies() << "  troops." << endl;
