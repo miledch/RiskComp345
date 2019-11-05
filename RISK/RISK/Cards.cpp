@@ -119,7 +119,6 @@ void Deck::displayCardsDistribution()
 	cout << "Artillery Cards Count: " << artilleryCardsCount << endl;
 	cout << "Cavalry Cards Count: " << cavalryCardsCount << endl;
 }
-
 //exchange an array of pointers of three matched cards
 void Deck::exchange(const array<Card*, 3> & exchangedCards)
 {// for lop to insert all the pointers(card pointers) in the array in the deck
@@ -131,9 +130,8 @@ void Deck::exchange(const array<Card*, 3> & exchangedCards)
 		}
 		deckCards.insert(cardIt, exchangedCards[t]);
 	}
-	++this->numOfExchanges;
 	// printing the number of soldiers awarded for trading in number of cards
-	//cout << "The rewarded soldiers are " << ++this->numOfExchanges * 5 << endl;
+	cout << "The rewarded soldiers are " << ++this->numOfExchanges * 5 << endl;
 }
 //hand constructor points the hand to +++++
 Hand::Hand(Deck& d)
@@ -326,5 +324,3 @@ int Hand::getNumHandCards()
 {
 	return handCards.size();
 }
-
-

@@ -1,11 +1,9 @@
 #include "Player.h"
 
 // Default constructor
-Player::Player()
+Player::Player() 
 {
-	map = new Map();
 	countries = new vector<Country*>();
-	continents = new vector<Continent>();
 	dice = new Dice_Rolling_Facility();
 	h = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
@@ -13,15 +11,15 @@ Player::Player()
 }
 
 // Parameterized constructor
-//Player::Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h)
-//{
-//	this->countries = c;
-//	this->dice = d;
-//	this->h = h;
-//	this->name = new string("DefaultPlayer");
-//	this->availableArmies = new int(0);
-//	map = nullptr;
-//}
+Player::Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h)
+{
+	this->countries = c;
+	this->dice = d;
+	this->h = h;
+	this->name = new string("DefaultPlayer");
+	this->availableArmies = new int(0);
+	map = nullptr;
+}
 
 Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
 {
@@ -31,7 +29,6 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->h = h;
 	this->name = name;
 	this->availableArmies = new int(0);
-	this->continents = new vector<Continent>();
 }
 
 Player::Player(const Player& p2)
@@ -42,7 +39,6 @@ Player::Player(const Player& p2)
 	this->h = new Hand(*p2.h);
 	this->name = new string(*p2.name);
 	this->availableArmies = new int(*p2.availableArmies);
-	this->continents = new vector<Continent>(*p2.continents);
 }
 
 Player& Player::operator=(const Player& rhs)
@@ -55,7 +51,6 @@ Player& Player::operator=(const Player& rhs)
 		*(this->h) = *(rhs.h);
 		*(this->name) = *(rhs.name);
 		*(this->availableArmies) = *(rhs.availableArmies);
-		*(this->continents) = *(rhs.continents);
 	}
 	return *this;
 }
@@ -67,10 +62,11 @@ Player::~Player()
 	//{
 	//	(*it)->deleteCountry();
 	//}
+
 	//delete map;
 	//map = NULL;
-	//delete h;
-	//h = NULL;
+	delete h;
+	h = NULL;
 	delete dice;
 	dice =NULL;
 	delete name;
@@ -81,13 +77,13 @@ Player::~Player()
 }
 
 // Get player's dice
-Dice_Rolling_Facility* Player::getDice()
+Dice_Rolling_Facility* Player::getDice() 
 {
 	return this->dice;
 }
 
 // Get player's hand of cards
-Hand* Player::getHand()
+Hand* Player::getHand() 
 {
 	return this->h;
 }
@@ -120,34 +116,32 @@ void Player::changeCountries(vector<Country*>* c)
 }
 
 // Change the hand of cards
-void Player::changeHand(Hand* hd)
+void Player::changeHand(Hand* hd) 
 {
 	this->h = hd;
 }
 
 // Print player's countries
-void Player::printCountries()
+void Player::printCountries() 
 {
-	if (countries->empty() == true)
+	if (countries->empty() == true) 
 	{
 		cout << "This player has no countries!\n";
 	}
-	else
+	else 
 	{
-		for (unsigned int i = 0; i < countries->size(); i++) {
+		for (int i = 0; i < countries->size(); i++) 
+		{
 			Country c = *(countries->at(i));
-			cout << c.getCountryName() << endl;
+			c.printCountry();
+			cout << endl;
 		}
-		// for (int i = 0; i < countries->size(); i++) 
-		// {
-		// 	Country c = countries->at(i);
-		// 	c.printCountry();
-		// 	cout << endl;
-		// }
 	}
 }
+
 // allow player to add more arrmy in his countries at the beginning of the player turn; 
-void Player::reinforce()
+
+void Player::reinforce() 
 {
 	cout << "I'm reinforcing!\n";
 	int availableArmies{ 0 };
@@ -460,7 +454,7 @@ void Player::attackPhase()
 							<< (*attackCountry->getCountryNumberArmies() - 1) << endl;
 						cout << ">";
 						cin >> nbrArmies;
-						if (nbrArmies > 1 && nbrArmies < *attackCountry->getCountryNumberArmies())
+						if (nbrArmies > 0 && nbrArmies < *attackCountry->getCountryNumberArmies())
 							validSelection = true;
 						else
 							cout << "\nPlease enter a valid number" << endl;
@@ -480,7 +474,7 @@ void Player::attackPhase()
 
 }
 //moving army from a contry to a neighbour counrty
-void Player::fortify()
+void Player::fortify() 
 {
 	cout << "I'm fortifying!\n";
 	Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)

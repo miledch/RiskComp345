@@ -99,10 +99,6 @@ void GameEngine::randomizeOrder()
 	random_device rd;
 	auto randomEngine = default_random_engine{ rd() };
 	shuffle(begin(*players), end(*players), randomEngine);
-	cout << "The order of the play is: " << endl;
-	for (int i = 0; i < (*players).size(); i++) {
-
-	}
 }
 
 void GameEngine::assignCountries()
