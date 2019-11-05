@@ -8,10 +8,15 @@
 int main()
 {
 
-	GameEngine g;
-	g.randomizeOrder();
-	g.assignCountries();
-	g.assignArmies();
+
+	PlayerDriver::runFortification();
+	//PlayerDriver::runReinforcement();
+	//GameEngine g;
+	//g.randomizeOrder();
+	//g.assignCountries();
+	//g.assignArmies();
 	//PlayerDriver::runAttackPhase();
+
+
 	return 0;
 }
