@@ -12,6 +12,6 @@ int main()
 	g.randomizeOrder();
 	g.assignCountries();
 	g.assignArmies();
-	PlayerDriver::runAttackPhase();
+	//PlayerDriver::runAttackPhase();
 	return 0;
 }
