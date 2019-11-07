@@ -76,7 +76,7 @@ bool Graph::checkVisitedSubGraph(list<Country> countriesPerContinent)
 
 Graph::~Graph()
 {
-	delete adjLists;
+	delete[] adjLists;
 	adjLists = nullptr;
 	delete visited;
 	visited = nullptr;
