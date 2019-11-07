@@ -182,13 +182,13 @@ void PlayerDriver::runAttackPhase()
 	{
 		int nbrArmies = rand() % 5 + 1; // between 1 & 6 armies assigned randomly for each countries
 		P2_countries.push_back(&*c_it);
-		c_it->setCountryPlayerOwned("PLAYER 2 - DEFENDER");
+		c_it->setCountryPlayerOwned("Player 2");
 		c_it->setCountryNumberArmies(nbrArmies);
 		for (int x : arrP1)
 		{
 			if (counter == x)
 			{
-				c_it->setCountryPlayerOwned("PLAYER 1 - ATTACKER");
+				c_it->setCountryPlayerOwned("Player 1");
 				c_it->setCountryNumberArmies(nbrArmies);
 				P1_countries.push_back(&*c_it);
 				

@@ -8,15 +8,16 @@
 int main()
 {
 
+	//MapDriver::RunMapDriver(); // from assignment 1, to test graph an subgraph connected
 
 	PlayerDriver::runFortification();
-	PlayerDriver::runReinforcement();
-	GameEngine g;
-	g.randomizeOrder();
-	g.assignCountries();
-	g.assignArmies();
-	PlayerDriver::runAttackPhase();
-
+	//PlayerDriver::runReinforcement();
+	//GameEngine g;
+	//g.randomizeOrder();
+	//g.assignCountries();
+	//g.assignArmies();
+	//PlayerDriver::runAttackPhase();
+	
 
 	return 0;
 }

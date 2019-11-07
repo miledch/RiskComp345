@@ -91,6 +91,8 @@ public:
 	void addEdge(int src, int dest);
 	void DFS(int vertex);
 	bool checkVisited();
+	bool checkVisitedSubGraph(list<Country> countriesPerContinent);
+	~Graph();
 };
 
 

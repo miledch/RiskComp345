@@ -156,7 +156,7 @@ void Player::attack()
 	int playerDecision = 0;
 	while (playerDecision != 2)
 	{
-		cout << "\nDo you want to attack adjacent territories ?" << endl;
+		cout << "\n" << *this->getName() << ", do you want to attack adjacent territories ?" << endl;
 		cout << "Press 1 for yes or 2 for no: ";
 		cout << ">";
 		cin >> playerDecision;
@@ -225,7 +225,7 @@ void Player::attackPhase()
 	{
 		for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 		{
-			if (*countriesIt->getCountryID() == *l_it)
+			if (*countriesIt->getCountryID() == *l_it && *countriesIt->getCountryPlayerOwned() != *attackCountry->getCountryPlayerOwned())
 			{
 				cout << *countriesIt->getCountryID() << "\t" << *countriesIt->getCountryName() << " containing " << *countriesIt->getCountryNumberArmies() << " armies." << endl;
 				validEntryForAttack.push_back(*countriesIt->getCountryID());
@@ -400,8 +400,8 @@ void Player::attackPhase()
 		if(defenderRoll.size() > 1)
 			defenderRoll.pop_back();
 
-		cout << "\nBecause " << *attackCountry->getCountryPlayerOwned() << " rolled " << attack << " and "
-			<< *targetedCountry->getCountryPlayerOwned() << " rolled " << defense << endl;
+		cout << "\nBecause [" << *attackCountry->getCountryPlayerOwned() << "] rolled " << attack << " and ["
+			<< *targetedCountry->getCountryPlayerOwned() << "] rolled " << defense << endl;
 		//Remove one of your opponent�s army from the defending territory if the attack die is higher to its corresponding defense die.
 		if (attack > defense)
 		{

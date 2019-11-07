@@ -72,4 +72,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="maps\eurasien.map">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="maps\ameroki.map">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

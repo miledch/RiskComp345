@@ -145,6 +145,10 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDriver.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="maps\ameroki.map" />
+    <None Include="maps\eurasien.map" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

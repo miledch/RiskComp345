@@ -1,23 +1,4 @@
-﻿  GameEngine.cpp
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(32,11): warning C4018: '>': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(121,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(160,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(161,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(168,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(179,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(185,52): warning C4018: '>': signed/unsigned mismatch
-  Map.cpp
-C:\Users\miled\Documents\GitHub\RISK\RISK\GameEngine.cpp(227,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(39,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(157,11): warning C4129: 'S': unrecognized character escape sequence
-  MapDriver.cpp
-  MapLoader.cpp
-  MapLoaderDriver.cpp
-  Player.cpp
-C:\Users\miled\Documents\GitHub\RISK\RISK\Map.cpp(159,16): warning C4129: 'S': unrecognized character escape sequence
+﻿  Player.cpp
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(134,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(300,24): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(307,24): warning C4018: '<=': signed/unsigned mismatch
@@ -26,14 +7,7 @@ C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(356,24): warning C4018: '<=
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(393,23): warning C4018: '<': signed/unsigned mismatch
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(509,20): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(558,20): warning C4018: '<=': signed/unsigned mismatch
-  PlayerDriver.cpp
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(671,22): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(145,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(153,11): warning C4018: '>': signed/unsigned mismatch
-  main.cpp
-  Generating Code...
-C:\Users\miled\Documents\GitHub\RISK\RISK\PlayerDriver.cpp(167,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(516): warning C4715: 'Player::chosingCountrySource': not all control paths return a value
 C:\Users\miled\Documents\GitHub\RISK\RISK\Player.cpp(565): warning C4715: 'Player::chooseTargetCountry': not all control paths return a value
-  LINK : C:\Users\miled\Documents\GitHub\RISK\Debug\RISK.exe not found or not built by the last incremental link; performing full link
   RISK.vcxproj -> C:\Users\miled\Documents\GitHub\RISK\Debug\RISK.exe
