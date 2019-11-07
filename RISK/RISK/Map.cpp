@@ -52,7 +52,7 @@ bool Graph::checkVisited()
 	bool connected = true;
 	for (size_t i = 0; i < numCountries; i++)
 	{
-		//cout << "visited[" << i << "] " << visited[i] << endl;
+		cout << "visited[" << i << "] " << visited[i] << endl;
 		if (!visited[i])
 		{
 			connected = false;
