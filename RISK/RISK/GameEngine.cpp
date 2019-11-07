@@ -1,6 +1,4 @@
 #include "GameEngine.h"
-#include <filesystem>
-namespace fs = std::filesystem;
 
 GameEngine::GameEngine()
 {
@@ -23,12 +21,10 @@ GameEngine::GameEngine()
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
 
+	// TODO: Fix cin
 	int n;
 	cin >> n;
-	if (cin.fail()) {
-		cin.clear();
-		cin.ignore(256, '\n');
-	}
+
 	while (n > availableMaps.size() || n < 1) {
 		if (cin.fail()) {
 			cin.clear();
@@ -44,6 +40,37 @@ GameEngine::GameEngine()
 	map = new Map();
 	MapLoader loader;
 	loader.LoadMap(*map, *mapPath);
+	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+	while (!validMap) {
+		cout << "Please choose another map or enter -1 to exit" << endl;
+		for (int i = 0; i < availableMaps.size(); i++)
+		{
+			cout << (i + 1) << ": " << availableMaps[i] << endl;
+		}
+		cin >> n;
+
+		while (n > availableMaps.size() || n < 1) {
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(256, '\n');
+			}
+
+			if (n == -1) {
+				cout << "The program will terminate immediately" << endl;
+				exit(0);
+			}
+
+			cout << "Please choose a valid number or -1 to exit" << endl;
+			cin >> n;
+		}
+
+		*mapPath = path + availableMaps[n - 1] + ext;
+		cout << "You have chosen " << *mapPath << endl;
+		delete map;
+		map = new Map();
+		loader.LoadMap(*map, *mapPath);
+		validMap = map->ConnectedGraph();
+	}
 
 	numOfPlayers = new int;
 	cout << "Please select the numbers of players in the game (2-6 players)" << endl;
@@ -74,9 +101,9 @@ GameEngine::GameEngine(const GameEngine& game2)
 	this->deck = new Deck(*game2.deck);
 
 	this->numOfPlayers = new int(*game2.numOfPlayers);
-	players = new vector<Player>(*numOfPlayers);
+	players = new vector<Player>();
 	for (int i = 0; i < *numOfPlayers; i++) {
-		(*players)[i] = Player((*players)[i]);
+		players->push_back(Player((*game2.players)[i]));
 	}
 }
 
@@ -263,4 +290,10 @@ GameEngine::~GameEngine()
 	mapPath = NULL;
 	delete numOfPlayers;
 	numOfPlayers = NULL;
+}
+
+GameEngine* GameEngineDriver::runGameStart()
+{
+	static GameEngine g; // Will exit program automatically if the loaded map is invalid
+	return &g;
 }

@@ -3,6 +3,7 @@
 // Default constructor
 Player::Player()
 {
+	map = new Map();
 	continents = new vector<Continent>();
 	countries = new vector<Country*>();
 	dice = new Dice_Rolling_Facility();
@@ -11,20 +12,11 @@ Player::Player()
 	availableArmies = new int(0);
 }
 
-// Parameterized constructor
-Player::Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h)
-{
-	this->countries = c;
-	this->dice = d;
-	this->h = h;
-	this->name = new string("DefaultPlayer");
-	this->availableArmies = new int(0);
-	map = nullptr;
-}
 
 Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
 {
 	this->map = map;
+	this->continents = new vector<Continent>();
 	this->countries = c;
 	this->dice = d;
 	this->h = h;
@@ -45,7 +37,7 @@ Player::Player(Map* map, vector<Continent>* continents, vector<Country*>* c, Dic
 
 Player::Player(const Player& p2)
 {
-	this->map = new Map(*p2.map);
+	this->map = p2.map;
 	this->continents = new vector<Continent>(*p2.continents);
 	this->countries = new vector<Country*>(*p2.countries);
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
@@ -58,7 +50,7 @@ Player& Player::operator=(const Player& rhs)
 {
 	if (this != &rhs) 
 	{
-		*(this->map) = *(rhs.map);
+		this->map = rhs.map; // Make it point to the same map
 		*(this->continents) = *(rhs.continents);
 		*(this->countries) = *(rhs.countries);
 		*(this->dice) = *(rhs.dice);
@@ -77,8 +69,7 @@ Player::~Player()
 	//	(*it)->deleteCountry();
 	//}
 
-	//delete map;
-	//map = NULL;
+	// Don't delete map and countries because all the players use the same map
 	delete h;
 	h = NULL;
 	delete dice;

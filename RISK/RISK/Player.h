@@ -24,7 +24,6 @@ private:
 
 public:
 	Player();
-	Player(vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h);
 	Player(Map *map, vector<Country*> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
 	Player(Map* map, vector<Continent>* continents, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name);
 	Player(const Player& p2);

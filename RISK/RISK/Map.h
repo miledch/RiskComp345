@@ -26,7 +26,7 @@ public:
 	void add_continents(int id, string name, int extraArmies);
 	list<Country>* getCountries();
 	list<Continent>* getcontinents();
-	void ConnectedGraph(); // for countries
+	bool ConnectedGraph(); // for countries
 	void ConnectedSubgraph();
 	void RunConnectedSubgraph(int continentID);  // for contiennts
 	~Map();

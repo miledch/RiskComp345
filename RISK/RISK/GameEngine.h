@@ -3,6 +3,8 @@
 #include "Player.h"
 #include <algorithm>
 #include <random>
+#include <filesystem>
+namespace fs = std::filesystem;
 class GameEngine
 {
 public:
@@ -32,5 +34,11 @@ private:
 
 	string* mapPath; // This is needed for the copy constructor
 	int* numOfPlayers; // This is needed for the copy constructor
+};
+
+class GameEngineDriver
+{
+public:
+	static GameEngine* runGameStart();
 };
 

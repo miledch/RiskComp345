@@ -1,9 +1,9 @@
 ﻿  Cards.cpp
   CardsDriver.cpp
   Dice.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(9,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(6,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   DiceDriver.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(65,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Dice.cpp(62,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(13,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(18,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(25,20): warning C4018: '<': signed/unsigned mismatch
@@ -13,40 +13,42 @@ C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(42,2
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(56,22): warning C4018: '<': signed/unsigned mismatch
   GameEngine.cpp
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\DiceDriver.cpp(61,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(21,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(32,11): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(121,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(160,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(161,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(168,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(179,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(185,52): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(19,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(28,11): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(46,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(52,12): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(139,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(148,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(187,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(188,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(195,25): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(206,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(212,52): warning C4018: '>': signed/unsigned mismatch
   main.cpp
   Map.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(227,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\GameEngine.cpp(254,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(39,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(52,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(157,11): warning C4129: 'S': unrecognized character escape sequence
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(53,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(162,11): warning C4129: 'S': unrecognized character escape sequence
   MapDriver.cpp
   MapLoader.cpp
   MapLoaderDriver.cpp
   Player.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(159,16): warning C4129: 'S': unrecognized character escape sequence
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(147,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(313,24): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(320,24): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(362,24): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(369,24): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(406,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(522,20): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(571,20): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Map.cpp(164,16): warning C4129: 'S': unrecognized character escape sequence
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(138,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(304,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(311,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(353,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(360,24): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(397,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(513,20): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(562,20): warning C4018: '<=': signed/unsigned mismatch
   PlayerDriver.cpp
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(684,22): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(675,22): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\PlayerDriver.cpp(145,20): warning C4018: '<': signed/unsigned mismatch
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\PlayerDriver.cpp(153,11): warning C4018: '>': signed/unsigned mismatch
   Generating Code...
 C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\PlayerDriver.cpp(167,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(529): warning C4715: 'Player::chosingCountrySource': not all control paths return a value
-C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(578): warning C4715: 'Player::chooseTargetCountry': not all control paths return a value
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(520): warning C4715: 'Player::chosingCountrySource': not all control paths return a value
+C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\RISK\Player.cpp(569): warning C4715: 'Player::chooseTargetCountry': not all control paths return a value
   RISK.vcxproj -> C:\Users\Rubiat Zaman\Documents\GitHub\RiskComp345\RISK\Debug\RISK.exe

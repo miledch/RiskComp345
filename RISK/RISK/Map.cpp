@@ -49,15 +49,16 @@ void Graph::addEdge(int src, int dest)
 
 bool Graph::checkVisited()
 {
+	bool connected = true;
 	for (size_t i = 0; i < numCountries; i++)
 	{
 		cout << "visited[" << i << "] " << visited[i] << endl;
 		if (!visited[i])
 		{
-			return false;
+			connected = false;
 		}
 	}
-	return true;
+	return connected;
 }
 
 void Graph::DFS(int country)
@@ -75,7 +76,7 @@ void Graph::DFS(int country)
 	}
 }
 
-void Map::ConnectedGraph()
+bool Map::ConnectedGraph()
 {
 	Graph g(countries->size());
 
@@ -93,10 +94,14 @@ void Map::ConnectedGraph()
 
 	g.DFS(0);// checking DFS starting from country 0
 
-	if(g.checkVisited())
+	if (g.checkVisited()) {
 		cout << "\nCountries are part of a connected graph\n" << endl;
-	else
+		return true;
+	}
+	else {
 		std::cerr << "\nThe map selected is not a connected graph\n" << endl;
+		return false;
+	}
 }
 
 void Map::ConnectedSubgraph()
