@@ -24,17 +24,6 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->availableArmies = new int(0);
 }
 
-Player::Player(Map* map, vector<Continent>* continents, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h, string* name)
-{
-	this->map = map;
-	this->continents = continents;
-	this->countries = c;
-	this->dice = d;
-	this->h = h;
-	this->name = name;
-	this->availableArmies = new int(0);
-}
-
 Player::Player(const Player& p2)
 {
 	this->map = p2.map;
@@ -160,7 +149,7 @@ void Player::attack()
 	int playerDecision = 0;
 	while (playerDecision != 2)
 	{
-		cout << "\nDo you want to attack adjacent territories ?" << endl;
+		cout << "\n" << *this->getName() << ", do you want to attack adjacent territories ?" << endl;
 		cout << "Press 1 for yes or 2 for no: ";
 		cout << ">";
 		cin >> playerDecision;
@@ -229,7 +218,7 @@ void Player::attackPhase()
 	{
 		for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 		{
-			if (*countriesIt->getCountryID() == *l_it)
+			if (*countriesIt->getCountryID() == *l_it && *countriesIt->getCountryPlayerOwned() != *attackCountry->getCountryPlayerOwned())
 			{
 				cout << *countriesIt->getCountryID() << "\t" << *countriesIt->getCountryName() << " containing " << *countriesIt->getCountryNumberArmies() << " armies." << endl;
 				validEntryForAttack.push_back(*countriesIt->getCountryID());
@@ -404,8 +393,8 @@ void Player::attackPhase()
 		if(defenderRoll.size() > 1)
 			defenderRoll.pop_back();
 
-		cout << "\nBecause " << *attackCountry->getCountryPlayerOwned() << " rolled " << attack << " and "
-			<< *targetedCountry->getCountryPlayerOwned() << " rolled " << defense << endl;
+		cout << "\nBecause [" << *attackCountry->getCountryPlayerOwned() << "] rolled " << attack << " and ["
+			<< *targetedCountry->getCountryPlayerOwned() << "] rolled " << defense << endl;
 		//Remove one of your opponent�s army from the defending territory if the attack die is higher to its corresponding defense die.
 		if (attack > defense)
 		{

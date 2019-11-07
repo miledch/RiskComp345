@@ -18,8 +18,6 @@ int MapDriver::RunMapDriver()
 
 	map.add_continents(1, "MURICA", 5);
 	map.add_continents(2, "Europa", 10);
-	map.add_continents(3, "INDIA", 14);
-	map.add_continents(4, "ASIA", 15);
 
 	// add the countries
 	//map.add_country(1, "siberia", 1);
@@ -70,11 +68,11 @@ int MapDriver::RunMapDriver()
 	map.add_country(3, "Country3", 1);
 	map.add_country(4, "Country4", 1);
 	map.add_country(5, "Country5", 1);
-	map.add_country(18, "Country18", 2);
-	map.add_country(19, "Country19", 2);
-	map.add_country(20, "Country20", 2);
-	map.add_country(21, "Country21", 2);
-	map.add_country(22, "Country22", 2);
+	map.add_country(6, "Country18", 2);
+	map.add_country(7, "Country19", 2);
+	map.add_country(8, "Country20", 2);
+	map.add_country(9, "Country21", 2);
+	map.add_country(10, "Country22", 2);
 
 
 	// add the neighbors of each countries
@@ -172,17 +170,17 @@ int MapDriver::RunMapDriver()
 	std::advance(it, 1);
 	it->add_edge("4 2 5");
 	std::advance(it, 1);
-	it->add_edge("5 4");
+	it->add_edge("5 4 6");
 	std::advance(it, 1);
-	it->add_edge("18 19 20");
+	it->add_edge("6 5 7");
 	std::advance(it, 1);
-	it->add_edge("19 18 20");
+	it->add_edge("7 8");
 	std::advance(it, 1);
-	it->add_edge("20 18 19 21 22");
+	it->add_edge("8 6 7 9");
 	std::advance(it, 1);
-	it->add_edge("21 20");
+	it->add_edge("9 8 10");
 	std::advance(it, 1);
-	it->add_edge("22 20");
+	it->add_edge("10 9");
 
 	list<Country>::iterator iter;
 	for (iter = map.getCountries()->begin(); iter != map.getCountries()->end(); ++iter)
