@@ -294,6 +294,29 @@ GameEngine::~GameEngine()
 
 GameEngine* GameEngineDriver::runGameStart()
 {
-	static GameEngine g; // Will exit program automatically if the loaded map is invalid
+	static GameEngine g;
+	int numOfPlayers = *g.getNumOfPlayers();
+	cout << numOfPlayers << " players have been created:" << endl;
+	for (int i = 0; i < numOfPlayers; i++) {
+		cout << (i+1) << ". " << (*(*g.getPlayers())[i].getName()) << endl;
+	}
+
+	list<Card> deckCards = g.getDeck()->getAllCards();
+	cout << "\nThe following deck of " << deckCards.size() << " cards was created:" << endl;
+	int i = 1;
+	for (Card deckCard : deckCards) {
+		cout << i++ << ". ";
+
+		switch (*(deckCard.getArmyType())) {
+		case 0:
+			cout << "Infantry" << endl;
+			break;
+		case 1:
+			cout << "Artillery" << endl;
+			break;
+		case 2:
+			cout << "Cavalry" << endl;
+		}
+	}
 	return &g;
 }

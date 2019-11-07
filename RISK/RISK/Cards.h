@@ -35,6 +35,7 @@ public:
 	Card* draw();
 	void displayCardsDistribution();
 	void exchange(const array<Card*, 3>&);
+	list<Card> getAllCards();
 };
 
 class Hand {

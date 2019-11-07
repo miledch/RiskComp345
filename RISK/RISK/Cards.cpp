@@ -133,6 +133,10 @@ void Deck::exchange(const array<Card*, 3> & exchangedCards)
 	// printing the number of soldiers awarded for trading in number of cards
 	cout << "The rewarded soldiers are " << ++this->numOfExchanges * 5 << endl;
 }
+list<Card> Deck::getAllCards()
+{
+	return this->allCards;
+}
 //hand constructor points the hand to +++++
 Hand::Hand(Deck& d)
 {
