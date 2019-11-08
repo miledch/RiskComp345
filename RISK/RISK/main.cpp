@@ -10,14 +10,10 @@ int main()
 
 	//MapDriver::RunMapDriver(); // from assignment 1, to test graph an subgraph connected
 
+	GameEngineDriver::runGameStart();
 	/*PlayerDriver::runFortification();
 	PlayerDriver::runReinforcement();*/
-	GameEngineDriver::runGameStart();
-	/*g.randomizeOrder();
-	g.assignCountries();
-	g.assignArmies();
-	g.runGame();
-	PlayerDriver::runAttackPhase();*/
+	//PlayerDriver::runAttackPhase();
 
 
 	return 0;

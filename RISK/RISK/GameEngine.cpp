@@ -192,12 +192,12 @@ void GameEngine::assignArmies()
 	}
 
 	int countryChosenIdx;
-	int maxAvailableArmies = A - ceil(((double)(map->getCountries()->size()) / *numOfPlayers)); // 'ceil' to get the max value
+	int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
 
 	for (int k = 0; k < maxAvailableArmies; k++) {
 		for (int i = 0; i < *numOfPlayers; i++) {
 
-			if ((*players)[i].getAvailableArmies() == 0) {
+			if (*(*players)[i].getAvailableArmies() == 0) {
 				continue;
 			}
 
@@ -247,17 +247,41 @@ int* GameEngine::getNumOfPlayers() const
 	return numOfPlayers;
 }
 
+void GameEngine::startup()
+{
+	randomizeOrder();
+	cout << "The order of the play will be: " << endl;
+	for (int i = 0; i < *numOfPlayers; i++) {
+		cout << (i + 1) << ". " << *((*players)[i].getName()) << endl;
+	}
+	cout << endl;
+	assignCountries();
+	assignArmies();
+}
+
 void GameEngine::runGame() {
 	string winner;
 	while (true) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
+			cout << endl << "REINFORCEMENT PHASE: " << (*(*players)[i].getName()) << endl;
+			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].reinforce();
+			cout << endl << "ATTACK PHASE: " << (*(*players)[i].getName()) << endl;
+			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].attack();
+			cout << endl << "FORTIFYING PHASE: " << (*(*players)[i].getName()) << endl;
+			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].fortify();
 
 			ownsAllCountries = true;
+
+			if (i == 1) {
+				for (list<Country>::iterator it = (*map->getCountries()).begin(); it != (*map->getCountries()).end(); ++it) {
+					*(it->getCountryPlayerOwned()) = *((*players)[i].getName());
+				}
+			}
 
 			for (Country country : *(map->getCountries())) {
 				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
@@ -275,7 +299,7 @@ void GameEngine::runGame() {
 				break;
 		}
 	}
-	cout << "Player " << winner << "owns all the countries and wins the game!" << endl;
+	cout << winner << " owns all the countries and wins the game!" << endl;
 }
 
 GameEngine::~GameEngine()
@@ -318,5 +342,9 @@ GameEngine* GameEngineDriver::runGameStart()
 			cout << "Cavalry" << endl;
 		}
 	}
+	cout << endl;
+
+	g.startup();
+	g.runGame();
 	return &g;
 }
