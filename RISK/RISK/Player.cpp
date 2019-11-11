@@ -590,7 +590,7 @@ void Player::movingArmy(Country* source, Country* target)
 	cout << "how many you want to move from " << *source->getCountryName() << " to " << *target->getCountryName() << " ." << endl;
 	int in;
 	cin >> in;
-	if (in >= 0 && in < (*source->getCountryNumberArmies() - 1)) {
+	if (in > 0 && in <= (*source->getCountryNumberArmies() - 1)) {
 		check = false;
 		source->decreaseArmy(in);
 		target->increaseArmy(in);
