@@ -127,6 +127,7 @@
     <ClInclude Include="Cards.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameObservers.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Player.h" />
@@ -137,6 +138,7 @@
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="DiceDriver.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameObservers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapDriver.cpp" />
