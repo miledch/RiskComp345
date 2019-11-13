@@ -125,15 +125,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h" />
+    <ClInclude Include="ConquestMapLoader.h" />
     <ClInclude Include="Dice.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapAdapter.h" />
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cards.cpp" />
     <ClCompile Include="CardsDriver.cpp" />
+    <ClCompile Include="ConquestMapLoader.cpp" />
     <ClCompile Include="Dice.cpp" />
     <ClCompile Include="DiceDriver.cpp" />
     <ClCompile Include="GameEngine.cpp" />

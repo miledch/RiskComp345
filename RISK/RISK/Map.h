@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -49,6 +50,7 @@ public:
 	Country& operator=(const Country& rhs);
 	void displayNeighborsList();
 	void add_edge(string borders);
+	void add_ConquestEdge(std::vector<string> borders, list<Country> countries);
 	int* getCountryID();
 	string* getCountryName();
 	int* getCountryContinent();
