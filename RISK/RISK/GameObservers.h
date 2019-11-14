@@ -1,8 +1,10 @@
+#pragma once
 #include <iostream>
 #include <vector>
-#include "Player.h"
-#include "Map.h"
+#include <algorithm>
 using namespace std;
+
+class Player;
 
 class GameObserver {
 public:
@@ -20,8 +22,17 @@ public:
 	virtual void Notify();
 	Subject();
 	~Subject();
-private:
+protected:
 	vector<GameObserver*>* observers;
+};
+
+class PlayerObserver : public GameObserver {
+public:
+	PlayerObserver(Player* p);
+	~PlayerObserver();
+	void Update();
+private:
+	Player* player;
 };
 
 

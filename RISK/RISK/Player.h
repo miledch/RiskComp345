@@ -9,10 +9,11 @@
 #include "Dice.h"
 #include "MapLoader.h"
 #include "Cards.h"
+#include "GameObservers.h"
 
 using namespace std;
 
-class Player {
+class Player : public Subject {
 private:
 	vector<Continent>* continents;
 	vector<Country*>* countries;
@@ -21,6 +22,8 @@ private:
 	Map *map; // player needs visibility to the map
 	string* name; // A player needs a name
 	int* availableArmies;
+
+	string* currentPhase; // To keep track of which phase the player is on (reinforce/attack/fortify)
 
 public:
 	Player();
@@ -33,6 +36,7 @@ public:
 	Hand* getHand();
 	vector<Country*>* getCountries() const;
 	string* getName();
+	string* getCurrentPhase();
 	int* getAvailableArmies();
 	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);

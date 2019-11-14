@@ -319,6 +319,10 @@ GameEngine::~GameEngine()
 GameEngine* GameEngineDriver::runGameStart()
 {
 	static GameEngine g;
+	vector<PlayerObserver*> playerObservers;
+	for (int i = 0; i < *(g.getNumOfPlayers()); i++) {
+		playerObservers.push_back(new PlayerObserver(&(*g.getPlayers())[i]));
+	}
 	int numOfPlayers = *g.getNumOfPlayers();
 	cout << numOfPlayers << " players have been created:" << endl;
 	for (int i = 0; i < numOfPlayers; i++) {

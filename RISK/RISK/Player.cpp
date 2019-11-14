@@ -10,6 +10,7 @@ Player::Player()
 	h = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
 	availableArmies = new int(0);
+	currentPhase = new string("N/A");
 }
 
 
@@ -22,6 +23,7 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->h = h;
 	this->name = name;
 	this->availableArmies = new int(0);
+	this->currentPhase = new string("N/A");
 }
 
 Player::Player(const Player& p2)
@@ -33,6 +35,7 @@ Player::Player(const Player& p2)
 	this->h = new Hand(*p2.h);
 	this->name = new string(*p2.name);
 	this->availableArmies = new int(*p2.availableArmies);
+	this->currentPhase = new string(*p2.currentPhase);
 }
 
 Player& Player::operator=(const Player& rhs)
@@ -46,6 +49,7 @@ Player& Player::operator=(const Player& rhs)
 		*(this->h) = *(rhs.h);
 		*(this->name) = *(rhs.name);
 		*(this->availableArmies) = *(rhs.availableArmies);
+		*(this->currentPhase) = *(rhs.currentPhase);
 	}
 	return *this;
 }
@@ -67,6 +71,8 @@ Player::~Player()
 	name = NULL;
 	delete availableArmies;
 	availableArmies = NULL;
+	delete currentPhase;
+	currentPhase = NULL;
 
 }
 
@@ -91,6 +97,11 @@ vector<Country*>* Player::getCountries() const
 string* Player::getName()
 {
 	return name;
+}
+
+string* Player::getCurrentPhase()
+{
+	return currentPhase;
 }
 
 int* Player::getAvailableArmies()
@@ -137,6 +148,8 @@ void Player::printCountries()
 
 void Player::reinforce() 
 {
+	*currentPhase = "Reinforcement Phase";
+	Notify();
 	cout << "I'm reinforcing!\n";
 	int availableArmies{ 0 };
 	availableArmies = getArmyByCountriesOwned() + getArmyByContinentsOwned() + getArmyByExchangingCards();
@@ -146,6 +159,8 @@ void Player::reinforce()
 
 void Player::attack()
 {
+	*currentPhase = "Attack Phase";
+	Notify();
 	int playerDecision = 0;
 	while (playerDecision != 2)
 	{
@@ -470,6 +485,8 @@ void Player::attackPhase()
 //moving army from a contry to a neighbour counrty
 void Player::fortify() 
 {
+	*currentPhase = "Fortify Phase";
+	Notify();
 	cout << "I'm fortifying!\n";
 	Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)
 	vector<Country*> possibleTargets = ownedNieghbourCountry(*source); 
@@ -724,3 +741,18 @@ void Player::initializeHand(Hand& hand)
 	*(this->h) = hand;
 }
 
+PlayerObserver::PlayerObserver(Player* p)
+{
+	player = p;
+	player->Attach(this);
+}
+
+PlayerObserver::~PlayerObserver()
+{
+	player->Detach(this);
+}
+
+void PlayerObserver::Update()
+{
+	cout << *player->getName() << ": " << *player->getCurrentPhase() << endl;
+}

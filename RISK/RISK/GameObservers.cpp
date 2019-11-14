@@ -1,8 +1,7 @@
 #include "GameObservers.h"
-#include <algorithm>
 
 Subject::Subject() {
-	observers = new vector<GameObserver*>;
+	observers = new vector<GameObserver*>();
 }
 Subject::~Subject() {
 	delete observers;
