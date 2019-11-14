@@ -1,29 +1,71 @@
 #include <iostream>
 #include "Map.h"
 #include "MapLoader.h"
+#include "MapAdapter.h"
+#include <vector>
+#include <filesystem>
+#include <fstream>
 
 using std::cout;
 using std::endl;
+using std::vector;
+using std::ifstream;
+namespace fs = std::filesystem;
 
 int MapLoaderDriver::RunMapLoaderDriver()
 {
-	cout << "Welcome to Command Line Risk! (comp345 - Assignment 1)" << endl;
+	cout << "Welcome to the Command Line Risk Game!\n" << endl;
 
-	Map map;
-	MapLoader mapLoader;
+	string path("maps/");
+	string ext(".map");
+	vector<string> availableMaps;
 
-	int mapStatus = 0;
-
-	string path;
-
-	do
+	for (auto& p : fs::recursive_directory_iterator(path))
 	{
-		cout << "Please pass in the name of the map you would like to load:" << endl;
-		cin >> path;
-		path = "maps/" + path;
-		mapStatus = mapLoader.LoadMap(map, path);
-	} 
-	while (mapStatus == 0);
+		if (p.path().extension() == ext)
+			availableMaps.push_back(p.path().stem().string());
+	}
+
+	cout << "Please select a map from the following list:" << endl;
+
+	for (int i = 0; i < availableMaps.size(); i++)
+	{
+		cout << (i + 1) << ": " << availableMaps[i] << endl;
+	}
+
+	int n;
+	cout << ">";
+	cin >> n;
+	while (n > availableMaps.size() || n < 1) {
+		cout << "Please choose a valid number" << endl;
+		cout << ">";
+		cin >> n;
+	}
+
+	string mapPath = path + availableMaps[n - 1] + ext;
+	cout << "You have chosen " << mapPath << endl;
+
+	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
+	Map map;
+	ifstream mapFile(mapPath);
+	string line;
+	bool conquestMap = false;
+	while (getline(mapFile, line))
+	{
+		if (line == "[Territories]")
+			conquestMap = true;
+	}
+	mapFile.close();
+
+	MapLoader* loader;
+	if (conquestMap)
+		loader = new MapAdapter();
+	else 
+		loader = new MapLoader();
+
+	loader->LoadMap(map, mapPath);
+
+
 	
 
 	// show the continents of the map
@@ -55,4 +97,5 @@ int MapLoaderDriver::RunMapLoaderDriver()
 
 	return 0;
 }
+
 

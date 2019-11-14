@@ -5,13 +5,14 @@
 class MapLoader
 {
 public:
-	int LoadMap(Map& map, string mapName);
-	~MapLoader();
+	virtual void LoadMap(Map& map, string mapName);
+	virtual ~MapLoader();
 };
 
 class MapLoaderDriver
 {
 public:
 	static int RunMapLoaderDriver();
+	bool static ConquestMap();
 };
 

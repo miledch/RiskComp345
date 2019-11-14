@@ -270,6 +270,21 @@ void Country::add_edge(string borders)
 
 }
 
+void Country::add_ConquestEdge(std::vector<string> borders, list<Country> countries)
+{
+	list<Country>::iterator countriesIt;
+	for (countriesIt = countries.begin(); countriesIt != countries.end(); ++countriesIt)
+	{
+		for (string& border : borders)
+		{
+			if (border == *countriesIt->getCountryName())
+			{
+				this->neighbors->push_back(*countriesIt->getCountryID());
+			}
+		}
+	}
+}
+
 int* Country::getCountryID()
 {
 	return countryID;
