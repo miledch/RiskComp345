@@ -1,0 +1,48 @@
+﻿  GameEngine.cpp
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.h(7): error C2039: 'filesystem': is not a member of 'std'
+  d:\visualstudio\ide\vc\tools\msvc\14.16.27023\include\experimental\filesystem(30): note: see declaration of 'std'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.h(7): error C2878: 'filesystem': a namespace or class of this name does not exist
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(11): error C2653: 'fs': is not a class or namespace name
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(11): error C3861: 'recursive_directory_iterator': identifier not found
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(12): error C3312: no callable 'begin' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(12): error C3312: no callable 'end' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(13): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(14): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(19): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(28): warning C4018: '>': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(46): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(52): warning C4018: '>': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(139): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(148): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(187): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(188): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(195): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(206): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(212): warning C4018: '>': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\gameengine.cpp(266): warning C4018: '<': signed/unsigned mismatch
+  MapLoaderDriver.cpp
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(13): error C2039: 'filesystem': is not a member of 'std'
+  d:\visualstudio\ide\vc\tools\msvc\14.16.27023\include\fstream(21): note: see declaration of 'std'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(13): error C2878: 'filesystem': a namespace or class of this name does not exist
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(23): error C2653: 'fs': is not a class or namespace name
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(23): error C3861: 'recursive_directory_iterator': identifier not found
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(24): error C3312: no callable 'begin' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(24): error C3312: no callable 'end' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(25): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(26): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(31): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\maploaderdriver.cpp(39): warning C4018: '>': signed/unsigned mismatch
+  PlayerDriver.cpp
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(5): error C2039: 'filesystem': is not a member of 'std'
+  d:\visualstudio\ide\vc\tools\msvc\14.16.27023\include\experimental\filesystem(30): note: see declaration of 'std'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(5): error C2878: 'filesystem': a namespace or class of this name does not exist
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(137): error C2653: 'fs': is not a class or namespace name
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(137): error C3861: 'recursive_directory_iterator': identifier not found
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(138): error C3312: no callable 'begin' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(138): error C3312: no callable 'end' function found for type 'unknown-type'
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(139): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(140): error C2065: 'p': undeclared identifier
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(145): warning C4018: '<': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(153): warning C4018: '>': signed/unsigned mismatch
+c:\users\queen zlata the 1st\documents\visual studio 2017\projects\risk game\risk game\playerdriver.cpp(167): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Generating Code...
