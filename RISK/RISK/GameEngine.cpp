@@ -265,23 +265,11 @@ void GameEngine::runGame() {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
-			cout << endl << "REINFORCEMENT PHASE: " << (*(*players)[i].getName()) << endl;
-			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].reinforce();
-			cout << endl << "ATTACK PHASE: " << (*(*players)[i].getName()) << endl;
-			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].attack();
-			cout << endl << "FORTIFYING PHASE: " << (*(*players)[i].getName()) << endl;
-			cout << "----------------------------------------------------------------------" << endl;
 			(*players)[i].fortify();
 
 			ownsAllCountries = true;
-
-			if (i == 1) {
-				for (list<Country>::iterator it = (*map->getCountries()).begin(); it != (*map->getCountries()).end(); ++it) {
-					*(it->getCountryPlayerOwned()) = *((*players)[i].getName());
-				}
-			}
 
 			for (Country country : *(map->getCountries())) {
 				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {

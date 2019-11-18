@@ -18,6 +18,12 @@ void Subject::Notify() {
 		(*i)->Update();
 };
 
+void Subject::Notify2() {
+	vector<GameObserver*>::iterator i = observers->begin();
+	for (; i != observers->end(); ++i)
+		(*i)->Update2();
+};
+
 GameObserver::GameObserver() {
 };
 GameObserver::~GameObserver() {

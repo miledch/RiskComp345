@@ -23,7 +23,8 @@ private:
 	string* name; // A player needs a name
 	int* availableArmies;
 
-	string* currentPhase; // To keep track of which phase the player is on (reinforce/attack/fortify)
+	vector<string>* viewBuffer; // This can be considered as the 'view' it will store the things it will print
+	bool* newPhase; // To indicate if the player has entered a new phase
 
 public:
 	Player();
@@ -36,8 +37,9 @@ public:
 	Hand* getHand();
 	vector<Country*>* getCountries() const;
 	string* getName();
-	string* getCurrentPhase();
+	bool* getNewPhase();
 	int* getAvailableArmies();
+	vector<string>* getViewBuffer();
 	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();
