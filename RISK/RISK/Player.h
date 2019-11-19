@@ -10,6 +10,7 @@
 #include "MapLoader.h"
 #include "Cards.h"
 #include "GameObservers.h"
+#include "PlayerStrategies.h"
 
 using namespace std;
 
@@ -22,12 +23,14 @@ private:
 	Map *map; // player needs visibility to the map
 	string* name; // A player needs a name
 	int* availableArmies;
+	Strategy *strategy;
 
 	vector<string>* viewBuffer; // This can be considered as the 'view' it will store the things it will print
 	bool* newPhase; // To indicate if the player has entered a new phase
 
 public:
 	Player();
+	Player(Strategy* s);
 	Player(Map *map, vector<Country*> *c, Dice_Rolling_Facility *d, Hand *h, string *name);
 	Player(const Player& p2);
 	Player& operator=(const Player& rhs);
@@ -61,6 +64,16 @@ public:
 	void addCountry(Country* c);
 	void addContinent(Continent c);
 	void initializeHand(Hand&);
+	int getNumPlayerCountries();
+	int getNumPlayerContienent();
+	int getNumMapCountries();
+	int getNumMapContienent();
+	void setStrategy(Strategy* s);
+	void executeStrategy();
+	Country* strongestCountry(vector<Country*>&);
+	Country* weakestCountry(vector<Country*>&);
+	void fortifyToStrongest();
+	void fortifyToWeakest();
 };
 
 class PlayerDriver 

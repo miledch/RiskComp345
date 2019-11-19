@@ -59,6 +59,7 @@ public:
 	int* getCountryNumberArmies();
 	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
+	
 	void deleteCountry();
 	void printCountry();
 	void decreaseArmy(int);

@@ -324,6 +324,7 @@ list<int>* Country::getNeighbors()
 	return neighbors;
 }
 
+
 void Country::increaseArmy(int add)
 {
 	*this->numberArmies += add;

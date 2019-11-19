@@ -11,6 +11,7 @@ public:
 	GameEngine();
 	GameEngine(const GameEngine& game2);
 	GameEngine& operator=(const GameEngine& rhs);
+	GameEngine(int i); // for a 1 vs 1 game
 
 	//// Getters ////
 	Map* getMap() const;
@@ -21,6 +22,7 @@ public:
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
+	void run1vs1();
 
 	~GameEngine();
 
@@ -41,5 +43,6 @@ class GameEngineDriver
 {
 public:
 	static GameEngine* runGameStart();
+	static GameEngine* runPlayerVsCpu();
 };
 

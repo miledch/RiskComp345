@@ -21,7 +21,7 @@ class Subject {
 public:
 	virtual void Attach(GameObserver* o);
 	virtual void Detach(GameObserver* o);
-	virtual void Notify();
+	virtual void Notify(); // this function will be called in the attak method in Player class after a contry is occupied .
 	virtual void Notify2(); // This calls the Update2() functions on all its obervers (as opposed to Update())
 	Subject();
 	~Subject();
@@ -33,9 +33,11 @@ class PlayerObserver : public GameObserver {
 public:
 	PlayerObserver(Player* p);
 	~PlayerObserver();
+	void updateIWordPercentage();
 	void Update();
 	void Update2();
 private:
+	float iWorldPercentage;
 	Player* player;
 };
 

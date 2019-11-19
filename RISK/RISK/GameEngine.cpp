@@ -91,6 +91,93 @@ GameEngine::GameEngine()
 	}
 }
 
+GameEngine::GameEngine(int i)
+{
+	cout << "Welcome to the Command Line Risk Game!\n" << endl;
+
+	string path("maps/");
+	string ext(".map");
+	vector<string> availableMaps;
+
+	for (auto& p : fs::recursive_directory_iterator(path))
+	{
+		if (p.path().extension() == ext)
+			availableMaps.push_back(p.path().stem().string());
+	}
+
+	cout << "Please select a map from the following list:" << endl;
+
+	for (int i = 0; i < availableMaps.size(); i++)
+	{
+		cout << (i + 1) << ": " << availableMaps[i] << endl;
+	}
+
+	// TODO: Fix cin
+	int n;
+	cin >> n;
+
+	while (n > availableMaps.size() || n < 1) {
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+		}
+		cout << "Please choose a valid number" << endl;
+		cin >> n;
+	}
+
+	mapPath = new string(path + availableMaps[n - 1] + ext);
+	cout << "You have chosen " << *mapPath << endl;
+
+	map = new Map();
+	MapLoader loader;
+	loader.LoadMap(*map, *mapPath);
+	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+	while (!validMap) {
+		cout << "Please choose another map or enter -1 to exit" << endl;
+		for (int i = 0; i < availableMaps.size(); i++)
+		{
+			cout << (i + 1) << ": " << availableMaps[i] << endl;
+		}
+		cin >> n;
+
+		while (n > availableMaps.size() || n < 1) {
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(256, '\n');
+			}
+
+			if (n == -1) {
+				cout << "The program will terminate immediately" << endl;
+				exit(0);
+			}
+
+			cout << "Please choose a valid number or -1 to exit" << endl;
+			cin >> n;
+		}
+
+		*mapPath = path + availableMaps[n - 1] + ext;
+		cout << "You have chosen " << *mapPath << endl;
+		delete map;
+		map = new Map();
+		loader.LoadMap(*map, *mapPath);
+		validMap = map->ConnectedGraph();
+	}
+
+	cout << "This is a 1 vs 1 game. You will play against a computer." << endl;
+
+	int numOfCountries = map->getCountries()->size(); // Get the number of countries in the map
+
+	deck = new Deck(numOfCountries);
+
+	players = new vector<Player>();
+	numOfPlayers = new int(2);
+
+	players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Human Player")));
+	players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("CPU Player")));
+	(*players)[0].setStrategy(new HumanPlayer());
+	(*players)[1].setStrategy(new AggressivePlayer());
+}
+
 GameEngine::GameEngine(const GameEngine& game2)
 {
 	map = new Map();
@@ -156,6 +243,7 @@ void GameEngine::assignCountries()
 		(*players)[j].getCountries()->push_back(&(*it));
 		it->setCountryPlayerOwned(*((*players)[j].getName()));
 		cout << *(it->getCountryName()) << " has been assigned to " << *(*players)[j].getName() << endl;
+		(*players)[j].Notify();
 	}
 }
 
@@ -339,4 +427,76 @@ GameEngine* GameEngineDriver::runGameStart()
 	g.startup();
 	g.runGame();
 	return &g;
+}
+
+void GameEngine::run1vs1() {
+	string winner;
+	while (true) {
+		bool finished = false;
+		for (int i = 0; i < (*players).size(); i++) {
+			bool ownsAllCountries = true;
+			
+			(*players)[i].executeStrategy();
+
+			ownsAllCountries = true;
+
+			if (i == 1) {
+				for (list<Country>::iterator it = (*map->getCountries()).begin(); it != (*map->getCountries()).end(); ++it) {
+					*(it->getCountryPlayerOwned()) = *((*players)[i].getName());
+				}
+			}
+
+			for (Country country : *(map->getCountries())) {
+				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+					ownsAllCountries = false;
+					break;
+				}
+			}
+			if (ownsAllCountries == true) {
+				winner = *((*players)[i].getName());
+				finished = true;
+				break;
+			}
+		}
+		if (finished) {
+			break;
+		}
+	}
+	cout << winner << " owns all the countries and wins the game!" << endl;
+}
+
+GameEngine* GameEngineDriver::runPlayerVsCpu() {
+	static GameEngine* g = new GameEngine(2);
+	vector<PlayerObserver*> playerObservers;
+	for (int i = 0; i < *(g->getNumOfPlayers()); i++) {
+		playerObservers.push_back(new PlayerObserver(&(*(g)->getPlayers())[i]));
+	}
+	int numOfPlayers = *g->getNumOfPlayers();
+	cout << numOfPlayers << " players have been created:" << endl;
+	for (int i = 0; i < numOfPlayers; i++) {
+		cout << (i + 1) << ". " << (*(*g->getPlayers())[i].getName()) << endl;
+	}
+
+	list<Card> deckCards = g->getDeck()->getAllCards();
+	cout << "\nThe following deck of " << deckCards.size() << " cards was created:" << endl;
+	int i = 1;
+	for (Card deckCard : deckCards) {
+		cout << i++ << ". ";
+
+		switch (*(deckCard.getArmyType())) {
+		case 0:
+			cout << "Infantry" << endl;
+			break;
+		case 1:
+			cout << "Artillery" << endl;
+			break;
+		case 2:
+			cout << "Cavalry" << endl;
+		}
+	}
+	cout << endl;
+	g->startup();
+	g->run1vs1();
+
+	return g;
 }

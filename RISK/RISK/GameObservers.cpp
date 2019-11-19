@@ -14,8 +14,10 @@ void Subject::Detach(GameObserver* o) {
 };
 void Subject::Notify() {
 	vector<GameObserver*>::iterator i = observers->begin();
-	for (; i != observers->end(); ++i)
+	for (; i != observers->end(); ++i){
 		(*i)->Update();
+
+	}
 };
 
 void Subject::Notify2() {
