@@ -68,10 +68,12 @@ GameEngine::GameEngine()
 		cout << "You have chosen " << *mapPath << endl;
 		delete map;
 		map = new Map();
-		MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
 		loader->LoadMap(*map, *mapPath);
 		validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	}
+
+	delete loader;
 
 	numOfPlayers = new int;
 	cout << "Please select the numbers of players in the game (2-6 players)" << endl;
@@ -294,7 +296,6 @@ void GameEngine::runGame() {
 MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
 {
 	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
-	//Map map;
 	ifstream mapFile(*mapPath);
 	string line;
 	bool conquestMap = false;
@@ -335,6 +336,7 @@ GameEngine* GameEngineDriver::runGameStart()
 	for (int i = 0; i < *(g.getNumOfPlayers()); i++) {
 		playerObservers.push_back(new PlayerObserver(&(*g.getPlayers())[i]));
 	}
+
 	int numOfPlayers = *g.getNumOfPlayers();
 	cout << numOfPlayers << " players have been created:" << endl;
 	for (int i = 0; i < numOfPlayers; i++) {

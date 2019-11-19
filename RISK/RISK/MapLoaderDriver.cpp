@@ -63,6 +63,7 @@ int MapLoaderDriver::RunMapLoaderDriver()
 		loader = new MapLoader();
 
 	loader->LoadMap(*map, *mapPath);
+	delete loader;
 
 	// show the continents of the map
 	cout << "\nThe continents of the map are " << endl;
