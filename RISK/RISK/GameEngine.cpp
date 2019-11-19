@@ -38,8 +38,8 @@ GameEngine::GameEngine()
 	cout << "You have chosen " << *mapPath << endl;
 
 	map = new Map();
-	MapLoader loader;
-	loader.LoadMap(*map, *mapPath);
+	MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+	loader->LoadMap(*map, *mapPath);
 	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	while (!validMap) {
 		cout << "Please choose another map or enter -1 to exit" << endl;
@@ -68,9 +68,12 @@ GameEngine::GameEngine()
 		cout << "You have chosen " << *mapPath << endl;
 		delete map;
 		map = new Map();
-		loader.LoadMap(*map, *mapPath);
-		validMap = map->ConnectedGraph();
+		loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader->LoadMap(*map, *mapPath);
+		validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	}
+
+	delete loader;
 
 	numOfPlayers = new int;
 	cout << "Please select the numbers of players in the game (2-6 players)" << endl;
@@ -378,6 +381,28 @@ void GameEngine::runGame() {
 	cout << winner << " owns all the countries and wins the game!" << endl;
 }
 
+MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
+{
+	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
+	ifstream mapFile(*mapPath);
+	string line;
+	bool conquestMap = false;
+	while (getline(mapFile, line))
+	{
+		if (line == "[Territories]")
+			conquestMap = true;
+	}
+	mapFile.close();
+
+	MapLoader* loader;
+	if (conquestMap)
+		loader = new MapAdapter();
+	else
+		loader = new MapLoader();
+
+	return loader;
+}
+
 GameEngine::~GameEngine()
 {
 	delete map;
@@ -399,6 +424,7 @@ GameEngine* GameEngineDriver::runGameStart()
 	for (int i = 0; i < *(g.getNumOfPlayers()); i++) {
 		playerObservers.push_back(new PlayerObserver(&(*g.getPlayers())[i]));
 	}
+
 	int numOfPlayers = *g.getNumOfPlayers();
 	cout << numOfPlayers << " players have been created:" << endl;
 	for (int i = 0; i < numOfPlayers; i++) {

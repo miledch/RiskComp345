@@ -243,8 +243,7 @@ void Player::attackPhase()
 				{
 					attackCountry = &(*(*it));
 					validSelection = true;
-				}
-					
+				}	
 			}
 		}
 		if (!validSelection) {
@@ -317,7 +316,7 @@ void Player::attackPhase()
 			{
 				for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 				{
-					if (*countriesIt->getCountryID() == *l_it)
+					if (*countriesIt->getCountryID() == *l_it && *countriesIt->getCountryPlayerOwned() != *attackCountry->getCountryPlayerOwned())
 					{
 						viewBuffer->push_back(to_string(*countriesIt->getCountryID()) + "\t" + *countriesIt->getCountryName() + " containing " + to_string(*countriesIt->getCountryNumberArmies()) + " armies.");
 						Notify2();

@@ -13,6 +13,8 @@ int main()
 	//MapLoaderDriver::RunMapLoaderDriver();
 	//GameEngineDriver::runGameStart();
 	GameEngineDriver::runPlayerVsCpu();
+	MapLoaderDriver::RunMapLoaderDriver();
+	//GameEngineDriver::runGameStart();
 
 	return 0;
 }
