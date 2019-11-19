@@ -177,8 +177,10 @@ GameEngine::GameEngine(int i)
 
 	players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Human Player")));
 	players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("CPU Player")));
-	(*players)[0].setStrategy(new HumanPlayer());
-	(*players)[1].setStrategy(new AggressivePlayer());
+	HumanPlayer* p1 = new HumanPlayer();
+	AggressivePlayer* p2 = new AggressivePlayer();
+	(*players)[0].setStrategy(p1);
+	(*players)[1].setStrategy(p2);
 }
 
 GameEngine::GameEngine(const GameEngine& game2)

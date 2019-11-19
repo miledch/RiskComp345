@@ -31,6 +31,7 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->availableArmies = new int(0);
 	this->viewBuffer = new vector<string>();
 	this->newPhase = new bool(false);
+	this->strategy = new HumanPlayer();
 }
 
 Player::Player(const Player& p2)
@@ -44,6 +45,7 @@ Player::Player(const Player& p2)
 	this->availableArmies = new int(*p2.availableArmies);
 	this->viewBuffer = new vector<string>(*p2.viewBuffer);
 	this->newPhase = new bool(*p2.newPhase);
+	this->strategy = p2.strategy;
 }
 
 Player& Player::operator=(const Player& rhs)
