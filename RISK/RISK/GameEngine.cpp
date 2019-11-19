@@ -38,8 +38,8 @@ GameEngine::GameEngine()
 	cout << "You have chosen " << *mapPath << endl;
 
 	map = new Map();
-	MapLoader loader;
-	loader.LoadMap(*map, *mapPath);
+	MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+	loader->LoadMap(*map, *mapPath);
 	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	while (!validMap) {
 		cout << "Please choose another map or enter -1 to exit" << endl;
@@ -68,8 +68,9 @@ GameEngine::GameEngine()
 		cout << "You have chosen " << *mapPath << endl;
 		delete map;
 		map = new Map();
-		loader.LoadMap(*map, *mapPath);
-		validMap = map->ConnectedGraph();
+		MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader->LoadMap(*map, *mapPath);
+		validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	}
 
 	numOfPlayers = new int;
@@ -288,6 +289,29 @@ void GameEngine::runGame() {
 		}
 	}
 	cout << winner << " owns all the countries and wins the game!" << endl;
+}
+
+MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
+{
+	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
+	//Map map;
+	ifstream mapFile(*mapPath);
+	string line;
+	bool conquestMap = false;
+	while (getline(mapFile, line))
+	{
+		if (line == "[Territories]")
+			conquestMap = true;
+	}
+	mapFile.close();
+
+	MapLoader* loader;
+	if (conquestMap)
+		loader = new MapAdapter();
+	else
+		loader = new MapLoader();
+
+	return loader;
 }
 
 GameEngine::~GameEngine()

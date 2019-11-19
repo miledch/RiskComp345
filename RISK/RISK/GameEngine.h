@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <random>
 #include <filesystem>
+#include <fstream>
+#include "MapAdapter.h"
 namespace fs = std::filesystem;
 class GameEngine
 {
@@ -21,6 +23,7 @@ public:
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
+	MapLoader* LoadLoader(Map* map, string* mapPath);
 
 	~GameEngine();
 

@@ -42,12 +42,11 @@ int MapLoaderDriver::RunMapLoaderDriver()
 		cin >> n;
 	}
 
-	string mapPath = path + availableMaps[n - 1] + ext;
+	string* mapPath =new string( path + availableMaps[n - 1] + ext);
 	cout << "You have chosen " << mapPath << endl;
 
-	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
-	Map map;
-	ifstream mapFile(mapPath);
+	Map* map = new Map;
+	ifstream mapFile(*mapPath);
 	string line;
 	bool conquestMap = false;
 	while (getline(mapFile, line))
@@ -60,18 +59,15 @@ int MapLoaderDriver::RunMapLoaderDriver()
 	MapLoader* loader;
 	if (conquestMap)
 		loader = new MapAdapter();
-	else 
+	else
 		loader = new MapLoader();
 
-	loader->LoadMap(map, mapPath);
-
-
-	
+	loader->LoadMap(*map, *mapPath);
 
 	// show the continents of the map
 	cout << "\nThe continents of the map are " << endl;
 	list<Continent>::iterator continentIt;
-	for (continentIt = map.getcontinents()->begin(); continentIt != map.getcontinents()->end(); ++continentIt)
+	for (continentIt = map->getcontinents()->begin(); continentIt != map->getcontinents()->end(); ++continentIt)
 	{
 		cout << *continentIt->getContinentName() << endl;
 	}
@@ -79,7 +75,7 @@ int MapLoaderDriver::RunMapLoaderDriver()
 	// show the countries of the map
 	cout << "\nThe countries of the map are " << endl;
 	list<Country>::iterator countriesIt;
-	for (countriesIt = map.getCountries()->begin(); countriesIt != map.getCountries()->end(); ++countriesIt)
+	for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
 	{
 		cout << *countriesIt->getCountryID() << ": " << *countriesIt->getCountryName() <<  endl;
 	}
@@ -87,7 +83,7 @@ int MapLoaderDriver::RunMapLoaderDriver()
 	list<Country>::iterator countriesIt2;
 	//display the neighbors of each countries.
 	cout << "\nThe neighbors of each countries are " << endl;
-	for (countriesIt2 = map.getCountries()->begin(); countriesIt2 != map.getCountries()->end(); ++countriesIt2)
+	for (countriesIt2 = map->getCountries()->begin(); countriesIt2 != map->getCountries()->end(); ++countriesIt2)
 	{
 		countriesIt2->displayNeighborsList();
 	}

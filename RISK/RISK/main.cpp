@@ -10,8 +10,8 @@ int main()
 
 	//MapDriver::RunMapDriver(); // from assignment 1, to test graph an subgraph connected
 
-	//MapLoaderDriver::RunMapLoaderDriver();
-	GameEngineDriver::runGameStart();
+	MapLoaderDriver::RunMapLoaderDriver();
+	//GameEngineDriver::runGameStart();
 
 
 	return 0;
