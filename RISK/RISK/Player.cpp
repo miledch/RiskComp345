@@ -222,7 +222,7 @@ void Player::attackPhase()
 
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*((*it)->getCountryNumberArmies()) >= 2)
+			if (*((*it)->getCountryNumberArmies()) >= 2) // TODO gives the "error"
 			{
 				viewBuffer->push_back(to_string(*(*it)->getCountryID()) + "\tCountry " + *(*it)->getCountryName() + " has " + to_string(*(*it)->getCountryNumberArmies()) + " armies available");
 				Notify2();
@@ -299,7 +299,7 @@ void Player::attackPhase()
 			cin >> attackSelection;
 		}
 		else {
-			int index = (rand() % validEntryForAttack.size()) + 1;
+			int index = (rand() % validEntryForAttack.size());
 			attackSelection = validEntryForAttack[index];
 		}
 		for (vecInt_it = validEntryForAttack.begin(); vecInt_it != validEntryForAttack.end(); vecInt_it++)
@@ -375,8 +375,7 @@ void Player::attackPhase()
 			cin >> attackerNbrDice;
 		}
 		else {
-			int index =  maxDice;
-			attackSelection = validEntryForAttack[index];
+			attackerNbrDice = maxDice;
 		}
 		
 		// for loop to check if the dice input is a valid selection
