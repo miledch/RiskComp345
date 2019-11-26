@@ -7,10 +7,6 @@
 
 int main()
 {
-	//PlayerDriver::runAttackPhase();
-	//MapDriver::RunMapDriver(); // from assignment 1, to test graph an subgraph connected
-
-	//MapLoaderDriver::RunMapLoaderDriver();
 	GameEngineDriver::runGameStart();
 	//GameEngineDriver::runPlayerVsCpu();
 	//MapLoaderDriver::RunMapLoaderDriver();

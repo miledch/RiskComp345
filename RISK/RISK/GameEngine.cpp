@@ -21,18 +21,18 @@ GameEngine::GameEngine()
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
 
-	// TODO: Fix cin
+	// TODO: Fix cin, if you enter "1k" for example it's valid
 	int n;
 	cin >> n;
 
 	while (n > availableMaps.size() || n < 1) {
-		if (cin.fail()) {
-			cin.clear();
-			cin.ignore(256, '\n');
-		}
+		cin.clear();
+		cin.ignore(256, '\n');
 		cout << "Please choose a valid number" << endl;
 		cin >> n;
 	}
+	cin.clear();
+	cin.ignore(256, '\n');
 
 	mapPath = new string(path + availableMaps[n - 1] + ext);
 	cout << "You have chosen " << *mapPath << endl;
@@ -380,7 +380,7 @@ void GameEngine::runGame() {
 			}
 		}
 		if (finished) {
-				break;
+			break;
 		}
 	}
 	cout << winner << " owns all the countries and wins the game!" << endl;
