@@ -478,26 +478,7 @@ void Player::attackPhase()
 			NotifyPhase();
 		}
 
-		// check if the attack country ran out of armies
-		if (*attackCountry->getCountryNumberArmies() == 0)
-		{//TODO does the program ever come inside this if statement?
-			viewBuffer->push_back("The aggressor " + *attackCountry->getCountryPlayerOwned() + " has been defeated and lost country "
-				+ *attackCountry->getCountryName());
-			NotifyPhase();
-			// player removes his attack country from his list of countries using our index
-			countries->erase(countries->begin() + index);
-			// remove this country from the map
-			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
-			{
-				if (*countriesIt->getCountryID() == *attackCountry->getCountryID())
-				{
-					countriesIt->setCountryPlayerOwned("NULL");
-					countriesIt->setCountryNumberArmies(0);
-					break;
-				}
-			}
-		}
-		else if (*targetedCountry->getCountryNumberArmies() == 0)
+		if (*targetedCountry->getCountryNumberArmies() == 0)
 		{
 			viewBuffer->push_back("Targeted  " + *targetedCountry->getCountryPlayerOwned() + " has been defeated and lost country "
 				+ *targetedCountry->getCountryName());
