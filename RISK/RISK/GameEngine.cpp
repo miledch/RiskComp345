@@ -288,7 +288,7 @@ void GameEngine::assignArmies()
 	}
 
 	int decision;
-	cout << "\nDo you want to place armies automatically or manually?" << endl;
+	cout << "\nDo you want to place armies manually or automatically?" << endl;
 	cout << "1. Manually " << endl;
 	cout << "2. Automatically " << endl;
 	cin >> decision;

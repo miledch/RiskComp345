@@ -281,7 +281,6 @@ void Player::attackPhase()
 	{
 		viewBuffer->push_back(">");
 		NotifyPhase();
-		HumanPlayer* p = dynamic_cast<HumanPlayer*>(strategy);
 		attackSelection = this->strategy->getAttackTarget(validEntryForAttack);
 
 		for (vecInt_it = validEntryForAttack.begin(); vecInt_it != validEntryForAttack.end(); vecInt_it++)
