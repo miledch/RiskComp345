@@ -21,7 +21,7 @@ GameEngine::GameEngine()
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
 
-	// TODO: Fix cin, if you enter "1k" for example it's valid
+	// TODO: Fix cin, if you enter "1k" for example it's valid even though "1k" is a string
 	int n;
 	cin >> n;
 
@@ -277,43 +277,91 @@ void GameEngine::assignArmies()
 	}
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		(*players)[i].setAvailableArmies(A);
+		(*players)[i].setAvailableArmies(A); // # of armies that each player has left to place
 	}
 
-	for (int i = 0; i < (*players).size(); i++) {
+	for (int i = 0; i < (*players).size(); i++) { // Assign 1 army to each country for all players
 		for (int j = 0; j < (*(*players)[i].getCountries()).size(); j++) {
 			(*(*(*players)[i].getCountries())[j]->getCountryNumberArmies())++;
 			(*(*players)[i].getAvailableArmies())--;
 		}
 	}
 
-	int countryChosenIdx;
-	int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
+	int decision;
+	cout << "\nDo you want to place armies automatically or manually?" << endl;
+	cout << "1. Manually " << endl;
+	cout << "2. Automatically " << endl;
+	cin >> decision;
+	while (decision != 1 && decision != 2) {
+		cout << "Invalid input. Try again" << endl;
+		cin >> decision;
+	}
 
-	for (int k = 0; k < maxAvailableArmies; k++) {
-		for (int i = 0; i < *numOfPlayers; i++) {
+	if (decision == 1) {
 
-			if (*(*players)[i].getAvailableArmies() == 0) {
-				continue;
-			}
+		int countryChosenIdx;
+		int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
 
-			cout << endl;
-			cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
-			for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
-				cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
-			}
+		for (int k = 0; k < maxAvailableArmies; k++) {
+			for (int i = 0; i < *numOfPlayers; i++) {
 
-			cin >> countryChosenIdx;
+				if (*(*players)[i].getAvailableArmies() == 0) {
+					continue;
+				}
 
-			while (countryChosenIdx < 1 || countryChosenIdx >(*players)[i].getCountries()->size()) {
-				cout << "Please enter a valid number" << endl;
+				cout << endl;
+				cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
+				for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
+					cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
+				}
+
 				cin >> countryChosenIdx;
+
+				while (countryChosenIdx < 1 || countryChosenIdx >(*players)[i].getCountries()->size()) {
+					cout << "Please enter a valid number" << endl;
+					cin >> countryChosenIdx;
+				}
+
+				(*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies())++;
+				(*(*players)[i].getAvailableArmies())--;
+
+				cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies()) << ")" << endl;
 			}
+		}
+	}
+	else {
+		this->autoPlaceArmies();
+	}
+}
 
-			(*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies())++;
-			(*(*players)[i].getAvailableArmies())--;
+void GameEngine::autoPlaceArmies()
+{
+	int firstCountryArmies; // Each player's first country will have 30% of its total armies to begin with
+	int secondCountryArmies; // Each player's first country will have 20% of its total armies to begin with
+	int randArmies; // The 50% of armies left will be placed randomly
+	int* availableArmies;
 
-			cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies()) << ")" << endl;
+	for (int i = 0; i < *numOfPlayers; i++) {
+		availableArmies = (*players)[i].getAvailableArmies();
+		vector<int> randomCountries(*availableArmies);
+		firstCountryArmies = (*(*players)[i].getAvailableArmies()) * 0.3;
+		secondCountryArmies = (*(*players)[i].getAvailableArmies()) * 0.2;
+		(*(*(*players)[i].getCountries())[0]->getCountryNumberArmies()) += firstCountryArmies;
+		(*(*(*players)[i].getCountries())[1]->getCountryNumberArmies()) += secondCountryArmies;
+		*availableArmies -= (firstCountryArmies + secondCountryArmies);
+		int size = (*players)[i].getNumPlayerCountries();
+		for (int j = 0; j < *availableArmies; j++) {
+			randomCountries[j] = rand() % size; // Get random countries indexes
+		}
+		// Repeat it for however many number of armies we have left to place
+		for (int j = 0; j < *availableArmies; j++) { // Increment # of armies in countries using those random indexes
+			(*(*(*players)[i].getCountries())[randomCountries[j]]->getCountryNumberArmies())++;
+		}
+		*availableArmies = 0;
+
+		cout << "\nArmies after placing randomly - " << *(*players)[i].getName() << ":" << endl;
+		for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
+			cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
 		}
 	}
 }

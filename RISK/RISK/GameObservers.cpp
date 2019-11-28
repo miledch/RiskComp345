@@ -20,10 +20,10 @@ void Subject::Notify() {
 	}
 };
 
-void Subject::Notify2() {
+void Subject::NotifyPhase() {
 	vector<GameObserver*>::iterator i = observers->begin();
 	for (; i != observers->end(); ++i)
-		(*i)->Update2();
+		(*i)->UpdatePhase();
 };
 
 GameObserver::GameObserver() {

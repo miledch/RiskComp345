@@ -40,6 +40,9 @@ private:
 	void randomizeOrder(); // Shuffle the vector of players to randomize the order of play
 	void assignCountries(); // Randomly assign countries to players in round-robin fashion
 	void assignArmies(); // Players assign armies to their countries in round-robin fashion
+
+	void autoPlaceArmies(); /* Place armies automatically in the startup phase 
+							 instead of choosing manually */
 };
 
 class GameEngineDriver
