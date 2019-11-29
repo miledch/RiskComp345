@@ -337,7 +337,7 @@ void GameEngine::assignArmies()
 void GameEngine::autoPlaceArmies()
 {
 	int firstCountryArmies; // Each player's first country will have 30% of its total armies to begin with
-	int secondCountryArmies; // Each player's first country will have 20% of its total armies to begin with
+	int secondCountryArmies; // Each player's second country will have 20% of its total armies to begin with
 	int randArmies; // The 50% of armies left will be placed randomly
 	int* availableArmies;
 

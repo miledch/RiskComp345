@@ -109,12 +109,12 @@ void AggressivePlayer::execute(Player* p) {
 
 Country* AggressivePlayer::chooseCountryToReinforce(vector<Country*>* countries)
 {
-	return strongestCountry(*countries);
+	return strongestCountry(*countries); // Reinforce the strongest country
 }
 
 int AggressivePlayer::getReinforceArmy(int rewardedArmy)
 {
-	return rewardedArmy;
+	return rewardedArmy; // Reinforce the strongest army with all armies at once
 }
 
 int AggressivePlayer::getFortifySource(vector<Country*> countries)
@@ -140,13 +140,13 @@ int AggressivePlayer::getFortifyArmy(Country* source)
 
 int AggressivePlayer::getAttackDecision()
 {
-	return 1;
+	return 1; // Always attack if possible
 }
 
 int AggressivePlayer::getAttackSource(vector<Country*> countries)
 {
 	int source = *strongestCountry(countries)->getCountryID();
-	return source;
+	return source; // Always attack from strongest country
 }
 
 int AggressivePlayer::getAttackTarget(vector<int> validEntryForAttack)
@@ -154,7 +154,7 @@ int AggressivePlayer::getAttackTarget(vector<int> validEntryForAttack)
 	int attackSelection;
 	int index = (rand() % validEntryForAttack.size());
 	attackSelection = validEntryForAttack[index];
-	return attackSelection;
+	return attackSelection; // Attack a random country
 }
 
 int AggressivePlayer::getAttackDice(int maxDice)
@@ -181,12 +181,12 @@ void BenevolentPlayer::execute(Player* p) {
 
 Country* BenevolentPlayer::chooseCountryToReinforce(vector<Country*>* countries)
 {
-	return weakestCountry(*countries);
+	return weakestCountry(*countries); // Always reinforce the weaker countries
 }
 
 int BenevolentPlayer::getReinforceArmy(int rewardedArmy)
 {
-	return 1;
+	return 1; // Don't use all the armies, instead reinforce the weak countries 1 by 1
 }
 
 int BenevolentPlayer::getFortifySource(vector<Country*> countries)
@@ -216,9 +216,10 @@ int BenevolentPlayer::getFortifyArmy(Country* source)
 	return 1;
 }
 
+// Attack decisions for benevolent CPU don't matter since it won't ever attack anyway
 int BenevolentPlayer::getAttackDecision()
 {
-	return 2;
+	return 2; // Never attack
 }
 
 int BenevolentPlayer::getAttackSource(vector<Country*> countries)
@@ -244,6 +245,81 @@ int BenevolentPlayer::getDefenceDice(int maxDice)
 int BenevolentPlayer::getTransferArmies(int maxArmies)
 {
 	return 1;
+}
+
+//////////////////////////////// RANDOMPLAYER //////////////////////////////// 
+
+void RandomPlayer::execute(Player* p)
+{
+}
+
+// All decisions for RandomPlayer CPU are chosen randomly
+Country* RandomPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+{
+	int index = rand() % countries->size();
+	return (*countries)[index];
+}
+
+int RandomPlayer::getReinforceArmy(int rewardedArmy)
+{
+	return ((rand() % rewardedArmy) + 1);
+}
+
+int RandomPlayer::getFortifySource(vector<Country*> countries)
+{
+	int index = rand() % countries.size();
+	return (index+1);
+}
+
+int RandomPlayer::getFortifyTarget(vector<Country*> countries)
+{
+	int index = rand() % countries.size();
+	return (index + 1);
+}
+
+int RandomPlayer::getFortifyArmy(Country* source)
+{
+	int army = rand() % (*source->getCountryNumberArmies());
+	return 0;
+}
+
+int RandomPlayer::getAttackDecision()
+{
+	int decision = (rand() % 2) + 1;
+	return decision;
+}
+
+int RandomPlayer::getAttackSource(vector<Country*> countries)
+{
+	int index = (rand() % countries.size());
+	int id = (*countries[index]->getCountryID());
+	return id;
+}
+
+int RandomPlayer::getAttackTarget(vector<int> validEntryForAttack)
+{
+	int attackSelection;
+	int index = (rand() % validEntryForAttack.size());
+	attackSelection = validEntryForAttack[index];
+	return attackSelection;
+}
+
+int RandomPlayer::getAttackDice(int maxDice)
+{
+	int dice = (rand() % maxDice) + 1;
+	return dice;
+}
+
+int RandomPlayer::getDefenceDice(int maxDice)
+{
+	int dice = (rand() % maxDice) + 1;
+	return dice;
+}
+
+int RandomPlayer::getTransferArmies(int maxArmies)
+{
+	int transfer = (rand() % maxArmies) + 1;
+	return transfer;
 }
 
 //////////////////////////////// MISCELLANEOUS //////////////////////////////// 
