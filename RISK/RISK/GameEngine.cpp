@@ -579,3 +579,33 @@ GameEngine* GameEngineDriver::runPlayerVsCpu() {
 
 	return g;
 }
+
+GameEngine* GameEngineDriver::runModeSelection()
+{
+	cout << "Please select a game mode !" << endl;
+	cout << "1: single game mode " << endl;
+	cout << "2: tournament mode " << endl;
+	bool validInput = false;
+	int choice = 1;
+	while (!validInput)
+	{
+		try
+		{
+			cin >> choice;
+			if (choice == 1) {
+				runGameStart();
+			}
+			else if (choice == 2) {
+				runGameStart();
+			}
+			else
+				throw choice;
+		}
+		catch (int error)
+		{
+			cout << "error! ...try Again" << endl;
+		}
+	}
+
+	return nullptr;
+}

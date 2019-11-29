@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+
 #include <iterator>
 #include <iostream>
 #include <string>
@@ -74,6 +75,7 @@ public:
 	Country* weakestCountry(vector<Country*>&);
 	void fortifyToStrongest();
 	void fortifyToWeakest();
+	bool hasEnemyNeibour(Country& c);
 };
 
 class PlayerDriver 

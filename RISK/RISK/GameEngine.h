@@ -49,6 +49,7 @@ class GameEngineDriver
 {
 public:
 	static GameEngine* runGameStart();
+	static GameEngine* runModeSelection();
 	static GameEngine* runPlayerVsCpu();
 };
 

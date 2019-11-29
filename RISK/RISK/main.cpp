@@ -7,7 +7,9 @@
 
 int main()
 {
-	GameEngineDriver::runGameStart();
+
+	//GameEngineDriver::runGameStart();
+	GameEngineDriver::runModeSelection();
 	//GameEngineDriver::runPlayerVsCpu();
 	//MapLoaderDriver::RunMapLoaderDriver();
 
