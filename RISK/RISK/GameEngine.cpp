@@ -434,6 +434,11 @@ void GameEngine::runGame() {
 	cout << winner << " owns all the countries and wins the game!" << endl;
 }
 
+void GameEngine::runTournament()
+{
+	cout << "MY TOUNRMANET";
+}
+
 MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
 {
 	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
@@ -506,6 +511,55 @@ GameEngine* GameEngineDriver::runGameStart()
 	g.startup();
 	g.runGame();
 	return &g;
+}
+
+void GameEngineDriver::runTournamentStart()
+{
+	cout << "You may now select 1 to 5 maps" << endl;
+
+	vector<Map*> mapsTournament;
+
+	string path("maps/");
+	string ext(".map");
+	vector<string> availableMaps;
+
+	bool allMapsSelected = false;
+
+	while (!allMapsSelected)
+	{
+		for (auto& p : fs::recursive_directory_iterator(path))
+		{
+			if (p.path().extension() == ext)
+				availableMaps.push_back(p.path().stem().string());
+		}
+		cout << "Please select a map from the following list:" << endl;
+		for (int i = 0; i < availableMaps.size(); i++)
+		{
+			cout << (i + 1) << ": " << availableMaps[i] << endl;
+		}
+
+		// TODO: Fix cin, if you enter "1k" for example it's valid even though "1k" is a string
+		int n;
+		cin >> n;
+
+		while (n > availableMaps.size() || n < 1) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << "Please choose a valid number" << endl;
+			cin >> n;
+		}
+		cin.clear();
+		cin.ignore(256, '\n');
+
+		string* mapPath = new string(path + availableMaps[n - 1] + ext);
+		cout << "You have chosen " << *mapPath << endl;
+
+		Map* map = new Map();
+		MapLoader* loader;
+		loader->LoadMap(*map, *mapPath);
+	}
+
+
 }
 
 void GameEngine::run1vs1() {
@@ -594,9 +648,11 @@ GameEngine* GameEngineDriver::runModeSelection()
 			cin >> choice;
 			if (choice == 1) {
 				runGameStart();
+				validInput = true;
 			}
 			else if (choice == 2) {
-				runGameStart();
+				runTournamentStart();
+				validInput = true;
 			}
 			else
 				throw choice;

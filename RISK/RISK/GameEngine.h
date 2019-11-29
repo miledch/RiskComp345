@@ -24,6 +24,7 @@ public:
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
+	void runTournament();
 	void run1vs1();
 	MapLoader* LoadLoader(Map* map, string* mapPath);
 
@@ -49,6 +50,7 @@ class GameEngineDriver
 {
 public:
 	static GameEngine* runGameStart();
+	static void runTournamentStart();
 	static GameEngine* runModeSelection();
 	static GameEngine* runPlayerVsCpu();
 };
