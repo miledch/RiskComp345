@@ -216,7 +216,7 @@ void Player::attackPhase()
 
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*((*it)->getCountryNumberArmies()) >= 2) // TODO gives the "error"
+			if (*((*it)->getCountryNumberArmies()) >= 2 && hasEnemyNeibour(**it))
 			{
 				viewBuffer->push_back(to_string(*(*it)->getCountryID()) + "\tCountry " + *(*it)->getCountryName() + " has " + to_string(*(*it)->getCountryNumberArmies()) + " armies available");
 				NotifyPhase();
@@ -943,3 +943,23 @@ void Player::fortifyToWeakest()
 	else
 		cout << "you can not Fortify this country." << endl;
 }
+
+bool Player::hasEnemyNeibour(Country& c)
+{
+	list<int> MyCoutriesIDs;
+	list<int> NeighboursIDs = *(c.getNeighbors());
+	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); it++) {
+		MyCoutriesIDs.push_back(*(*it)->getCountryID());
+	}
+	list<int> possibleAttakers;
+	list<int>::iterator it;
+
+	MyCoutriesIDs.sort();
+	NeighboursIDs.sort();
+
+	set_difference(NeighboursIDs.begin(), NeighboursIDs.end(), MyCoutriesIDs.begin(), MyCoutriesIDs.end(), std::inserter(possibleAttakers, possibleAttakers.begin()));
+	
+	return (possibleAttakers.size() > 0);
+}
+
+
