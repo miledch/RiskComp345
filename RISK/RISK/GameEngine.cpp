@@ -94,6 +94,15 @@ GameEngine::GameEngine()
 	}
 }
 
+GameEngine::GameEngine(bool tournament) :numOfPlayers(0)
+{
+	int mapsNum = choosingNumOfMaps();
+	selectingMaps(mapsNum);
+	choosingNumOfPlayers();
+	choosingNumOfGames();
+	choosingNumOfMaxTurns();
+}
+
 GameEngine::GameEngine(int i)
 {
 	cout << "Welcome to the Command Line Risk Game!\n" << endl;
@@ -114,18 +123,18 @@ GameEngine::GameEngine(int i)
 	{
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
-
-	// TODO: Fix cin
+	 
+	// TODO:maybe Fixed hahahhahaha cin
 	int n;
 	cin >> n;
-
-	while (n > availableMaps.size() || n < 1) {
-		if (cin.fail()) {
-			cin.clear();
-			cin.ignore(256, '\n');
-		}
+	bool valid = false;
+	while (!valid) {
+		if (n > 0 || n <= availableMaps.size() ) {
+			valid = true;
+		}else{
 		cout << "Please choose a valid number" << endl;
 		cin >> n;
+		}
 	}
 
 	mapPath = new string(path + availableMaps[n - 1] + ext);
@@ -461,6 +470,208 @@ MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
 	return loader;
 }
 
+int GameEngine::choosingNumOfMaps()
+{
+	cout << "Choose the number of maps between 1 to 5:" << endl;
+	cout << "> ";
+	int numOfMaps;
+	bool valid = false;
+	cin >> numOfMaps;
+	while(!valid){
+		if (numOfMaps > 0 && numOfMaps <= 5) {
+			valid = true;
+		}
+		else {
+			cout << "the number you entered isn't valid! try again Balez" << endl;
+			cin >> numOfMaps;
+		}
+	}
+	return numOfMaps;
+}
+
+void GameEngine::choosingNumOfPlayers()
+{
+	cout << "Choose the number of Cumputer Players between 2 to 4:" << endl;
+	cout << "> ";
+	bool valid = false;
+	int numCpuPlayers;
+	cin >> numCpuPlayers;
+	while (!valid) {
+		if (numCpuPlayers > 1 && numCpuPlayers <= 4) {
+			*numOfPlayers = numCpuPlayers;
+			valid = true;
+		}
+		else {
+			cout << "the number you entered isn't valid! try again Balez" << endl;
+			cin >> numCpuPlayers;
+		}
+	}
+}
+
+void GameEngine::selectingMaps(int& mapsNum)
+{
+	string path("maps/");
+	string ext(".map");
+	vector<string> availableMaps;
+
+	for (auto& p : fs::recursive_directory_iterator(path))
+	{
+		if (p.path().extension() == ext){
+			availableMaps.push_back(p.path().stem().string());
+			remainingMaps.push_back(p.path().stem().string());
+		}
+	}
+	while(mapsNum != 0){
+		cout << "Please select maps from the following list:" << endl;
+		for (int i = 0; i < remainingMaps.size(); i++)
+		{
+			cout << (i + 1) << ": " << remainingMaps[i] << endl;
+		}
+		
+		// checking USER'S input
+		int n;
+		cin >> n;
+		bool valid = false;
+		while (!valid) {
+			if (n > 0 || n <= remainingMaps.size()) {
+				valid = true;
+			}
+			else {
+				cout << "Please choose a valid number" << endl;
+				cin >> n;
+			}
+		}
+	
+		mapPath = new string(path + remainingMaps[n - 1] + ext);
+		cout << "You have chosen " << *mapPath << endl;
+
+		map = new Map();
+		MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader->LoadMap(*map, *mapPath);
+		bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+		while (!validMap) {
+			cout << "Please choose another map" << endl;
+			for (int i = 0; i < remainingMaps.size(); i++)
+			{
+				cout << (i + 1) << ": " << remainingMaps[i] << endl;
+			}
+			cin >> n;
+
+			// checking USER'S input
+			int n;
+			cin >> n;
+			bool valid = false;
+			while (!valid) {
+				if (n > 0 || n <= remainingMaps.size()) {
+					valid = true;
+				}
+				else {
+					cout << "Please choose a valid number" << endl;
+					cin >> n;
+				}
+			}
+
+			*mapPath = path + remainingMaps[n - 1] + ext;
+			cout << "You have chosen " << *mapPath << endl;
+			delete map;
+			map = new Map();
+			loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+			loader->LoadMap(*map, *mapPath);
+			validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+		}
+		selectedMaps.push_back(remainingMaps[n - 1]); // adding map
+		remainingMaps.erase(remainingMaps.begin() + n - 1); // removing map from the options
+		mapsNum -= 1;
+		delete loader;
+		if(mapsNum != 0)
+		cout << "You still have " << mapsNum << "to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
+	}
+}
+
+void GameEngine::choosingNumOfMaxTurns()
+{
+	cout << "Choose the  maximum number of turns for each game between 10 to 50:" << endl;
+	cout << "> ";
+	int numOfTurns;
+	bool valid = false;
+	cin >> numOfTurns;
+	while (!valid) {
+		if (numOfTurns > 9 && numOfTurns <= 50) {
+			*numOfMaxTurns = numOfTurns;
+			valid = true;
+		}
+		else {
+			cout << "the number you entered isn't valid! try again Balez" << endl;
+			cout << "> ";
+			cin >> numOfTurns;
+		}
+	}
+}
+
+void GameEngine::choosingNumOfGames()
+{
+	cout << "Choose the number games to be played on each map 1 to 5:" << endl;
+	cout << "> ";
+	int gameNum;
+	bool valid = false;
+	cin >> gameNum;
+	while (!valid) {
+		if (gameNum > 0 && gameNum <= 5) {
+			*numOfGames = gameNum;
+			valid = true;
+		}
+		else {
+			cout << "the number you entered isn't valid! try again Balez" << endl;
+			cout << "> ";
+			cin >> gameNum;
+		}
+	}
+}
+
+void GameEngine::startupCpu(){
+	randomizeOrder();
+	cout << "The order of the play will be: " << endl;
+	for (int i = 0; i < *numOfPlayers; i++) {
+		cout << (i + 1) << ". " << *((*players)[i].getName()) << endl;
+	}
+	cout << endl;
+	assignCountries();
+	assignArmies();
+}
+
+void GameEngine::runGameCpu()
+{
+	string winner = "draw";
+	int numTurn = *numOfMaxTurns;
+	int count = 0;
+	while (numTurn = !0) {
+		bool finished = false;
+		for (int i = 0; i < (*players).size(); i++) {
+			bool ownsAllCountries = true;
+			(*players)[i].reinforce();
+			(*players)[i].attack();
+			(*players)[i].fortify();
+
+			ownsAllCountries = true;
+
+			for (Country country : *(map->getCountries())) {
+				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+					ownsAllCountries = false;
+					break;
+				}
+			}
+			if (ownsAllCountries == true) {
+				winner = *((*players)[i].getName());
+				finished = true;
+				break;
+			}
+		}
+			numTurn--;
+	}
+	cout << winner << " owns all the countries and wins the game!" << endl;
+	winners.push_back(winner);
+}
+
 GameEngine::~GameEngine()
 {
 	delete map;
@@ -515,51 +726,7 @@ GameEngine* GameEngineDriver::runGameStart()
 
 void GameEngineDriver::runTournamentStart()
 {
-	cout << "You may now select 1 to 5 maps" << endl;
-
-	vector<Map*> mapsTournament;
-
-	string path("maps/");
-	string ext(".map");
-	vector<string> availableMaps;
-
-	bool allMapsSelected = false;
-
-	while (!allMapsSelected)
-	{
-		for (auto& p : fs::recursive_directory_iterator(path))
-		{
-			if (p.path().extension() == ext)
-				availableMaps.push_back(p.path().stem().string());
-		}
-		cout << "Please select a map from the following list:" << endl;
-		for (int i = 0; i < availableMaps.size(); i++)
-		{
-			cout << (i + 1) << ": " << availableMaps[i] << endl;
-		}
-
-		// TODO: Fix cin, if you enter "1k" for example it's valid even though "1k" is a string
-		int n;
-		cin >> n;
-
-		while (n > availableMaps.size() || n < 1) {
-			cin.clear();
-			cin.ignore(256, '\n');
-			cout << "Please choose a valid number" << endl;
-			cin >> n;
-		}
-		cin.clear();
-		cin.ignore(256, '\n');
-
-		string* mapPath = new string(path + availableMaps[n - 1] + ext);
-		cout << "You have chosen " << *mapPath << endl;
-
-		Map* map = new Map();
-		MapLoader* loader;
-		loader->LoadMap(*map, *mapPath);
-	}
-
-
+	GameEngine g(true);
 }
 
 void GameEngine::run1vs1() {

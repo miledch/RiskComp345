@@ -11,12 +11,14 @@ class GameEngine
 {
 public:
 	GameEngine();
+	GameEngine(bool tournament);
 	GameEngine(const GameEngine& game2);
 	GameEngine& operator=(const GameEngine& rhs);
 	GameEngine(int i); // for a 1 vs 1 game
 
 	//// Getters ////
 	Map* getMap() const;
+
 	vector<Player>* getPlayers() const;
 	Deck* getDeck() const;
 	string* getMapPath() const;
@@ -24,9 +26,20 @@ public:
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
+	
 	void runTournament();
 	void run1vs1();
 	MapLoader* LoadLoader(Map* map, string* mapPath);
+
+	int choosingNumOfMaps();
+	void choosingNumOfPlayers();
+	void selectingMaps(int&);
+	void choosingNumOfMaxTurns();
+	void choosingNumOfGames();
+	void startupCpu();
+	void runGameCpu();
+
+
 
 	~GameEngine();
 
@@ -44,6 +57,13 @@ private:
 
 	void autoPlaceArmies(); /* Place armies automatically in the startup phase 
 							 instead of choosing manually */
+
+	int *numOfMaxTurns;
+	int *numOfGames;
+	vector<string> selectedMaps;
+	vector<string> remainingMaps;
+	vector<string> winners;
+
 };
 
 class GameEngineDriver
@@ -54,4 +74,3 @@ public:
 	static GameEngine* runModeSelection();
 	static GameEngine* runPlayerVsCpu();
 };
-
