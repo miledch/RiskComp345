@@ -43,6 +43,7 @@ public:
 	bool* getNewPhase();
 	int* getAvailableArmies();
 	vector<string>* getViewBuffer();
+	Map* getMap();
 	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();
