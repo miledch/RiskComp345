@@ -39,8 +39,6 @@ public:
 	void startupCpu();
 	void runGameCpu();
 
-
-
 	~GameEngine();
 
 private:
@@ -60,11 +58,17 @@ private:
 
 	int *numOfMaxTurns;
 	int *numOfGames;
-	vector<string> selectedMaps;
-	vector<string> remainingMaps;
-	vector<string> winners;
+	vector<string>* selectedMaps;
+	vector<string>* remainingMaps;
+	vector<string>* winners;
 
 };
+
+//class Tournament
+//{
+//public:
+//	
+//};
 
 class GameEngineDriver
 {

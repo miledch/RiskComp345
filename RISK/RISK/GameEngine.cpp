@@ -94,13 +94,14 @@ GameEngine::GameEngine()
 	}
 }
 
-GameEngine::GameEngine(bool tournament) :numOfPlayers(0)
+GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMaps(new vector<string>), remainingMaps(new vector <string>), 
+	winners(new vector<string>)
 {
 	int mapsNum = choosingNumOfMaps();
 	selectingMaps(mapsNum);
-	//choosingNumOfPlayers();
-	//choosingNumOfGames();
-	//choosingNumOfMaxTurns();
+	choosingNumOfPlayers();
+	choosingNumOfGames();
+	choosingNumOfMaxTurns();
 }
 
 GameEngine::GameEngine(int i)
@@ -443,6 +444,39 @@ void GameEngine::runGame() {
 	cout << winner << " owns all the countries and wins the game!" << endl;
 }
 
+void GameEngine::runGameCpu()
+{
+	string winner = "draw";
+	int numTurn = *numOfMaxTurns;
+	int count = 0;
+	while (numTurn =! 0) {
+		bool finished = false;
+		for (int i = 0; i < (*players).size(); i++) {
+			bool ownsAllCountries = true;
+			(*players)[i].reinforce();
+			(*players)[i].attack();
+			(*players)[i].fortify();
+
+			ownsAllCountries = true;
+
+			for (Country country : *(map->getCountries())) {
+				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+					ownsAllCountries = false;
+					break;
+				}
+			}
+			if (ownsAllCountries == true) {
+				winner = *((*players)[i].getName());
+				finished = true;
+				break;
+			}
+		}
+		numTurn--;
+	}
+	cout << winner << " owns all the countries and wins the game!" << endl;
+	winners->push_back(winner);
+}
+
 void GameEngine::runTournament()
 {
 	cout << "MY TOUNRMANET";
@@ -498,7 +532,7 @@ void GameEngine::choosingNumOfPlayers()
 	cin >> numCpuPlayers;
 	while (!valid) {
 		if (numCpuPlayers > 1 && numCpuPlayers <= 4) {
-			*numOfPlayers = numCpuPlayers;
+			numOfPlayers = new int(numCpuPlayers);
 			valid = true;
 		}
 		else {
@@ -518,14 +552,14 @@ void GameEngine::selectingMaps(int& mapsNum)
 	{
 		if (p.path().extension() == ext){
 			availableMaps.push_back(p.path().stem().string());
-			remainingMaps.push_back(p.path().stem().string());
+			remainingMaps->push_back(p.path().stem().string());
 		}
 	}
 	while(mapsNum != 0){
 		cout << "Please select maps from the following list:" << endl;
-		for (int i = 0; i < remainingMaps.size(); i++)
+		for (int i = 0; i < remainingMaps->size(); i++)
 		{
-			cout << (i + 1) << ": " << remainingMaps[i] << endl;
+			cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
 		}
 		
 		// checking USER'S input
@@ -533,7 +567,7 @@ void GameEngine::selectingMaps(int& mapsNum)
 		cin >> n;
 		bool valid = false;
 		while (!valid) {
-			if (n > 0 || n <= remainingMaps.size()) {
+			if (n > 0 || n <= remainingMaps->size()) {
 				valid = true;
 			}
 			else {
@@ -542,7 +576,7 @@ void GameEngine::selectingMaps(int& mapsNum)
 			}
 		}
 	
-		mapPath = new string(path + remainingMaps[n - 1] + ext);
+		mapPath = new string(path + (*remainingMaps)[n - 1] + ext);
 		cout << "You have chosen " << *mapPath << endl;
 
 		map = new Map();
@@ -551,9 +585,9 @@ void GameEngine::selectingMaps(int& mapsNum)
 		bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 		while (!validMap) {
 			cout << "Please choose another map" << endl;
-			for (int i = 0; i < remainingMaps.size(); i++)
+			for (int i = 0; i < remainingMaps->size(); i++)
 			{
-				cout << (i + 1) << ": " << remainingMaps[i] << endl;
+				cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
 			}
 			cin >> n;
 
@@ -562,7 +596,7 @@ void GameEngine::selectingMaps(int& mapsNum)
 			cin >> n;
 			bool valid = false;
 			while (!valid) {
-				if (n > 0 || n <= remainingMaps.size()) {
+				if (n > 0 || n <= remainingMaps->size()) {
 					valid = true;
 				}
 				else {
@@ -571,7 +605,7 @@ void GameEngine::selectingMaps(int& mapsNum)
 				}
 			}
 
-			*mapPath = path + remainingMaps[n - 1] + ext;
+			*mapPath = path + (*remainingMaps)[n - 1] + ext;
 			cout << "You have chosen " << *mapPath << endl;
 			delete map;
 			map = new Map();
@@ -579,12 +613,12 @@ void GameEngine::selectingMaps(int& mapsNum)
 			loader->LoadMap(*map, *mapPath);
 			validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 		}
-		selectedMaps.push_back(remainingMaps[n - 1]); // adding map
-		remainingMaps.erase(remainingMaps.begin() + n - 1); // removing map from the options
+		selectedMaps->push_back((*remainingMaps)[n - 1]); // adding map
+		remainingMaps->erase(remainingMaps->begin() + n - 1); // removing map from the options
 		mapsNum -= 1;
 		delete loader;
 		if(mapsNum != 0)
-		cout << "You still have " << mapsNum << "to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
+		cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
 	}
 }
 
@@ -597,7 +631,7 @@ void GameEngine::choosingNumOfMaxTurns()
 	cin >> numOfTurns;
 	while (!valid) {
 		if (numOfTurns > 9 && numOfTurns <= 50) {
-			*numOfMaxTurns = numOfTurns;
+			numOfMaxTurns = new int (numOfTurns);
 			valid = true;
 		}
 		else {
@@ -617,7 +651,7 @@ void GameEngine::choosingNumOfGames()
 	cin >> gameNum;
 	while (!valid) {
 		if (gameNum > 0 && gameNum <= 5) {
-			*numOfGames = gameNum;
+			numOfGames = new int (gameNum);
 			valid = true;
 		}
 		else {
@@ -639,20 +673,22 @@ void GameEngine::startupCpu(){
 	assignArmies();
 }
 
-void GameEngine::runGameCpu()
-{
-	string winner = "draw";
-	int numTurn = *numOfMaxTurns;
-	int count = 0;
-	while (numTurn = !0) {
+void GameEngine::run1vs1() {
+	string winner;
+	while (true) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
-			(*players)[i].reinforce();
-			(*players)[i].attack();
-			(*players)[i].fortify();
+
+			(*players)[i].executeStrategy();
 
 			ownsAllCountries = true;
+
+			if (i == 1) {
+				for (list<Country>::iterator it = (*map->getCountries()).begin(); it != (*map->getCountries()).end(); ++it) {
+					*(it->getCountryPlayerOwned()) = *((*players)[i].getName());
+				}
+			}
 
 			for (Country country : *(map->getCountries())) {
 				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
@@ -666,10 +702,11 @@ void GameEngine::runGameCpu()
 				break;
 			}
 		}
-			numTurn--;
+		if (finished) {
+			break;
+		}
 	}
 	cout << winner << " owns all the countries and wins the game!" << endl;
-	winners.push_back(winner);
 }
 
 GameEngine::~GameEngine()
@@ -727,42 +764,8 @@ GameEngine* GameEngineDriver::runGameStart()
 void GameEngineDriver::runTournamentStart()
 {
 	GameEngine g(true);
-}
-
-void GameEngine::run1vs1() {
-	string winner;
-	while (true) {
-		bool finished = false;
-		for (int i = 0; i < (*players).size(); i++) {
-			bool ownsAllCountries = true;
-			
-			(*players)[i].executeStrategy();
-
-			ownsAllCountries = true;
-
-			if (i == 1) {
-				for (list<Country>::iterator it = (*map->getCountries()).begin(); it != (*map->getCountries()).end(); ++it) {
-					*(it->getCountryPlayerOwned()) = *((*players)[i].getName());
-				}
-			}
-
-			for (Country country : *(map->getCountries())) {
-				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
-					ownsAllCountries = false;
-					break;
-				}
-			}
-			if (ownsAllCountries == true) {
-				winner = *((*players)[i].getName());
-				finished = true;
-				break;
-			}
-		}
-		if (finished) {
-			break;
-		}
-	}
-	cout << winner << " owns all the countries and wins the game!" << endl;
+	g.startupCpu();
+	g.runGameCpu();
 }
 
 GameEngine* GameEngineDriver::runPlayerVsCpu() {
