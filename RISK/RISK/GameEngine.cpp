@@ -98,9 +98,9 @@ GameEngine::GameEngine(bool tournament) :numOfPlayers(0)
 {
 	int mapsNum = choosingNumOfMaps();
 	selectingMaps(mapsNum);
-	choosingNumOfPlayers();
-	choosingNumOfGames();
-	choosingNumOfMaxTurns();
+	//choosingNumOfPlayers();
+	//choosingNumOfGames();
+	//choosingNumOfMaxTurns();
 }
 
 GameEngine::GameEngine(int i)
