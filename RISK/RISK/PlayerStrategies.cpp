@@ -459,7 +459,7 @@ int CheaterPlayer::getAttackDecision(Player& player)
 	}
 
 	// Insert the countries now in the actual vector of countries for that player
-	// so that we don't change the vector while we were iterating through it before
+	// to keep the vector from changing while we were iterating through it before
 	for (int i = 0; i < tempCountries.size(); i++) {
 		myCountries->push_back(tempCountries[i]);
 	}

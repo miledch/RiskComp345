@@ -480,9 +480,48 @@ GameEngine* GameEngineDriver::runGameStart()
 	}
 
 	int numOfPlayers = *g.getNumOfPlayers();
-	cout << numOfPlayers << " players have been created:" << endl;
+	cout << "\n" << numOfPlayers << " players have been created:" << endl;
 	for (int i = 0; i < numOfPlayers; i++) {
 		cout << (i+1) << ". " << (*(*g.getPlayers())[i].getName()) << endl;
+	}
+
+	int strategyChoice;
+
+	for (int i = 0; i < numOfPlayers; i++) {
+		cout << "\nWhat player strategy do you want for " << (*(*g.getPlayers())[i].getName()) << "?" << endl;
+		// Display strategy options
+		cout << "1. Human\n2. Aggressive\n3. Benevolent\n4. Random\n5. Cheater" << endl;
+		cin >> strategyChoice;
+		while (strategyChoice > 5 || strategyChoice < 1) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << "Please choose a valid number" << endl;
+			cin >> strategyChoice;
+		}
+		cin.clear();
+		cin.ignore(256, '\n');
+
+		switch (strategyChoice) {
+		case 1:
+			(*g.getPlayers())[i].setStrategy(new HumanPlayer());
+			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Human Player" << endl;
+			break;
+		case 2:
+			(*g.getPlayers())[i].setStrategy(new AggressivePlayer());
+			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Aggressive Player" << endl;
+			break;
+		case 3:
+			(*g.getPlayers())[i].setStrategy(new BenevolentPlayer());
+			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Benevolent Player" << endl;
+			break;
+		case 4:
+			(*g.getPlayers())[i].setStrategy(new RandomPlayer());
+			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Random Player" << endl;
+			break;
+		case 5:
+			(*g.getPlayers())[i].setStrategy(new CheaterPlayer());
+			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Cheater Player" << endl;
+		}
 	}
 
 	list<Card> deckCards = g.getDeck()->getAllCards();
