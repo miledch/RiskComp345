@@ -18,21 +18,23 @@ public:
 
 	//// Getters ////
 	Map* getMap() const;
-
 	vector<Player>* getPlayers() const;
 	Deck* getDeck() const;
 	string* getMapPath() const;
 	int* getNumOfPlayers() const;
+	vector<string>* getSelectedMapsPath() const;
+
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
 	
 	void run1vs1();
-	MapLoader* LoadLoader(Map* map, string* mapPath);
+	MapLoader* LoadLoader(string* mapPath);
 
 	inline int choosingNumOfMaps();
 	void choosingNumOfPlayers();
-	void selectingMaps(int&);
+	void selectingMaps(int&); // for tournament
+	void loadTournamentMaps(string mapPath); // for tournament
 	void choosingNumOfMaxTurns();
 	void choosingNumOfGames();
 	void startupCpu();
@@ -58,7 +60,7 @@ private:
 
 	int *numOfMaxTurns;
 	int *numOfGames;
-	vector<string>* selectedMaps;
+	vector<string>* selectedMapsPath;
 	vector<string>* remainingMaps;
 	vector<string>* winners;
 

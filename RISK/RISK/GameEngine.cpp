@@ -39,7 +39,7 @@ GameEngine::GameEngine()
 	cout << "You have chosen " << *mapPath << endl;
 
 	map = new Map();
-	MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+	MapLoader* loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 	loader->LoadMap(*map, *mapPath);
 	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	while (!validMap) {
@@ -69,7 +69,7 @@ GameEngine::GameEngine()
 		cout << "You have chosen " << *mapPath << endl;
 		delete map;
 		map = new Map();
-		loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 		loader->LoadMap(*map, *mapPath);
 		validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	}
@@ -95,7 +95,7 @@ GameEngine::GameEngine()
 	}
 }
 
-GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMaps(new vector<string>), remainingMaps(new vector <string>), 
+GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMapsPath(new vector<string>), remainingMaps(new vector <string>), 
 	winners(new vector<string>), players(new vector<Player>())
 {
 	int mapsNum = choosingNumOfMaps();
@@ -143,7 +143,7 @@ GameEngine::GameEngine(int i)
 	cout << "You have chosen " << *mapPath << endl;
 
 	map = new Map();
-	MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+	MapLoader* loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 	loader->LoadMap(*map, *mapPath);
 	bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	while (!validMap) {
@@ -173,7 +173,7 @@ GameEngine::GameEngine(int i)
 		cout << "You have chosen " << *mapPath << endl;
 		delete map;
 		map = new Map();
-		loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 		loader->LoadMap(*map, *mapPath);
 		validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 	}
@@ -404,6 +404,11 @@ int* GameEngine::getNumOfPlayers() const
 	return numOfPlayers;
 }
 
+vector<string>* GameEngine::getSelectedMapsPath() const
+{
+	return selectedMapsPath;
+}
+
 void GameEngine::startup()
 {
 	randomizeOrder();
@@ -491,7 +496,7 @@ bool GameEngine::isIncludeHuman()
 }
 
 
-MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
+MapLoader* GameEngine::LoadLoader(string* mapPath)
 {
 	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
 	ifstream mapFile(*mapPath);
@@ -626,7 +631,8 @@ void GameEngine::selectingMaps(int& mapsNum)
 			remainingMaps->push_back(p.path().stem().string());
 		}
 	}
-	while(mapsNum != 0){
+	while(mapsNum > 0)
+	{
 		cout << "Please select maps from the following list:" << endl;
 		for (int i = 0; i < remainingMaps->size(); i++)
 		{
@@ -655,7 +661,7 @@ void GameEngine::selectingMaps(int& mapsNum)
 		cout << "You have chosen " << *mapPath << endl;
 
 		map = new Map();
-		MapLoader* loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		MapLoader* loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 		loader->LoadMap(*map, *mapPath);
 		bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 		while (!validMap) {
@@ -666,35 +672,34 @@ void GameEngine::selectingMaps(int& mapsNum)
 			}
 			cin >> n;
 
-			// checking USER'S input
-			int n;
-			cin >> n;
-			bool valid = false;
-			while (!valid) {
-				if (n > 0 || n <= remainingMaps->size()) {
-					valid = true;
-				}
-				else {
-					cout << "Please choose a valid number" << endl;
-					cin >> n;
-				}
-			}
-
 			*mapPath = path + (*remainingMaps)[n - 1] + ext;
 			cout << "You have chosen " << *mapPath << endl;
-			delete map;
+			map = nullptr;
 			map = new Map();
-			loader = LoadLoader(map, mapPath);// LoadLoader will load the correct map between domination and conquest map types
+			loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
 			loader->LoadMap(*map, *mapPath);
 			validMap = map->ConnectedGraph(); // To check if the map is a connected graph
 		}
-		selectedMaps->push_back((*remainingMaps)[n - 1]); // adding map
+		selectedMapsPath->push_back(*mapPath); // adding map
 		remainingMaps->erase(remainingMaps->begin() + n - 1); // removing map from the options
 		mapsNum -= 1;
 		delete loader;
+		loader = nullptr;
+		delete map;
+		map = nullptr;
+		delete mapPath;
+		mapPath = nullptr;
 		if(mapsNum != 0)
 		cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
 	}
+}
+
+void GameEngine::loadTournamentMaps(string mapPath)
+{
+	this->map = new Map();
+	this->mapPath = new string(mapPath);
+	MapLoader* loader = LoadLoader(this->mapPath);// LoadLoader will load the correct map between domination and conquest map types
+	loader->LoadMap(*map, *this->mapPath);
 }
 
 void GameEngine::choosingNumOfMaxTurns()
@@ -839,8 +844,16 @@ GameEngine* GameEngineDriver::runGameStart()
 void GameEngineDriver::runTournamentStart()
 {
 	GameEngine g(true);
-	g.startupCpu();
-	g.runGameCpu();
+	// play a game on each maps
+	vector<string>::iterator it;
+	for (it = g.getSelectedMapsPath()->begin(); it < g.getSelectedMapsPath()->end(); it++)
+	{
+		// load each maps before starting the games
+		g.loadTournamentMaps(*it);
+		g.startupCpu();
+		g.runGameCpu();
+	}
+
 }
 
 GameEngine* GameEngineDriver::runPlayerVsCpu() {
