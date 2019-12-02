@@ -77,6 +77,7 @@ public:
 	void fortifyToWeakest();
 	bool hasEnemyNeibour(Country& c);
 	Strategy* getStrategy();
+	void setMap(Map* map);
 };
 
 class PlayerDriver 

@@ -978,4 +978,9 @@ Strategy* Player::getStrategy()
 	return strategy;
 }
 
+void Player::setMap(Map* map)
+{
+	this->map = map;
+}
+
 

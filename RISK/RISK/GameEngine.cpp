@@ -340,10 +340,10 @@ void GameEngine::assignArmies()
 				}
 			}
 		}
-		else {
+		else 
 			this->autoPlaceArmies();
-		}
-	}else
+	}
+	else
 		this->autoPlaceArmies();
 }
 
@@ -591,25 +591,25 @@ void GameEngine::choosingNumOfPlayers()
 		if (choice == "Aggressive")
 		{
 			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
-			Player aggressivePlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
+			Player aggressivePlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
 			aggressivePlayer.setStrategy(new AggressivePlayer());
 			players->push_back(aggressivePlayer);
 		}
 		else if (choice == "Benevolent")
 		{
-			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Benevolent Player"));
+			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Benevolent Player"));
 			benevolentPlayer.setStrategy(new BenevolentPlayer());
 			players->push_back(benevolentPlayer);
 		}
 		else if (choice == "Random") // TODO CHANGE STRATEGY
 		{
-			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
+			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
 			benevolentPlayer.setStrategy(new BenevolentPlayer());
 			players->push_back(benevolentPlayer);
 		}
 		else if (choice == "Cheater") // TODO CHANGE STRATEGY
 		{
-			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
+			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
 			benevolentPlayer.setStrategy(new BenevolentPlayer());
 			players->push_back(benevolentPlayer);
 		}
@@ -700,6 +700,11 @@ void GameEngine::loadTournamentMaps(string mapPath)
 	this->mapPath = new string(mapPath);
 	MapLoader* loader = LoadLoader(this->mapPath);// LoadLoader will load the correct map between domination and conquest map types
 	loader->LoadMap(*map, *this->mapPath);
+	for (int i = 0; i < *getNumOfPlayers(); i++)
+	{
+		(*players)[i].setMap(map);
+	}
+	
 }
 
 void GameEngine::choosingNumOfMaxTurns()
