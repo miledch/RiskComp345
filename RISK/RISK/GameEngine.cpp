@@ -411,6 +411,7 @@ void GameEngine::runGame() {
 			bool ownsAllCountries = true;
 			(*players)[i].reinforce();
 			(*players)[i].attack();
+			this->updateCountries();
 			(*players)[i].fortify();
 
 			ownsAllCountries = true;
@@ -578,4 +579,22 @@ GameEngine* GameEngineDriver::runPlayerVsCpu() {
 	g->run1vs1();
 
 	return g;
+}
+
+void GameEngine::updateCountries()
+{
+	// Loop through all the players in the game
+	for (int i = 0; i < this->players->size(); i++) {
+		vector<Country*>* countries = (*players)[i].getCountries();
+		// Loop through all the countries for each player to check if they lost any countries
+		for (vector<Country*>::iterator countriesIt = countries->begin(); countriesIt != countries->end(); ++countriesIt) {
+			if (*(*countriesIt)->getCountryPlayerOwned() != *(*players)[i].getName()) {
+				// Remove the country from its countries vector if they lost it
+				countries->erase(countriesIt);
+				// Reset the iterator to the beginning, otherwise the iterator is 'invalidated'
+				// ... whatever that means...
+				countriesIt = countries->begin();
+			}
+		}
+	}
 }

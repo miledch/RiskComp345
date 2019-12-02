@@ -30,7 +30,7 @@ public:
 	//////////////////// ATTACK DECISIONS ////////////////////
 
 	// Returns decision to attack or not
-	virtual int getAttackDecision() = 0;
+	virtual int getAttackDecision(Player& player) = 0;
 	virtual int getAttackSource(vector<Country*> countries) = 0;
 	virtual int getAttackTarget(vector<int> validEntryForAttack) = 0;
 	virtual int getAttackDice(int maxDice) = 0;
@@ -62,7 +62,7 @@ public:
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -88,7 +88,7 @@ public:
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -114,7 +114,7 @@ public:
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -140,7 +140,7 @@ public:
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -160,13 +160,15 @@ public:
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
 	int getFortifyDecision(Player& player);
+	// The following 3 functions should technically never be called 
 	int getFortifySource(vector<Country*> countries);
 	int getFortifyTarget(vector<Country*> countries);
 	int getFortifyArmy(Country* source);
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
+	// The following 5 functions should technically never be called 
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);

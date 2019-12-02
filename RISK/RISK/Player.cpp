@@ -199,7 +199,7 @@ void Player::attack()
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
-		playerDecision = this->strategy->getAttackDecision();
+		playerDecision = this->strategy->getAttackDecision(*this);
 		if (playerDecision == 1)
 			attackPhase();
 	}

@@ -25,6 +25,9 @@ public:
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
 	void run1vs1();
+	// For each player, remove any country that they lost in the previous attack phase
+	// from their 'countries' vector of Country*
+	void updateCountries();
 	MapLoader* LoadLoader(Map* map, string* mapPath);
 
 	~GameEngine();
