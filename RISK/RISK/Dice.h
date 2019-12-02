@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include <ctime>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 using namespace std;
 class Dice_Rolling_Facility
 {

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -26,7 +27,7 @@ public:
 	void add_continents(int id, string name, int extraArmies);
 	list<Country>* getCountries();
 	list<Continent>* getcontinents();
-	void ConnectedGraph(); // for countries
+	bool ConnectedGraph(); // for countries
 	void ConnectedSubgraph();
 	void RunConnectedSubgraph(int continentID);  // for contiennts
 	~Map();
@@ -43,11 +44,13 @@ private:
 
 	list<int>* neighbors;
 public:
+	Country();
 	Country(int, string, int);
 	Country(const Country& country2);
 	Country& operator=(const Country& rhs);
 	void displayNeighborsList();
 	void add_edge(string borders);
+	void add_ConquestEdge(std::vector<string> borders, list<Country> countries);
 	int* getCountryID();
 	string* getCountryName();
 	int* getCountryContinent();
@@ -56,8 +59,11 @@ public:
 	int* getCountryNumberArmies();
 	void setCountryNumberArmies(int armies);
 	list<int>* getNeighbors();
+	
 	void deleteCountry();
 	void printCountry();
+	void decreaseArmy(int);
+	void increaseArmy(int);
 
 	~Country();
 };
@@ -88,6 +94,8 @@ public:
 	void addEdge(int src, int dest);
 	void DFS(int vertex);
 	bool checkVisited();
+	bool checkVisitedSubGraph(list<Country> countriesPerContinent);
+	~Graph();
 };
 
 

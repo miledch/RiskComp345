@@ -3,7 +3,7 @@
 
 using std::ifstream;
 
-int MapLoader::LoadMap(Map& map, string mapName)
+void MapLoader::LoadMap(Map& map, string mapName)
 {
 	ifstream mapFile(mapName);
 
@@ -11,7 +11,7 @@ int MapLoader::LoadMap(Map& map, string mapName)
 	{
 		cout << "File does not exist" << endl;
 		cout << "Double check the name of the map file" << endl;
-		return 0;// exit the load method
+		return;// exit the load method
 	}
 
 	bool storeContinents = false;
@@ -84,7 +84,7 @@ int MapLoader::LoadMap(Map& map, string mapName)
 			storeNeighbors = true;
 		}
 	}
-	return 1;
+	mapFile.close();
 }
 
 MapLoader::~MapLoader()

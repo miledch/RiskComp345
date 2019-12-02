@@ -1,0 +1,97 @@
+[Map]
+image=Middle Earth.bmp
+wrap=no
+scroll=none
+
+[Continents]
+Arthedain=2
+Cardolan=2
+Forodwaith=2
+Gondor=5
+Greenwood=5
+Haradwaith=2
+Mordor=3
+Palisor=2
+Rhudaur=2
+Rohan=5
+Wastelands=2
+
+[Territories]
+East Lindon,136,119,Arthedain,Evendim,Forlindon,Forochel,Grey Havens
+Evendim,186,127,Arthedain,Angmar,East Lindon,Forochel,Grey Havens,Hoardale,The North Downs,The Shire
+Forlindon,47,131,Arthedain,East Lindon
+Forochel,187,71,Arthedain,Angmar,East Lindon,Evendim
+Grey Havens,143,185,Arthedain,East Lindon,Evendim,Harlindon,The Shire
+Harlindon,73,240,Arthedain,Grey Havens,The Shire,Minhiriath
+The Shire,200,200,Arthedain,Evendim,Grey Havens,Harlindon,Minhiriath,The North Downs,The Old Forest,The South Downs
+
+Dunland,323,307,Cardolan,Enedwaith,Eregion,Minhiriath,Tharbad
+Enedwaith,277,367,Cardolan,Dunland,Druwaith Iaur,Isengard,Lond Daer,Minhiriath
+Lond Daer,224,329,Cardolan,Enedwaith,Minhiriath
+Minhiriath,210,298,Cardolan,Dunland,Enedwaith,Harlindon,Lond Daer,The South Downs,Tharbad,The Shire
+Tharbad,262,266,Cardolan,Dunland,Minhiriath,The South Downs
+
+Angmar,300,83,Forodwaith,Dor Daidelos,Evendim,Forochel,Hoardale
+Dor Daidelos,530,34,Forodwaith,Angmar,Iron Hills,Near Rhun,Withered Heath
+Withered Heath,594,75,Forodwaith,Dor Daidelos,Erebor,Iron Hills
+
+Andrast,267,511,Gondor,Druwaith Iaur,Langstrand,Morthrond
+Belfalas,435,515,Gondor,Dol Amroth,Lamedon,Langstrand,Lebennin
+Dol Amroth,415,514,Gondor,Belfalas,Langstrand,Umbar
+Druwaith Iaur,336,409,Gondor,Andrast,Enedwaith,Isengard
+Ithilien,555,435,Gondor,Dagorlad,Gorgoroth,Minas Tirith,Nindalf,South Ithilien
+Lamedon,466,486,Gondor,Belfalas,Langstrand,Lebennin,Lossarnach,Morthrond
+Langstrand,309,494,Gondor,Andrast,Belfalas,Dol Amroth,Lamedon,Morthrond
+Lebennin,495,519,Gondor,Belfalas,Lamedon,Lossarnach,Umbar
+Lossarnach,528,500,Gondor,Lamedon,Lebennin,Minas Tirith
+Minas Tirith,545,465,Gondor,Anorien,Ithilien,Lossarnach
+Morthrond,378,459,Gondor,Andrast,Lamedon,Langstrand
+South Ithilien,554,527,Gondor,Harondor,Ithilien
+
+Celduin Plains,617,230,Greenwood,Dale,Dol Guilder,Mirkwood,Rhovanion,Near Rhun
+Dale,629,165,Greenwood,Celduin Plains,Erebor,Iron Hills,Mirkwood,Near Rhun,Thranduil's Caves
+Dol Guilder,513,271,Greenwood,Celduin Plains,Mirkwood,Rhovanion,The Brown Lands,Withered Wold
+Erebor,609,109,Greenwood,Dale,Iron Hills,Thranduil's Caves,Withered Heath,Withered Wold
+Gladden Fields,438,243,Greenwood,Lorein,Withered Wold
+Iron Hills,675,93,Greenwood,Dale,Dor Daidelos,Erebor,Near Rhun,Withered Heath
+Lorein,428,297,Greenwood,Eregion,Fangorn,Gladden Fields,Withered Wold,Wold
+Mirkwood,526,227,Greenwood,Celduin Plains,Dale,Dol Guilder,Thranduil's Caves,Withered Wold
+Thranduil's Caves,516,137,Greenwood,Dale,Erebor,Mirkwood,Withered Wold
+Withered Wold,461,195,Greenwood,Dol Guilder,Erebor,Gladden Fields,Lorein,Mirkwood,Rivendell,The Brown Lands,Thranduil's Caves
+
+Far Harad,536,712,Haradwaith,Harondor,Near Harad,Umbar
+Harondor,530,612,Haradwaith,Far Harad,Near Harad,South Ithilien,Umbar
+Near Harad,684,630,Haradwaith,Far Harad,Harondor,Khand
+Umbar,445,700,Haradwaith,Dol Amroth,Far Harad,Harondor,Lebennin
+
+Gorgoroth,623,469,Mordor,Ithilien,Nurn,Udun
+Nurn,639,528,Mordor,Gorgoroth,Nurnen
+Nurnen,744,494,Mordor,Khand,Nurn
+Udun,582,413,Mordor,Dagorlad,Gorgoroth
+
+Dorwinion,707,260,Palisor,Rhovanion,Near Rhun
+Far Rhun,794,373,Palisor,Dagorlad,Khand,Near Rhun,Rhovanion
+Khand,828,482,Palisor,Near Harad,Nurnen,Far Rhun
+Near Rhun,750,175,Palisor,Celduin Plains,Dale,Dor Daidelos,Dorwinion,Far Rhun,Iron Hills
+Rhovanion,625,290,Palisor,Celduin Plains,Dagorlad,Dol Guilder,Dorwinion,Far Rhun,The Brown Lands
+
+Bree,285,191,Rhudaur,Hoardale,The North Downs,The South Downs,The Old Forest
+Eregion,357,252,Rhudaur,Dunland,Lorein,Rivendell,The South Downs
+Hoardale,326,149,Rhudaur,Angmar,Bree,Evendim,The North Downs,Rivendell,The South Downs
+The North Downs,250,155,Rhudaur,Bree,Evendim,Hoardale,The Old Forest,The Shire
+Rivendell,384,169,Rhudaur,Eregion,Hoardale,The South Downs,Withered Wold
+The South Downs,300,229,Rhudaur,Bree,Eregion,Hoardale,Minhiriath,Rivendell,Tharbad,The Old Forest,The Shire
+The Old Forest,249,183,Rhudaur,Bree,The North Downs,The South Downs,The Shire
+
+Anorien,446,427,Rohan,East Emnet,Minas Tirith,West Emnet
+East Emnet,470,402,Rohan,Anorien,The Brown Lands,West Emnet,Wold
+Fangorn,408,337,Rohan,Lorein,West Emnet,Wold
+Isengard,366,384,Rohan,Druwaith Iaur,Enedwaith,West Emnet
+West Emnet,416,393,Rohan,Anorien,East Emnet,Fangorn,Isengard,Wold
+Wold,455,346,Rohan,East Emnet,Fangorn,Lorein,The Brown Lands,West Emnet
+
+Dagorlad,614,387,Wastelands,Far Rhun,Ithilien,Nindalf,Rhovanion,The Brown Lands,Udun
+Emyn Muil,522,381,Wastelands,Nindalf,The Brown Lands
+Nindalf,535,420,Wastelands,Dagorlad,Emyn Muil,Ithilien,The Brown Lands
+The Brown Lands,548,346,Wastelands,Dagorlad,Dol Guilder,East Emnet,Emyn Muil,Nindalf,Rhovanion,Withered Wold,Wold
+

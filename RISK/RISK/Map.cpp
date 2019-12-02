@@ -49,15 +49,37 @@ void Graph::addEdge(int src, int dest)
 
 bool Graph::checkVisited()
 {
+	bool connected = true;
 	for (size_t i = 0; i < numCountries; i++)
 	{
-		cout << "visited[" << i << "] " << visited[i] << endl;
 		if (!visited[i])
+		{
+			connected = false;
+		}
+	}
+	return connected;
+}
+
+bool Graph::checkVisitedSubGraph(list<Country> countriesPerContinent)
+{
+	list<Country>::iterator c_it;
+	for (c_it = countriesPerContinent.begin(); c_it != countriesPerContinent.end(); ++c_it)
+	{
+		//cout << "visited[" << *c_it->getCountryID() << "] " << *c_it->getCountryID() << endl;
+		if (!visited[--*c_it->getCountryID()])
 		{
 			return false;
 		}
 	}
 	return true;
+}
+
+Graph::~Graph()
+{
+	delete[] adjLists;
+	adjLists = nullptr;
+	delete visited;
+	visited = nullptr;
 }
 
 void Graph::DFS(int country)
@@ -75,7 +97,7 @@ void Graph::DFS(int country)
 	}
 }
 
-void Map::ConnectedGraph()
+bool Map::ConnectedGraph()
 {
 	Graph g(countries->size());
 
@@ -93,10 +115,14 @@ void Map::ConnectedGraph()
 
 	g.DFS(0);// checking DFS starting from country 0
 
-	if(g.checkVisited())
+	if (g.checkVisited()) {
 		cout << "\nCountries are part of a connected graph\n" << endl;
-	else
+		return true;
+	}
+	else {
 		std::cerr << "\nThe map selected is not a connected graph\n" << endl;
+		return false;
+	}
 }
 
 void Map::ConnectedSubgraph()
@@ -121,8 +147,8 @@ void Map::RunConnectedSubgraph(int continentID)
 		}
 	}
 	
-	int nbrCountries = countriesPerContinent->size();
-	Graph g(nbrCountries);
+	
+	Graph g(countries->size());
 
 	list<int>::iterator nei_it;
 	list<Country>::iterator countries_it;
@@ -136,24 +162,20 @@ void Map::RunConnectedSubgraph(int continentID)
 				{
 					if (*countries_it->getCountryContinent() == continentID)
 					{
-						int index = std::distance(countriesPerContinent->begin(), c_it);
+						//int index = std::distance(countriesPerContinent->begin(), c_it);
+						int country = *c_it->getCountryID();
 						int neighbor = *nei_it;
-						if (continentID == 1)
-							g.addEdge(index, --neighbor);
-						else
-						{
-							neighbor = neighbor - nbrCountries;
-							g.addEdge(index, --neighbor);
-						}
+						g.addEdge(--country, --neighbor);
 					}
 				}
 			}
 		}
 	}
 
-	g.DFS(0);// checking DFS starting from country 0
+	int firstCountry = *countriesPerContinent->begin()->getCountryID();
+	g.DFS(--firstCountry);// checking DFS starting from country 0
 
-	if(g.checkVisited())
+	if(g.checkVisitedSubGraph(*countriesPerContinent))
 		cout << "\Subgraph " << continentID << " is a connected subgraph." << endl << endl;
 	else
 		std::cerr << "\Subgraph " << continentID << " is not a connected subgraph." << endl << endl;
@@ -179,6 +201,12 @@ Map::~Map()
 	}
 	delete countries;
 	delete continents;
+	countries = nullptr;
+	continents = nullptr;
+}
+
+Country::Country()
+{
 }
 
 Country::Country(int id, string name, int continent)
@@ -241,6 +269,21 @@ void Country::add_edge(string borders)
 
 }
 
+void Country::add_ConquestEdge(std::vector<string> borders, list<Country> countries)
+{
+	list<Country>::iterator countriesIt;
+	for (countriesIt = countries.begin(); countriesIt != countries.end(); ++countriesIt)
+	{
+		for (string& border : borders)
+		{
+			if (border == *countriesIt->getCountryName())
+			{
+				this->neighbors->push_back(*countriesIt->getCountryID());
+			}
+		}
+	}
+}
+
 int* Country::getCountryID()
 {
 	return countryID;
@@ -279,6 +322,17 @@ void Country::setCountryNumberArmies(int armies)
 list<int>* Country::getNeighbors()
 {
 	return neighbors;
+}
+
+
+void Country::increaseArmy(int add)
+{
+	*this->numberArmies += add;
+}
+
+void Country::decreaseArmy(int minus)
+{
+	*this->numberArmies -= minus;
 }
 
 // deletion of pointers member class

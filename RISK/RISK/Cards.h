@@ -30,10 +30,12 @@ private:
 	void initiateDeck();
 
 public:
+	int getNumOfExchanges();
 	Deck(const int&);
 	Card* draw();
 	void displayCardsDistribution();
 	void exchange(const array<Card*, 3>&);
+	list<Card> getAllCards();
 };
 
 class Hand {
@@ -43,8 +45,10 @@ public:
 	void draw();
 	bool hasExchange() const;
 	void displayExchangeOptions() const;
-	void exchange();
+	bool exchange();
 	void printCards();
+	int getNumHandCards();
+	int getNumberOfExchanges();
 
 private:
 	void eraseExchangeOptions();

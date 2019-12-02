@@ -1,7 +1,4 @@
-#include <iostream>
 #include "Dice.h"
-#include <algorithm>
-#include <vector>
 using namespace std;
 
 Dice_Rolling_Facility::Dice_Rolling_Facility()

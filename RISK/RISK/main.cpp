@@ -7,11 +7,9 @@
 
 int main()
 {
+	GameEngineDriver::runGameStart();
+	//GameEngineDriver::runPlayerVsCpu();
+	//MapLoaderDriver::RunMapLoaderDriver();
 
-	GameEngine g;
-	g.randomizeOrder();
-	g.assignCountries();
-	g.assignArmies();
-	PlayerDriver::runAttackPhase();
 	return 0;
 }
