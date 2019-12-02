@@ -27,17 +27,17 @@ public:
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
 	void runGame();
 	
-	void runTournament();
 	void run1vs1();
 	MapLoader* LoadLoader(Map* map, string* mapPath);
 
-	int choosingNumOfMaps();
+	inline int choosingNumOfMaps();
 	void choosingNumOfPlayers();
 	void selectingMaps(int&);
 	void choosingNumOfMaxTurns();
 	void choosingNumOfGames();
 	void startupCpu();
 	void runGameCpu();
+	bool isIncludeHuman();
 
 	~GameEngine();
 
@@ -64,13 +64,8 @@ private:
 
 };
 
-//class Tournament
-//{
-//public:
-//	
-//};
 
-class GameEngineDriver
+class GameEngineDriver : public GameEngine
 {
 public:
 	static GameEngine* runGameStart();

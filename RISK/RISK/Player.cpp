@@ -188,19 +188,22 @@ void Player::attack()
 		"\n----------------------------------------------------------------------");
 	NotifyPhase();
 	int playerDecision = 0;
-	while (playerDecision != 2)
+	bool keepAttacking = true;
+	
+	while (playerDecision != 2 && keepAttacking)
 	{
 		viewBuffer->push_back(*this->getName() + ", do you want to attack adjacent territories ?");
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
 		playerDecision = this->strategy->getAttackDecision();
-		if (playerDecision == 1)
-			attackPhase();
+		if (playerDecision == 1) {
+			attackPhase(keepAttacking);
+		}
 	}
 }
 
-void Player::attackPhase()
+void Player::attackPhase(bool& keepAttacking)
 {
 	Country* attackCountry = NULL;
 	Country* targetedCountry = NULL;
@@ -274,6 +277,13 @@ void Player::attackPhase()
 			}
 		}
 	}
+
+	if (validEntryForAttack.size() == 0)
+	{
+		keepAttacking = false;
+		return;
+	}
+
 	int attackSelection;
 	validSelection = false;
 	vector<int>::iterator vecInt_it;
@@ -732,7 +742,7 @@ void Player::placingArmy(int& rewardedArmy)
 	{
 		int in;
 		Country* chosenCountry = new Country();
-		viewBuffer->push_back("you have " + to_string(rewardedArmy) + " army(s) to place.");
+		viewBuffer->push_back(*this->getName() + " have " + to_string(rewardedArmy) + " army(s) to place.");
 		NotifyPhase();
 		viewBuffer->push_back("\nPlease select the country's number you want to reinforce:\n");
 		NotifyPhase();
@@ -753,6 +763,7 @@ void Player::placingArmy(int& rewardedArmy)
 		rewardedArmy = rewardedArmy - in;
 		viewBuffer->push_back("You have chosen " + to_string(in) + " armies");
 		NotifyPhase();
+		cout << endl;
 	}
 }
 //calculate the number of armies that a players get according to the number of countries he has
@@ -767,8 +778,8 @@ int Player::getArmyByCountriesOwned() {
 	else {
 		rewardedArmies = countryCount / 3;
 	}
-
-	cout << "You have " << countryCount << " countries. You are rewarded " << rewardedArmies << " armies.\n";
+	cout << endl;
+	cout << *this->getName() <<" have " << countryCount << " countries. You are rewarded " << rewardedArmies << " armies.\n";
 
 	return rewardedArmies;
 }
@@ -949,7 +960,7 @@ bool Player::hasEnemyNeibour(Country& c)
 	list<int> MyCoutriesIDs;
 	list<int> NeighboursIDs = *(c.getNeighbors());
 	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); it++) {
-		MyCoutriesIDs.push_back(*(*it)->getCountryID());
+			MyCoutriesIDs.push_back(*(*it)->getCountryID());
 	}
 	list<int> possibleAttakers;
 	list<int>::iterator it;
@@ -960,6 +971,11 @@ bool Player::hasEnemyNeibour(Country& c)
 	set_difference(NeighboursIDs.begin(), NeighboursIDs.end(), MyCoutriesIDs.begin(), MyCoutriesIDs.end(), std::inserter(possibleAttakers, possibleAttakers.begin()));
 	
 	return (possibleAttakers.size() > 0);
+}
+
+Strategy* Player::getStrategy()
+{
+	return strategy;
 }
 
 

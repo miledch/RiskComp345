@@ -49,7 +49,7 @@ public:
 	void printCountries();
 	void reinforce();
 	void attack();
-	void attackPhase();
+	void attackPhase(bool& keepAttacking);
 	void fortify();
 	Country* chosingCountrySource();
 	vector<Country*> ownedNieghbourCountry(Country& c);
@@ -76,6 +76,7 @@ public:
 	void fortifyToStrongest();
 	void fortifyToWeakest();
 	bool hasEnemyNeibour(Country& c);
+	Strategy* getStrategy();
 };
 
 class PlayerDriver 

@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 
+
 GameEngine::GameEngine()
 {
 	cout << "Welcome to the Command Line Risk Game!\n" << endl;
@@ -95,7 +96,7 @@ GameEngine::GameEngine()
 }
 
 GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMaps(new vector<string>), remainingMaps(new vector <string>), 
-	winners(new vector<string>)
+	winners(new vector<string>), players(new vector<Player>())
 {
 	int mapsNum = choosingNumOfMaps();
 	selectingMaps(mapsNum);
@@ -296,52 +297,54 @@ void GameEngine::assignArmies()
 			(*(*players)[i].getAvailableArmies())--;
 		}
 	}
-
-	int decision;
-	cout << "\nDo you want to place armies manually or automatically?" << endl;
-	cout << "1. Manually " << endl;
-	cout << "2. Automatically " << endl;
-	cin >> decision;
-	while (decision != 1 && decision != 2) {
-		cout << "Invalid input. Try again" << endl;
+	if (isIncludeHuman()) {
+		int decision;
+		cout << "\nDo you want to place armies manually or automatically?" << endl;
+		cout << "1. Manually " << endl;
+		cout << "2. Automatically " << endl;
 		cin >> decision;
-	}
+		while (decision != 1 && decision != 2) {
+			cout << "Invalid input. Try again" << endl;
+			cin >> decision;
+		}
 
-	if (decision == 1) {
+		if (decision == 1) {
 
-		int countryChosenIdx;
-		int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
+			int countryChosenIdx;
+			int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
 
-		for (int k = 0; k < maxAvailableArmies; k++) {
-			for (int i = 0; i < *numOfPlayers; i++) {
+			for (int k = 0; k < maxAvailableArmies; k++) {
+				for (int i = 0; i < *numOfPlayers; i++) {
 
-				if (*(*players)[i].getAvailableArmies() == 0) {
-					continue;
-				}
+					if (*(*players)[i].getAvailableArmies() == 0) {
+						continue;
+					}
 
-				cout << endl;
-				cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
-				for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
-					cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
-				}
+					cout << endl;
+					cout << "(" << (*(*players)[i].getName()) << ") Place 1 army on a country (armies left: " << (*(*players)[i].getAvailableArmies()) << ")" << endl;
+					for (int j = 0; j < (*players)[i].getCountries()->size(); j++) {
+						cout << (j + 1) << ": " << (*(*(*players)[i].getCountries())[j]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[j]->getCountryNumberArmies()) << ")" << endl;
+					}
 
-				cin >> countryChosenIdx;
-
-				while (countryChosenIdx < 1 || countryChosenIdx >(*players)[i].getCountries()->size()) {
-					cout << "Please enter a valid number" << endl;
 					cin >> countryChosenIdx;
+
+					while (countryChosenIdx < 1 || countryChosenIdx >(*players)[i].getCountries()->size()) {
+						cout << "Please enter a valid number" << endl;
+						cin >> countryChosenIdx;
+					}
+
+					(*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies())++;
+					(*(*players)[i].getAvailableArmies())--;
+
+					cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies()) << ")" << endl;
 				}
-
-				(*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies())++;
-				(*(*players)[i].getAvailableArmies())--;
-
-				cout << "You have chosen " << countryChosenIdx << ": " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryName()) << " (armies: " << (*(*(*players)[i].getCountries())[countryChosenIdx - 1]->getCountryNumberArmies()) << ")" << endl;
 			}
 		}
-	}
-	else {
+		else {
+			this->autoPlaceArmies();
+		}
+	}else
 		this->autoPlaceArmies();
-	}
 }
 
 void GameEngine::autoPlaceArmies()
@@ -449,7 +452,7 @@ void GameEngine::runGameCpu()
 	string winner = "draw";
 	int numTurn = *numOfMaxTurns;
 	int count = 0;
-	while (numTurn =! 0) {
+	while (numTurn != 0) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			bool ownsAllCountries = true;
@@ -477,10 +480,16 @@ void GameEngine::runGameCpu()
 	winners->push_back(winner);
 }
 
-void GameEngine::runTournament()
+bool GameEngine::isIncludeHuman()
 {
-	cout << "MY TOUNRMANET";
+	for (vector<Player>::iterator it = players->begin(); it != players->end(); it++) {
+		if (it->getStrategy()->isHuman()) {
+			return true;
+		}
+	}
+	return false;
 }
+
 
 MapLoader* GameEngine::LoadLoader(Map* map, string* mapPath)
 {
@@ -540,6 +549,68 @@ void GameEngine::choosingNumOfPlayers()
 			cin >> numCpuPlayers;
 		}
 	}
+
+	cout << "\nNow choose your " << numCpuPlayers << " player types" << endl;
+	vector<string> cpuPlayersType = { "Aggressive", "Benevolent", "Random", "Cheater" };
+	while(numCpuPlayers != 0){
+		string choice;
+		int selection;
+		for (int i = 0; i < cpuPlayersType.size(); i++) {
+			cout << i+1 << ": " << cpuPlayersType[i] << endl;
+		}
+		int stringSize = cpuPlayersType.size();
+		bool validSelection = false;
+		while (!validSelection)
+		{
+			try
+			{
+				cout << "> ";
+				cin >> selection;
+				if (selection < 0 || selection > stringSize)
+					throw selection;
+				validSelection = true;
+				choice = cpuPlayersType[selection - 1];
+				cpuPlayersType.erase(cpuPlayersType.begin() + selection - 1);
+			}
+			catch (int e)
+			{
+				cout << e << " is not valid, please choose a valid number" << endl;
+				for (int i = 0; i < cpuPlayersType.size(); i++) {
+					cout << i + 1 << ": " << cpuPlayersType[i] << endl;
+				}
+				cout << "> ";
+				cin >> selection;
+			}
+		}
+
+		if (choice == "Aggressive")
+		{
+			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
+			Player aggressivePlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
+			aggressivePlayer.setStrategy(new AggressivePlayer());
+			players->push_back(aggressivePlayer);
+		}
+		else if (choice == "Benevolent")
+		{
+			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Benevolent Player"));
+			benevolentPlayer.setStrategy(new BenevolentPlayer());
+			players->push_back(benevolentPlayer);
+		}
+		else if (choice == "Random") // TODO CHANGE STRATEGY
+		{
+			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
+			benevolentPlayer.setStrategy(new BenevolentPlayer());
+			players->push_back(benevolentPlayer);
+		}
+		else if (choice == "Cheater") // TODO CHANGE STRATEGY
+		{
+			Player benevolentPlayer = Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
+			benevolentPlayer.setStrategy(new BenevolentPlayer());
+			players->push_back(benevolentPlayer);
+		}
+		cout << endl;
+		numCpuPlayers--;
+	}
 }
 
 void GameEngine::selectingMaps(int& mapsNum)
@@ -564,14 +635,18 @@ void GameEngine::selectingMaps(int& mapsNum)
 		
 		// checking USER'S input
 		int n;
+		cout << ">";
 		cin >> n;
 		bool valid = false;
 		while (!valid) {
-			if (n > 0 || n <= remainingMaps->size()) {
-				valid = true;
-			}
-			else {
-				cout << "Please choose a valid number" << endl;
+			try {
+				if (n > 0 && n <= remainingMaps->size()) {
+					valid = true;
+				}
+				else
+					throw n;
+			}catch(int e){
+				cout << e <<" isn't a between 1 and "<< remainingMaps->size() <<" Please choose a valid number\n>";
 				cin >> n;
 			}
 		}
@@ -832,6 +907,7 @@ GameEngine* GameEngineDriver::runModeSelection()
 			cout << "error! ...try Again" << endl;
 		}
 	}
+
 
 	return nullptr;
 }

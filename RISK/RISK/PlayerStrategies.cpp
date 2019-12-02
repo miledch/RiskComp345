@@ -99,6 +99,11 @@ int HumanPlayer::getTransferArmies(int maxArmies)
 	return transfer;
 }
 
+bool HumanPlayer::isHuman()
+{
+	return true;
+}
+
 //////////////////////////////// AGGRESSIVEPLAYER //////////////////////////////// 
 
 void AggressivePlayer::execute(Player* p) {
@@ -170,6 +175,11 @@ int AggressivePlayer::getDefenceDice(int maxDice)
 int AggressivePlayer::getTransferArmies(int maxArmies)
 {
 	return (maxArmies/2);
+}
+
+bool AggressivePlayer::isHuman()
+{
+	return false;
 }
 
 //////////////////////////////// BENEVOLENTPLAYER //////////////////////////////// 
@@ -247,6 +257,11 @@ int BenevolentPlayer::getTransferArmies(int maxArmies)
 	return 1;
 }
 
+bool BenevolentPlayer::isHuman()
+{
+	return false;
+}
+
 //////////////////////////////// RANDOMPLAYER //////////////////////////////// 
 
 void RandomPlayer::execute(Player* p)
@@ -322,6 +337,11 @@ int RandomPlayer::getTransferArmies(int maxArmies)
 	return transfer;
 }
 
+bool RandomPlayer::isHuman()
+{
+	return false;
+}
+
 //////////////////////////////// MISCELLANEOUS //////////////////////////////// 
 
 Country* Strategy::strongestCountry(vector<Country*>& myCountries)
@@ -355,3 +375,5 @@ Country* Strategy::weakestCountry(vector<Country*>& countries)
 	}
 	return weak;
 }
+
+
