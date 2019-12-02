@@ -15,6 +15,7 @@ public:
 	GameEngine(const GameEngine& game2);
 	GameEngine& operator=(const GameEngine& rhs);
 	GameEngine(int i); // for a 1 vs 1 game
+	GameEngine(vector<string> playerStr, string mapStr );
 
 	//// Getters ////
 	Map* getMap() const;
@@ -38,8 +39,9 @@ public:
 	void choosingNumOfMaxTurns();
 	void choosingNumOfGames();
 	void startupCpu();
-	void runGameCpu();
+	void runGameCpu(int);
 	bool isIncludeHuman();
+	void createPlayers(vector<string>& , string);
 
 	~GameEngine();
 
@@ -47,6 +49,7 @@ private:
 	Map* map;
 	vector<Player>* players;
 	Deck* deck;
+	
 
 	string* mapPath; // This is needed for the copy constructor
 	int* numOfPlayers; // This is needed for the copy constructor

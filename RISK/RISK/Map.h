@@ -88,7 +88,6 @@ class Graph
 	int numCountries;
 	list<int>* adjLists;
 	bool* visited;
-
 public:
 	Graph(int V);
 	void addEdge(int src, int dest);

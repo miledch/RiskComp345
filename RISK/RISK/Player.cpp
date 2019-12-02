@@ -264,6 +264,7 @@ void Player::attackPhase(bool& keepAttacking)
 	list<int>::iterator l_it;
 	list<Country>::iterator countriesIt;
 	vector<int> validEntryForAttack;
+
 	for (l_it = attackCountry->getNeighbors()->begin(); l_it != attackCountry->getNeighbors()->end(); ++l_it)
 	{
 		for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
