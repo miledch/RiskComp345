@@ -23,6 +23,7 @@ public:
 	string* getMapPath() const;
 	int* getNumOfPlayers() const;
 	vector<string>* getSelectedMapsPath() const;
+	vector<string>* getWinners() const;
 
 
 	void startup(); // Randomizes player order, assigns countries, and assigns armies
@@ -35,6 +36,7 @@ public:
 	void choosingNumOfPlayers();
 	void selectingMaps(int&); // for tournament
 	void loadTournamentMaps(string mapPath); // for tournament
+	int* getNumberOfGames() const;
 	void choosingNumOfMaxTurns();
 	void choosingNumOfGames();
 	void startupCpu();

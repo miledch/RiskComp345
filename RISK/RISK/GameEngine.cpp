@@ -409,6 +409,11 @@ vector<string>* GameEngine::getSelectedMapsPath() const
 	return selectedMapsPath;
 }
 
+vector<string>* GameEngine::getWinners() const
+{
+	return winners;
+}
+
 void GameEngine::startup()
 {
 	randomizeOrder();
@@ -481,7 +486,7 @@ void GameEngine::runGameCpu()
 		}
 		numTurn--;
 	}
-	cout << winner << " owns all the countries and wins the game!" << endl;
+	//cout << winner << " owns all the countries and wins the game!" << endl;
 	winners->push_back(winner);
 }
 
@@ -702,9 +707,13 @@ void GameEngine::loadTournamentMaps(string mapPath)
 	loader->LoadMap(*map, *this->mapPath);
 	for (int i = 0; i < *getNumOfPlayers(); i++)
 	{
-		(*players)[i].setMap(map);
+		(*players)[i].resetPlayer(map);
 	}
-	
+}
+
+int* GameEngine::getNumberOfGames() const
+{
+	return numOfGames;
 }
 
 void GameEngine::choosingNumOfMaxTurns()
@@ -853,12 +862,57 @@ void GameEngineDriver::runTournamentStart()
 	vector<string>::iterator it;
 	for (it = g.getSelectedMapsPath()->begin(); it < g.getSelectedMapsPath()->end(); it++)
 	{
-		// load each maps before starting the games
-		g.loadTournamentMaps(*it);
-		g.startupCpu();
-		g.runGameCpu();
-	}
+		for (int i = 0; i < *g.getNumberOfGames(); i++)
+		{
+			// load each maps before starting the games
+			g.loadTournamentMaps(*it);
+			g.startupCpu();
+			g.runGameCpu();
+		}
 
+	}
+	int iterIndex = 0;
+	int numGames = *g.getNumberOfGames();
+	int slashPos;
+	int pointPos;
+	string map;
+	// DISPLAY RESULTS
+	for (int i = 0; i <= numGames; i++)
+	{
+		if (i == 0)
+		{
+			printf("%-20s", "");
+			continue;
+		}
+		else
+		{
+			string gameIndex = "game " + to_string(i);
+			printf("%-20s", gameIndex.c_str());
+		}
+
+	}
+	cout << endl;
+	for (it = g.getSelectedMapsPath()->begin(); it < g.getSelectedMapsPath()->end(); ++it, ++iterIndex)
+	{
+		for (int i = 0; i <= numGames; i++)
+		{
+			if (i == 0)
+			{
+				slashPos = it->find("/");
+				pointPos = it->find(".");
+				map = *it;
+				map = string(&map[slashPos+1], &map[pointPos]);
+				printf("%-20s", map.c_str());
+			}	
+			else
+			{
+				printf("%-20s", g.getWinners()->at(i).c_str());
+			}
+			
+		}
+		cout << endl;
+	}
+	
 }
 
 GameEngine* GameEngineDriver::runPlayerVsCpu() {

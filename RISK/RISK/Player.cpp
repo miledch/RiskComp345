@@ -495,7 +495,6 @@ void Player::attackPhase(bool& keepAttacking)
 			NotifyPhase();
 			// player now owns the targeted countries
 			countries->push_back(targetedCountry);
-			// TODO Do we need to remove the 'targetedCountry' from the vector of countries of the defending player?
 			Notify();
 			// modify the map object
 			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
@@ -524,6 +523,7 @@ void Player::attackPhase(bool& keepAttacking)
 
 					countriesIt->setCountryNumberArmies(nbrArmies);
 					// TODO Do we have to decrease armies from the source countries after moving them
+					//attackCountry->decreaseArmy(nbrArmies);
 					break;
 				}
 			}
@@ -978,9 +978,16 @@ Strategy* Player::getStrategy()
 	return strategy;
 }
 
-void Player::setMap(Map* map)
+void Player::resetPlayer(Map* map)
 {
 	this->map = map;
+	this->continents = new vector<Continent>();
+	this->countries = new vector<Country*>();
+	this->dice = new Dice_Rolling_Facility();
+	this->h = new Hand(*(new Deck(0)));
+	this->availableArmies = new int(0);
+	this->viewBuffer = new vector<string>();
+	this->newPhase = new bool(false);
 }
 
 
