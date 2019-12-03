@@ -202,16 +202,17 @@ void Player::attack()
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
 
-		// playerDecision = this->strategy->getAttackDecision();
-		// if (playerDecision == 1) {
-		// 	attackPhase(keepAttacking);
+		 playerDecision = this->strategy->getAttackDecision(*this);
+		 if (playerDecision == 1) {
+			 attackPhase(keepAttacking);
+		 }
 
-		playerDecision = this->strategy->getAttackDecision(*this);
-		if (playerDecision == 1) {
-			viewBuffer->push_back("You have chosen 1");
-			NotifyPhase();
-			attackPhase();
-		}
+		//playerDecision = this->strategy->getAttackDecision(*this);
+		//if (playerDecision == 1) {
+		//	viewBuffer->push_back("You have chosen 1");
+		//	NotifyPhase();
+		//	attackPhase();
+		//}
 		else if (playerDecision == 2) {
 			viewBuffer->push_back("You have chosen 2");
 			NotifyPhase();

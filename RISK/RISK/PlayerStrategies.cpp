@@ -363,6 +363,7 @@ int RandomPlayer::getTransferArmies(int maxArmies)
 bool RandomPlayer::isHuman()
 {
 	return false;
+}
 
 //////////////////////////////// CHEATERPLAYER //////////////////////////////// 
 
@@ -511,6 +512,11 @@ int CheaterPlayer::getTransferArmies(int maxArmies)
 {
 	return 1;
 
+}
+
+bool CheaterPlayer::isHuman()
+{
+	return false;
 }
 
 //////////////////////////////// MISCELLANEOUS //////////////////////////////// 

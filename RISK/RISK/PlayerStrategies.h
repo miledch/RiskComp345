@@ -152,6 +152,8 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+
+	bool isHuman();
 };
 
 class CheaterPlayer : public Strategy {

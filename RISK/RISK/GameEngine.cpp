@@ -126,12 +126,12 @@ GameEngine::GameEngine(int i)
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
 	 
-	// TODO:maybe Fixed hahahhahaha cin
+
 	int n;
 	cin >> n;
 	bool valid = false;
 	while (!valid) {
-		if (n > 0 || n <= availableMaps.size() ) {
+		if (n > 0 && n <= availableMaps.size() ) {
 			valid = true;
 		}else{
 		cout << "Please choose a valid number" << endl;
@@ -865,7 +865,7 @@ GameEngine* GameEngineDriver::runGameStart()
 			(*g.getPlayers())[i].setStrategy(new RandomPlayer());
 			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Random Player" << endl;
 			break;
-		case 5:
+		case 5: 
 			(*g.getPlayers())[i].setStrategy(new CheaterPlayer());
 			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Cheater Player" << endl;
 		}
