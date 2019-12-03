@@ -607,17 +607,17 @@ void GameEngine::choosingNumOfPlayers()
 			benevolentPlayer.setStrategy(new BenevolentPlayer());
 			players->push_back(benevolentPlayer);
 		}
-		else if (choice == "Random") // TODO CHANGE STRATEGY
+		else if (choice == "Random")
 		{
-			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
-			benevolentPlayer.setStrategy(new BenevolentPlayer());
-			players->push_back(benevolentPlayer);
+			Player randomPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
+			randomPlayer.setStrategy(new RandomPlayer());
+			players->push_back(randomPlayer);
 		}
-		else if (choice == "Cheater") // TODO CHANGE STRATEGY
+		else if (choice == "Cheater")
 		{
-			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
-			benevolentPlayer.setStrategy(new BenevolentPlayer());
-			players->push_back(benevolentPlayer);
+			Player cheaterPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
+			cheaterPlayer.setStrategy(new CheaterPlayer());
+			players->push_back(cheaterPlayer);
 		}
 		cout << endl;
 		numCpuPlayers--;
