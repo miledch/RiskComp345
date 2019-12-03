@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+
 #include <iterator>
 #include <iostream>
 #include <string>
@@ -50,7 +51,7 @@ public:
 	void printCountries();
 	void reinforce();
 	void attack();
-	void attackPhase();
+	void attackPhase(bool& keepAttacking);
 	void fortify();
 	Country* chosingCountrySource();
 	vector<Country*> ownedNieghbourCountry(Country& c);
@@ -76,6 +77,9 @@ public:
 	Country* weakestCountry(vector<Country*>&);
 	void fortifyToStrongest();
 	void fortifyToWeakest();
+	bool hasEnemyNeibour(Country& c);
+	Strategy* getStrategy();
+	void resetPlayer(Map* map);
 };
 
 class PlayerDriver 

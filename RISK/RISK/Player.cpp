@@ -198,26 +198,35 @@ void Player::attack()
 		"\n----------------------------------------------------------------------");
 	NotifyPhase();
 	int playerDecision = 0;
-	while (playerDecision != 2)
+	bool keepAttacking = true;
+	
+	while (playerDecision != 2 && keepAttacking)
 	{
 		viewBuffer->push_back(*this->getName() + ", do you want to attack adjacent territories ?");
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
-		playerDecision = this->strategy->getAttackDecision(*this);
-		if (playerDecision == 1) {
-			viewBuffer->push_back("You have chosen 1");
-			NotifyPhase();
-			attackPhase();
-		}
+
+		 playerDecision = this->strategy->getAttackDecision(*this);
+		 if (playerDecision == 1) {
+			 attackPhase(keepAttacking);
+		 }
+
+		//playerDecision = this->strategy->getAttackDecision(*this);
+		//if (playerDecision == 1) {
+		//	viewBuffer->push_back("You have chosen 1");
+		//	NotifyPhase();
+		//	attackPhase();
+		//}
 		else if (playerDecision == 2) {
 			viewBuffer->push_back("You have chosen 2");
 			NotifyPhase();
+
 		}
 	}
 }
 
-void Player::attackPhase()
+void Player::attackPhase(bool& keepAttacking)
 {
 	Country* attackCountry = NULL;
 	Country* targetedCountry = NULL;
@@ -233,7 +242,7 @@ void Player::attackPhase()
 
 		for (it = countries->begin(); it != countries->end(); ++it)
 		{
-			if (*((*it)->getCountryNumberArmies()) >= 2) // TODO gives the "error"
+			if (*((*it)->getCountryNumberArmies()) >= 2 && hasEnemyNeibour(**it))
 			{
 				viewBuffer->push_back(to_string(*(*it)->getCountryID()) + "\tCountry " + *(*it)->getCountryName() + " has " + to_string(*(*it)->getCountryNumberArmies()) + " armies available");
 				NotifyPhase();
@@ -293,6 +302,13 @@ void Player::attackPhase()
 			}
 		}
 	}
+
+	if (validEntryForAttack.size() == 0)
+	{
+		keepAttacking = false;
+		return;
+	}
+
 	int attackSelection;
 	validSelection = false;
 	vector<int>::iterator vecInt_it;
@@ -510,7 +526,6 @@ void Player::attackPhase()
 			NotifyPhase();
 			// player now owns the targeted countries
 			countries->push_back(targetedCountry);
-			// TODO Do we need to remove the 'targetedCountry' from the vector of countries of the defending player?
 			Notify();
 			// modify the map object
 			for (countriesIt = map->getCountries()->begin(); countriesIt != map->getCountries()->end(); ++countriesIt)
@@ -542,6 +557,7 @@ void Player::attackPhase()
 
 					countriesIt->setCountryNumberArmies(nbrArmies);
 					// TODO Do we have to decrease armies from the source countries after moving them
+					//attackCountry->decreaseArmy(nbrArmies);
 					break;
 				}
 			}
@@ -800,7 +816,7 @@ void Player::placingArmy(int& rewardedArmy)
 	{
 		int in;
 		Country* chosenCountry = new Country();
-		viewBuffer->push_back("you have " + to_string(rewardedArmy) + " army(s) to place.");
+		viewBuffer->push_back(*this->getName() + " have " + to_string(rewardedArmy) + " army(s) to place.");
 		NotifyPhase();
 		viewBuffer->push_back("\nPlease select the country's number you want to reinforce:\n");
 		NotifyPhase();
@@ -821,6 +837,7 @@ void Player::placingArmy(int& rewardedArmy)
 		rewardedArmy = rewardedArmy - in;
 		viewBuffer->push_back("You have chosen " + to_string(in) + " armies");
 		NotifyPhase();
+		cout << endl;
 	}
 }
 //calculate the number of armies that a players get according to the number of countries he has
@@ -835,8 +852,8 @@ int Player::getArmyByCountriesOwned() {
 	else {
 		rewardedArmies = countryCount / 3;
 	}
-
-	cout << "You have " << countryCount << " countries. You are rewarded " << rewardedArmies << " armies.\n";
+	cout << endl;
+	cout << *this->getName() <<" have " << countryCount << " countries. You are rewarded " << rewardedArmies << " armies.\n";
 
 	return rewardedArmies;
 }
@@ -1011,3 +1028,40 @@ void Player::fortifyToWeakest()
 	else
 		cout << "you can not Fortify this country." << endl;
 }
+
+bool Player::hasEnemyNeibour(Country& c)
+{
+	list<int> MyCoutriesIDs;
+	list<int> NeighboursIDs = *(c.getNeighbors());
+	for (vector<Country*>::iterator it = countries->begin(); it != countries->end(); it++) {
+			MyCoutriesIDs.push_back(*(*it)->getCountryID());
+	}
+	list<int> possibleAttakers;
+	list<int>::iterator it;
+
+	MyCoutriesIDs.sort();
+	NeighboursIDs.sort();
+
+	set_difference(NeighboursIDs.begin(), NeighboursIDs.end(), MyCoutriesIDs.begin(), MyCoutriesIDs.end(), std::inserter(possibleAttakers, possibleAttakers.begin()));
+	
+	return (possibleAttakers.size() > 0);
+}
+
+Strategy* Player::getStrategy()
+{
+	return strategy;
+}
+
+void Player::resetPlayer(Map* map)
+{
+	this->map = map;
+	this->continents = new vector<Continent>();
+	this->countries = new vector<Country*>();
+	this->dice = new Dice_Rolling_Facility();
+	this->h = new Hand(*(new Deck(0)));
+	this->availableArmies = new int(0);
+	this->viewBuffer = new vector<string>();
+	this->newPhase = new bool(false);
+}
+
+

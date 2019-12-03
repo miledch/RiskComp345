@@ -42,6 +42,8 @@ public:
 	/* Same as the methods in Player class but we need to use it from a Strategy object*/
 	Country* strongestCountry(vector<Country*>& myCountries);
 	Country* weakestCountry(vector<Country*>& countries);
+
+	virtual bool isHuman() = 0;
 };
 
 class HumanPlayer : public Strategy {
@@ -68,6 +70,8 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+
+	bool isHuman();
 };
 
 class AggressivePlayer : public Strategy {
@@ -94,6 +98,7 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+	bool isHuman();
 };
 
 class BenevolentPlayer : public Strategy {
@@ -120,6 +125,7 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+	bool isHuman();
 };
 
 class RandomPlayer : public Strategy {
@@ -146,6 +152,8 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+
+	bool isHuman();
 };
 
 class CheaterPlayer : public Strategy {
@@ -174,4 +182,5 @@ public:
 	int getAttackDice(int maxDice);
 	int getDefenceDice(int maxDice);
 	int getTransferArmies(int maxArmies);
+	bool isHuman();
 };
