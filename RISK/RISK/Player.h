@@ -78,7 +78,6 @@ public:
 	void fortifyToStrongest();
 	void fortifyToWeakest();
 	bool hasEnemyNeibour(Country& c);
-	Strategy* getStrategy();
 	void resetPlayer(Map* map);
 };
 

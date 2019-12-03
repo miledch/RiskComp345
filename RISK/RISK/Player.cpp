@@ -1047,11 +1047,6 @@ bool Player::hasEnemyNeibour(Country& c)
 	return (possibleAttakers.size() > 0);
 }
 
-Strategy* Player::getStrategy()
-{
-	return strategy;
-}
-
 void Player::resetPlayer(Map* map)
 {
 	this->map = map;
