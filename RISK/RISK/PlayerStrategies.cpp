@@ -22,7 +22,7 @@ Country* HumanPlayer::chooseCountryToReinforce(vector<Country*>* countries)
 	}
 }
 
-int HumanPlayer::getReinforceArmy(int rewardedArmy)
+int HumanPlayer::getReinforceArmy(int rewardedArmy, Player& player)
 {
 	int in;
 	while (true) {
@@ -34,6 +34,13 @@ int HumanPlayer::getReinforceArmy(int rewardedArmy)
 			cout << "Invalid input. Try again." << endl;
 		}
 	}
+}
+
+int HumanPlayer::getFortifyDecision(Player& player)
+{
+	int decision;
+	cin >> decision;
+	return decision;
 }
 
 int HumanPlayer::getFortifySource(vector<Country*> countries)
@@ -57,7 +64,7 @@ int HumanPlayer::getFortifyArmy(Country* source)
 	return army;
 }
 
-int HumanPlayer::getAttackDecision()
+int HumanPlayer::getAttackDecision(Player& player)
 {
 	int decision;
 	cin >> decision;
@@ -117,9 +124,14 @@ Country* AggressivePlayer::chooseCountryToReinforce(vector<Country*>* countries)
 	return strongestCountry(*countries); // Reinforce the strongest country
 }
 
-int AggressivePlayer::getReinforceArmy(int rewardedArmy)
+int AggressivePlayer::getReinforceArmy(int rewardedArmy, Player& player)
 {
 	return rewardedArmy; // Reinforce the strongest army with all armies at once
+}
+
+int AggressivePlayer::getFortifyDecision(Player& player)
+{
+	return 1;
 }
 
 int AggressivePlayer::getFortifySource(vector<Country*> countries)
@@ -143,7 +155,7 @@ int AggressivePlayer::getFortifyArmy(Country* source)
 	return ((*source->getCountryNumberArmies()) - 1);
 }
 
-int AggressivePlayer::getAttackDecision()
+int AggressivePlayer::getAttackDecision(Player& player)
 {
 	return 1; // Always attack if possible
 }
@@ -194,9 +206,14 @@ Country* BenevolentPlayer::chooseCountryToReinforce(vector<Country*>* countries)
 	return weakestCountry(*countries); // Always reinforce the weaker countries
 }
 
-int BenevolentPlayer::getReinforceArmy(int rewardedArmy)
+int BenevolentPlayer::getReinforceArmy(int rewardedArmy, Player& player)
 {
 	return 1; // Don't use all the armies, instead reinforce the weak countries 1 by 1
+}
+
+int BenevolentPlayer::getFortifyDecision(Player& player)
+{
+	return 1;
 }
 
 int BenevolentPlayer::getFortifySource(vector<Country*> countries)
@@ -227,7 +244,7 @@ int BenevolentPlayer::getFortifyArmy(Country* source)
 }
 
 // Attack decisions for benevolent CPU don't matter since it won't ever attack anyway
-int BenevolentPlayer::getAttackDecision()
+int BenevolentPlayer::getAttackDecision(Player& player)
 {
 	return 2; // Never attack
 }
@@ -275,9 +292,14 @@ Country* RandomPlayer::chooseCountryToReinforce(vector<Country*>* countries)
 	return (*countries)[index];
 }
 
-int RandomPlayer::getReinforceArmy(int rewardedArmy)
+int RandomPlayer::getReinforceArmy(int rewardedArmy, Player& player)
 {
 	return ((rand() % rewardedArmy) + 1);
+}
+
+int RandomPlayer::getFortifyDecision(Player& player)
+{
+	return 1;
 }
 
 int RandomPlayer::getFortifySource(vector<Country*> countries)
@@ -295,10 +317,10 @@ int RandomPlayer::getFortifyTarget(vector<Country*> countries)
 int RandomPlayer::getFortifyArmy(Country* source)
 {
 	int army = rand() % (*source->getCountryNumberArmies());
-	return 0;
+	return army;
 }
 
-int RandomPlayer::getAttackDecision()
+int RandomPlayer::getAttackDecision(Player& player)
 {
 	int decision = (rand() % 2) + 1;
 	return decision;
@@ -337,9 +359,158 @@ int RandomPlayer::getTransferArmies(int maxArmies)
 	return transfer;
 }
 
+
 bool RandomPlayer::isHuman()
 {
 	return false;
+
+//////////////////////////////// CHEATERPLAYER //////////////////////////////// 
+
+void CheaterPlayer::execute(Player* p)
+{
+}
+
+Country* CheaterPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+{
+	return strongestCountry(*countries);
+}
+
+int CheaterPlayer::getReinforceArmy(int rewardedArmy, Player& player)
+{
+	Country* strongestCountry = this->strongestCountry(*player.getCountries());
+	for (int i = 0; i < player.getNumPlayerCountries(); i++) {
+		*(*player.getCountries())[i]->getCountryNumberArmies() *= 2;
+	}// Double the armies in each country
+
+	cout << "** Cheater CPU player has doubled its armies on every country!**" << endl;
+
+	// Remove 'rewarded' # of armies from the strongest country because it will 
+	//be added later again from the placingArmy() method since we return 
+	//rewardedArmy from this function
+	*strongestCountry->getCountryNumberArmies() -= rewardedArmy;
+
+	return rewardedArmy;
+}
+
+int CheaterPlayer::getFortifyDecision(Player& player)
+{
+	// Get all the countries from the map
+	list<Country>* mapCountries = player.getMap()->getCountries();
+	list<Country>::iterator countriesIt;
+
+	// Get the player's countries
+	vector<Country*>* myCountries = player.getCountries();
+	vector<Country*>::iterator myCountryIt;
+
+	// Get all the neighbors of all the player's countries
+	list<int>* neighbors;
+	list<int>::iterator neighborId;
+
+	// Iterate through the vector of countries for that player
+	for (myCountryIt = myCountries->begin(); myCountryIt != myCountries->end(); ++myCountryIt) {
+		neighbors = (*myCountryIt)->getNeighbors();
+		// Iterate through the list of neighbors of each country of that player
+		for (neighborId = neighbors->begin(); neighborId != neighbors->end(); ++neighborId) {
+			for (countriesIt = mapCountries->begin(); countriesIt != mapCountries->end(); ++countriesIt) {
+				if (*countriesIt->getCountryID() == *neighborId) {
+					// If the neighboring country belongs to an enemy
+					if (*countriesIt->getCountryPlayerOwned() != *player.getName()) {
+						*((*myCountryIt)->getCountryNumberArmies()) *= 2; // Double the number of armies
+						cout << "Cheater CPU has doubled the number of armies in: " << *(*myCountryIt)->getCountryName() << "!" << endl;
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	return 2; // 2 for 'no' decision
+}
+
+int CheaterPlayer::getFortifySource(vector<Country*> countries)
+{
+	return 1;
+}
+
+int CheaterPlayer::getFortifyTarget(vector<Country*> countries)
+{
+	return 1;
+}
+
+int CheaterPlayer::getFortifyArmy(Country* source)
+{
+	return 1;
+}
+
+int CheaterPlayer::getAttackDecision(Player& player)
+{
+	// Get all the countries from the map
+	list<Country>* mapCountries = player.getMap()->getCountries();
+	list<Country>::iterator countriesIt;
+
+	// Get the player's countries
+	vector<Country*>* myCountries = player.getCountries();
+	vector<Country*>::iterator myCountryIt;
+
+	// Get all the neighbors of all the player's countries
+	list<int>* neighbors;
+	list<int>::iterator neighborId;
+
+	vector<Country*> tempCountries; // Countries that the cheater will eventually conquer
+	vector<Country*>::iterator tempCountriesIt;
+
+	// Iterate through the vector of countries for that player
+	for (myCountryIt = myCountries->begin(); myCountryIt != myCountries->end(); ++myCountryIt) {
+		neighbors = (*myCountryIt)->getNeighbors();
+		// Iterate through the list of neighbors of each country of that player
+		for (neighborId = neighbors->begin(); neighborId != neighbors->end(); ++neighborId) {
+			for (countriesIt = mapCountries->begin(); countriesIt != mapCountries->end(); ++countriesIt) {
+				if (*countriesIt->getCountryID() == *neighborId) {
+					// If the neighboring country belongs to an enemy
+					if (*countriesIt->getCountryPlayerOwned() != *player.getName()) {
+						countriesIt->setCountryPlayerOwned(*player.getName());
+						tempCountries.push_back(&(*countriesIt));
+						cout << "Cheater CPU now owns " << *countriesIt->getCountryName() << " and all armies in it!" << endl;
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	// Insert the countries now in the actual vector of countries for that player
+	// to keep the vector from changing while we were iterating through it before
+	for (int i = 0; i < tempCountries.size(); i++) {
+		myCountries->push_back(tempCountries[i]);
+	}
+
+	return 2; // Return 2 for 'no' decision
+}
+
+int CheaterPlayer::getAttackSource(vector<Country*> countries)
+{
+	return 0;
+}
+
+int CheaterPlayer::getAttackTarget(vector<int> validEntryForAttack)
+{
+	return 0;
+}
+
+int CheaterPlayer::getAttackDice(int maxDice)
+{
+	return 1;
+}
+
+int CheaterPlayer::getDefenceDice(int maxDice)
+{
+	return 1;
+}
+
+int CheaterPlayer::getTransferArmies(int maxArmies)
+{
+	return 1;
+
 }
 
 //////////////////////////////// MISCELLANEOUS //////////////////////////////// 

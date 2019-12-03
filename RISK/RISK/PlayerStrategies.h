@@ -12,10 +12,12 @@ public:
 	virtual Country* chooseCountryToReinforce(vector<Country*>* countries) = 0;
 
 	// Returns number of reinforce armies 
-	virtual int getReinforceArmy(int rewardedArmy) = 0;
+	virtual int getReinforceArmy(int rewardedArmy, Player& player) = 0;
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
+	// Returns decision to fortify or not
+	virtual int getFortifyDecision(Player& player) = 0;
 	 // Returns which country you want to take armies from
 	virtual int getFortifySource(vector<Country*> countries) = 0;
 
@@ -28,7 +30,7 @@ public:
 	//////////////////// ATTACK DECISIONS ////////////////////
 
 	// Returns decision to attack or not
-	virtual int getAttackDecision() = 0;
+	virtual int getAttackDecision(Player& player) = 0;
 	virtual int getAttackSource(vector<Country*> countries) = 0;
 	virtual int getAttackTarget(vector<int> validEntryForAttack) = 0;
 	virtual int getAttackDice(int maxDice) = 0;
@@ -51,17 +53,18 @@ public:
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
 	Country* chooseCountryToReinforce(vector<Country*>* countries);
-	int getReinforceArmy(int rewardedArmy);
+	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
+	int getFortifyDecision(Player& player);
 	int getFortifySource(vector<Country*> countries);
 	int getFortifyTarget(vector<Country*> countries);
 	int getFortifyArmy(Country* source);
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -78,17 +81,18 @@ public:
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
 	Country* chooseCountryToReinforce(vector<Country*>* countries);
-	int getReinforceArmy(int rewardedArmy);
+	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
+	int getFortifyDecision(Player& player);
 	int getFortifySource(vector<Country*> countries);
 	int getFortifyTarget(vector<Country*> countries);
 	int getFortifyArmy(Country* source);
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -104,17 +108,18 @@ public:
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
 	Country* chooseCountryToReinforce(vector<Country*>* countries);
-	int getReinforceArmy(int rewardedArmy);
+	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
+	int getFortifyDecision(Player& player);
 	int getFortifySource(vector<Country*> countries);
 	int getFortifyTarget(vector<Country*> countries);
 	int getFortifyArmy(Country* source);
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);
@@ -130,17 +135,46 @@ public:
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
 	Country* chooseCountryToReinforce(vector<Country*>* countries);
-	int getReinforceArmy(int rewardedArmy);
+	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
 
+	int getFortifyDecision(Player& player);
 	int getFortifySource(vector<Country*> countries);
 	int getFortifyTarget(vector<Country*> countries);
 	int getFortifyArmy(Country* source);
 
 	//////////////////// ATTACK DECISIONS ////////////////////
 
-	int getAttackDecision();
+	int getAttackDecision(Player& player);
+	int getAttackSource(vector<Country*> countries);
+	int getAttackTarget(vector<int> validEntryForAttack);
+	int getAttackDice(int maxDice);
+	int getDefenceDice(int maxDice);
+	int getTransferArmies(int maxArmies);
+};
+
+class CheaterPlayer : public Strategy {
+public:
+	void execute(Player* p);
+
+	//////////////////// REINFORCE DECISIONS ////////////////////
+
+	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	int getReinforceArmy(int rewardedArmy, Player& player);
+
+	//////////////////// FORTIFY DECISIONS ////////////////////
+
+	int getFortifyDecision(Player& player);
+	// The following 3 functions should technically never be called 
+	int getFortifySource(vector<Country*> countries);
+	int getFortifyTarget(vector<Country*> countries);
+	int getFortifyArmy(Country* source);
+
+	//////////////////// ATTACK DECISIONS ////////////////////
+
+	int getAttackDecision(Player& player);
+	// The following 5 functions should technically never be called 
 	int getAttackSource(vector<Country*> countries);
 	int getAttackTarget(vector<int> validEntryForAttack);
 	int getAttackDice(int maxDice);

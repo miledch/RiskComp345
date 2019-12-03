@@ -127,6 +127,11 @@ vector<string>* Player::getViewBuffer()
 	return viewBuffer;
 }
 
+Map* Player::getMap()
+{
+	return map;
+}
+
 void Player::setAvailableArmies(int armies)
 {
 	*(this->availableArmies) = armies;
@@ -196,9 +201,21 @@ void Player::attack()
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
-		playerDecision = this->strategy->getAttackDecision();
+
+		// playerDecision = this->strategy->getAttackDecision();
+		// if (playerDecision == 1) {
+		// 	attackPhase(keepAttacking);
+
+		playerDecision = this->strategy->getAttackDecision(*this);
 		if (playerDecision == 1) {
-			attackPhase(keepAttacking);
+			viewBuffer->push_back("You have chosen 1");
+			NotifyPhase();
+			attackPhase();
+		}
+		else if (playerDecision == 2) {
+			viewBuffer->push_back("You have chosen 2");
+			NotifyPhase();
+
 		}
 	}
 }
@@ -544,10 +561,32 @@ void Player::fortify()
 	viewBuffer->push_back("\nFORTIFICATION PHASE: " + *name +
 		"\n----------------------------------------------------------------------");
 	NotifyPhase();
-	Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)
-	vector<Country*> possibleTargets = ownedNieghbourCountry(*source);
-	Country* target = chooseTargetCountry(possibleTargets);// choosing the nighbouring country
-	movingArmy(source, target);
+	int playerDecision = 0;
+		viewBuffer->push_back(*this->getName() + ", do you want to fortify a country?");
+		NotifyPhase();
+		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
+		NotifyPhase();
+		playerDecision = this->strategy->getFortifyDecision(*this);
+		while (playerDecision != 1 && playerDecision != 2) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << "Please choose a valid number" << endl;
+			playerDecision = this->strategy->getFortifyDecision(*this);
+		}
+
+		if (playerDecision == 1)
+		{
+			viewBuffer->push_back("You have chosen 1");
+			NotifyPhase();
+			Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)
+			vector<Country*> possibleTargets = ownedNieghbourCountry(*source);
+			Country* target = chooseTargetCountry(possibleTargets);// choosing the nighbouring country
+			movingArmy(source, target);
+		}
+		else {
+			viewBuffer->push_back("You have chosen 2");
+			NotifyPhase();
+		}
 }
 // chosing the country that you want take army from
 Country* Player::chosingCountrySource()
@@ -576,6 +615,8 @@ Country* Player::chosingCountrySource()
 		// to check if the  is between 1 and the number of possible counties that can be part of the reinforcement
 		if (in > 0 && in <= possibleSource.size()) {
 			t = false;
+			viewBuffer->push_back("You have chosen " + to_string(in));
+			NotifyPhase();
 			return (possibleSource.at(in - 1));
 		}
 		else {
@@ -629,6 +670,8 @@ Country* Player::chooseTargetCountry(vector<Country*> targets)
 
 		if (in > 0 && in <= targets.size()) {
 			t = false;
+			viewBuffer->push_back("You have chosen " + to_string(in));
+			NotifyPhase();
 			return targets.at(in - 1);
 		}
 		else {
@@ -675,6 +718,8 @@ void Player::movingArmy(Country* source, Country* target)
 		int in = this->strategy->getFortifyArmy(source);
 		if (in > 0 && in <= (*source->getCountryNumberArmies() - 1)) {
 			check = false;
+			viewBuffer->push_back("You have chosen " + to_string(in));
+			NotifyPhase();
 			source->decreaseArmy(in);
 			target->increaseArmy(in);
 		}
@@ -758,7 +803,7 @@ void Player::placingArmy(int& rewardedArmy)
 		viewBuffer->push_back("Choose number of army to place in " + *(chosenCountry->getCountryName()) + ".");
 		NotifyPhase();
 
-		in = this->strategy->getReinforceArmy(rewardedArmy);
+		in = this->strategy->getReinforceArmy(rewardedArmy, *this);
 		chosenCountry->increaseArmy(in);
 		rewardedArmy = rewardedArmy - in;
 		viewBuffer->push_back("You have chosen " + to_string(in) + " armies");
