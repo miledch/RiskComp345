@@ -44,6 +44,7 @@ public:
 	int* getAvailableArmies();
 	vector<string>* getViewBuffer();
 	Map* getMap();
+	Strategy* getStrategy();
 	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();

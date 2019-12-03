@@ -132,6 +132,11 @@ Map* Player::getMap()
 	return map;
 }
 
+Strategy* Player::getStrategy()
+{
+	return strategy;
+}
+
 void Player::setAvailableArmies(int armies)
 {
 	*(this->availableArmies) = armies;
@@ -245,6 +250,8 @@ void Player::attackPhase()
 				{
 					attackCountry = &(*(*it));
 					validSelection = true;
+					viewBuffer->push_back("You have chosen " + *attackCountry->getCountryName());
+					NotifyPhase();
 				}
 			}
 		}
@@ -328,6 +335,8 @@ void Player::attackPhase()
 		if (*countriesIt->getCountryID() == attackSelection)
 		{
 			targetedCountry = &(*countriesIt);
+			viewBuffer->push_back("You have chosen " + *targetedCountry->getCountryName());
+			NotifyPhase();
 		}
 	}
 
@@ -370,6 +379,8 @@ void Player::attackPhase()
 			if (attackerNbrDice == i)
 			{
 				validSelection = true;
+				viewBuffer->push_back("You have chosen " + to_string(i));
+				NotifyPhase();
 				break;
 			}
 		}
@@ -424,6 +435,8 @@ void Player::attackPhase()
 			if (defenderNbrDice == i)
 			{
 				validSelection = true;
+				viewBuffer->push_back("You have chosen " + to_string(i));
+				NotifyPhase();
 				break;
 			}
 		}
@@ -516,8 +529,11 @@ void Player::attackPhase()
 						viewBuffer->push_back(">");
 						NotifyPhase();
 						nbrArmies = this->strategy->getTransferArmies(*attackCountry->getCountryNumberArmies() - 1);
-						if (nbrArmies > 0 && nbrArmies < *attackCountry->getCountryNumberArmies())
+						if (nbrArmies > 0 && nbrArmies < *attackCountry->getCountryNumberArmies()) {
 							validSelection = true;
+							viewBuffer->push_back("You have chosen " + to_string(nbrArmies));
+							NotifyPhase();
+						}
 						else {
 							viewBuffer->push_back("\nPlease enter a valid number");
 							NotifyPhase();
@@ -564,6 +580,9 @@ void Player::fortify()
 			viewBuffer->push_back("You have chosen 1");
 			NotifyPhase();
 			Country* source = chosingCountrySource(); //chosing on the countires that has a neighbour(belong to the same player)
+			if (source == NULL) {
+				return;
+			}
 			vector<Country*> possibleTargets = ownedNieghbourCountry(*source);
 			Country* target = chooseTargetCountry(possibleTargets);// choosing the nighbouring country
 			movingArmy(source, target);
@@ -595,18 +614,25 @@ Country* Player::chosingCountrySource()
 			}
 		}
 		check = false;
-		int in = this->strategy->getFortifySource(possibleSource);
+		if (possibleSource.size() > 0) {
+			int in = this->strategy->getFortifySource(possibleSource);
 
-		// to check if the  is between 1 and the number of possible counties that can be part of the reinforcement
-		if (in > 0 && in <= possibleSource.size()) {
-			t = false;
-			viewBuffer->push_back("You have chosen " + to_string(in));
-			NotifyPhase();
-			return (possibleSource.at(in - 1));
+			// to check if the  is between 1 and the number of possible counties that can be part of the reinforcement
+			if (in > 0 && in <= possibleSource.size()) {
+				t = false;
+				viewBuffer->push_back("You have chosen " + to_string(in));
+				NotifyPhase();
+				return (possibleSource.at(in - 1));
+			}
+			else {
+				viewBuffer->push_back("Invalid input.\nTry again:\n");
+				NotifyPhase();
+			}
 		}
 		else {
-			viewBuffer->push_back("Invalid input.\nTry again:\n");
+			viewBuffer->push_back("Sorry, no countries to fortify from\n");
 			NotifyPhase();
+			return NULL;
 		}
 	} while (t);
 }
@@ -710,6 +736,8 @@ void Player::movingArmy(Country* source, Country* target)
 		}
 		else if (in == 0) {
 			check = false;
+			viewBuffer->push_back("You have chosen 0");
+			NotifyPhase();
 		}
 		else {
 			viewBuffer->push_back("You should leave at least one army in" + *source->getCountryName() + "\n");

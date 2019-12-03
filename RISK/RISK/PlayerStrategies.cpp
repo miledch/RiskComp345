@@ -157,6 +157,9 @@ int AggressivePlayer::getAttackDecision(Player& player)
 
 int AggressivePlayer::getAttackSource(vector<Country*> countries)
 {
+	if (countries.size() == 0) {
+		return 0;
+	}
 	int source = *strongestCountry(countries)->getCountryID();
 	return source; // Always attack from strongest country
 }
@@ -289,6 +292,10 @@ int RandomPlayer::getFortifyDecision(Player& player)
 
 int RandomPlayer::getFortifySource(vector<Country*> countries)
 {
+	if (countries.size() == 0) {
+		return 0;
+	}
+
 	int index = rand() % countries.size();
 	return (index+1);
 }
@@ -313,6 +320,9 @@ int RandomPlayer::getAttackDecision(Player& player)
 
 int RandomPlayer::getAttackSource(vector<Country*> countries)
 {
+	if (countries.size() == 0) {
+		return 0;
+	}
 	int index = (rand() % countries.size());
 	int id = (*countries[index]->getCountryID());
 	return id;
@@ -328,8 +338,8 @@ int RandomPlayer::getAttackTarget(vector<int> validEntryForAttack)
 
 int RandomPlayer::getAttackDice(int maxDice)
 {
-	int dice = (rand() % maxDice) + 1;
-	return dice;
+	// Return max because it might choose 1 or 2 and it just prolongs the game
+	return maxDice;
 }
 
 int RandomPlayer::getDefenceDice(int maxDice)

@@ -405,6 +405,7 @@ void GameEngine::startup()
 
 void GameEngine::runGame() {
 	string winner;
+	int strategyChoice;
 	while (true) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
@@ -413,6 +414,60 @@ void GameEngine::runGame() {
 			(*players)[i].attack();
 			this->updateCountries();
 			(*players)[i].fortify();
+
+			HumanPlayer* hPlayer = dynamic_cast<HumanPlayer*> ((*players)[i].getStrategy());
+			strategyChoice;
+			if (hPlayer != NULL) {
+				cout << "\n" << *(*players)[i].getName() << ", do you want to change strategy?" << endl;
+
+				cout << "1. Yes\n2. No" << endl;
+
+				cin >> strategyChoice;
+				while (strategyChoice != 1 && strategyChoice != 2) {
+					cin.clear();
+					cin.ignore(256, '\n');
+					cout << "Please choose a valid number" << endl;
+					cin >> strategyChoice;
+				}
+				cin.clear();
+				cin.ignore(256, '\n');
+
+				if (strategyChoice == 1) {
+					cout << "Which strategy do you want to take?" << endl;
+					cout << "\n1. Human\n2. Aggressive\n3. Benevolent\n4. Random\n5. Cheater" << endl;
+					cin >> strategyChoice;
+					while (strategyChoice > 5 || strategyChoice < 1) {
+						cin.clear();
+						cin.ignore(256, '\n');
+						cout << "Please choose a valid number" << endl;
+						cin >> strategyChoice;
+					}
+					cin.clear();
+					cin.ignore(256, '\n');
+
+					switch (strategyChoice) {
+					case 1:
+						(*players)[i].setStrategy(new HumanPlayer());
+						cout << (*(*players)[i].getName()) << " has been set to a Human Player" << endl;
+						break;
+					case 2:
+						(*players)[i].setStrategy(new AggressivePlayer());
+						cout << (*(*players)[i].getName()) << " has been set to a Aggressive Player" << endl;
+						break;
+					case 3:
+						(*players)[i].setStrategy(new BenevolentPlayer());
+						cout << (*(*players)[i].getName()) << " has been set to a Benevolent Player" << endl;
+						break;
+					case 4:
+						(*players)[i].setStrategy(new RandomPlayer());
+						cout << (*(*players)[i].getName()) << " has been set to a Random Player" << endl;
+						break;
+					case 5:
+						(*players)[i].setStrategy(new CheaterPlayer());
+						cout << (*(*players)[i].getName()) << " has been set to a Cheater Player" << endl;
+					}
+				}
+			}
 
 			ownsAllCountries = true;
 
@@ -626,13 +681,17 @@ void GameEngine::updateCountries()
 	for (int i = 0; i < this->players->size(); i++) {
 		vector<Country*>* countries = (*players)[i].getCountries();
 		// Loop through all the countries for each player to check if they lost any countries
-		for (vector<Country*>::iterator countriesIt = countries->begin(); countriesIt != countries->end(); ++countriesIt) {
+		vector<Country*>::iterator countriesIt = countries->begin();
+		while (countriesIt != countries->end()) {
 			if (*(*countriesIt)->getCountryPlayerOwned() != *(*players)[i].getName()) {
 				// Remove the country from its countries vector if they lost it
 				countries->erase(countriesIt);
 				// Reset the iterator to the beginning, otherwise the iterator is 'invalidated'
 				// ... whatever that means...
 				countriesIt = countries->begin();
+			}
+			else {
+				++countriesIt;
 			}
 		}
 	}
