@@ -556,6 +556,7 @@ void GameEngine::runGameCpu()
 				bool ownsAllCountries = true;
 				(*players)[i].reinforce();
 				(*players)[i].attack();
+				this->updateCountries();
 				(*players)[i].fortify();
 
 				ownsAllCountries = true;
@@ -582,6 +583,10 @@ void GameEngine::runGameCpu()
 			else {
 				cout << "\n" << *(*players)[i].getName() << "'s turn will be skipped as he/she lost all countries" << endl;
 			}
+		}
+
+		if (finished) {
+			break;
 		}
 
 		numTurn--;
