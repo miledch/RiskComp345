@@ -577,7 +577,7 @@ void Player::attackPhase(bool& keepAttacking)
 
 					countriesIt->setCountryNumberArmies(nbrArmies);
 					// TODO Do we have to decrease armies from the source countries after moving them
-					//attackCountry->decreaseArmy(nbrArmies);
+					attackCountry->decreaseArmy(nbrArmies);
 					break;
 				}
 			}
