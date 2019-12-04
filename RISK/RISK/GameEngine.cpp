@@ -91,12 +91,12 @@ GameEngine::GameEngine()
 	players = new vector<Player>();
 
 	for (int i = 0; i < *numOfPlayers; i++) {
-		players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i+1)))));
+		players->push_back(Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Player " + to_string((i + 1)))));
 	}
 }
 
-GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMapsPath(new vector<string>), remainingMaps(new vector <string>), 
-	winners(new vector<string>), players(new vector<Player>())
+GameEngine::GameEngine(bool tournament) :numOfPlayers(0), selectedMapsPath(new vector<string>), remainingMaps(new vector <string>),
+winners(new vector<string>), players(new vector<Player>())
 {
 	int mapsNum = choosingNumOfMaps();
 	selectingMaps(mapsNum);
@@ -125,17 +125,18 @@ GameEngine::GameEngine(int i)
 	{
 		cout << (i + 1) << ": " << availableMaps[i] << endl;
 	}
-	 
+
 
 	int n;
 	cin >> n;
 	bool valid = false;
 	while (!valid) {
-		if (n > 0 && n <= availableMaps.size() ) {
+		if (n > 0 && n <= availableMaps.size()) {
 			valid = true;
-		}else{
-		cout << "Please choose a valid number" << endl;
-		cin >> n;
+		}
+		else {
+			cout << "Please choose a valid number" << endl;
+			cin >> n;
 		}
 	}
 
@@ -229,9 +230,25 @@ GameEngine& GameEngine::operator=(const GameEngine& rhs)
 
 void GameEngine::randomizeOrder()
 {
+	vector<Strategy*> strategies;
+	vector<string> names;
+	for (int i = 0; i < (*players).size(); i++) {
+		strategies.push_back((*players)[i].getStrategy());
+		names.push_back(*(*players)[i].getName());
+	}
+
 	random_device rd;
 	auto randomEngine = default_random_engine{ rd() };
 	shuffle(begin(*players), end(*players), randomEngine);
+
+	for (int i = 0; i < names.size(); i++) {
+		for (int j = 0; j < (*players).size(); j++) {
+			if (names[i] == *(*players)[j].getName()) {
+				(*players)[j].setStrategy(strategies[i]);
+				break;
+			}
+		}
+	}
 }
 
 void GameEngine::assignCountries()
@@ -340,7 +357,7 @@ void GameEngine::assignArmies()
 				}
 			}
 		}
-		else 
+		else
 			this->autoPlaceArmies();
 	}
 	else
@@ -432,34 +449,22 @@ void GameEngine::runGame() {
 	while (true) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
-			bool ownsAllCountries = true;
-			(*players)[i].reinforce();
-			(*players)[i].attack();
-			this->updateCountries();
-			(*players)[i].fortify();
+			// Skips the plyer's turn if they lost all their countries
+			if (!(*(*players)[i].getLostAllCountries())) {
+				bool ownsAllCountries = true;
+				(*players)[i].reinforce();
+				(*players)[i].attack();
+				this->updateCountries();
+				(*players)[i].fortify();
 
-			HumanPlayer* hPlayer = dynamic_cast<HumanPlayer*> ((*players)[i].getStrategy());
-			strategyChoice;
-			if (hPlayer != NULL) {
-				cout << "\n" << *(*players)[i].getName() << ", do you want to change strategy?" << endl;
+				HumanPlayer* hPlayer = dynamic_cast<HumanPlayer*> ((*players)[i].getStrategy());
+				if (hPlayer != NULL) {
+					cout << "\n" << *(*players)[i].getName() << ", do you want to change strategy?" << endl;
 
-				cout << "1. Yes\n2. No" << endl;
+					cout << "1. Yes\n2. No" << endl;
 
-				cin >> strategyChoice;
-				while (strategyChoice != 1 && strategyChoice != 2) {
-					cin.clear();
-					cin.ignore(256, '\n');
-					cout << "Please choose a valid number" << endl;
 					cin >> strategyChoice;
-				}
-				cin.clear();
-				cin.ignore(256, '\n');
-
-				if (strategyChoice == 1) {
-					cout << "Which strategy do you want to take?" << endl;
-					cout << "\n1. Human\n2. Aggressive\n3. Benevolent\n4. Random\n5. Cheater" << endl;
-					cin >> strategyChoice;
-					while (strategyChoice > 5 || strategyChoice < 1) {
+					while (strategyChoice != 1 && strategyChoice != 2) {
 						cin.clear();
 						cin.ignore(256, '\n');
 						cout << "Please choose a valid number" << endl;
@@ -468,44 +473,69 @@ void GameEngine::runGame() {
 					cin.clear();
 					cin.ignore(256, '\n');
 
-					switch (strategyChoice) {
-					case 1:
-						(*players)[i].setStrategy(new HumanPlayer());
-						cout << (*(*players)[i].getName()) << " has been set to a Human Player" << endl;
+					if (strategyChoice == 1) {
+						cout << "Which strategy do you want to take?" << endl;
+						cout << "\n1. Human\n2. Aggressive\n3. Benevolent\n4. Random\n5. Cheater" << endl;
+						cin >> strategyChoice;
+						while (strategyChoice > 5 || strategyChoice < 1) {
+							cin.clear();
+							cin.ignore(256, '\n');
+							cout << "Please choose a valid number" << endl;
+							cin >> strategyChoice;
+						}
+						cin.clear();
+						cin.ignore(256, '\n');
+
+						switch (strategyChoice) {
+						case 1:
+							(*players)[i].setStrategy(new HumanPlayer());
+							cout << (*(*players)[i].getName()) << " has been set to a Human Player" << endl;
+							break;
+						case 2:
+							(*players)[i].setStrategy(new AggressivePlayer());
+							cout << (*(*players)[i].getName()) << " has been set to a Aggressive Player" << endl;
+							break;
+						case 3:
+							(*players)[i].setStrategy(new BenevolentPlayer());
+							cout << (*(*players)[i].getName()) << " has been set to a Benevolent Player" << endl;
+							break;
+						case 4:
+							(*players)[i].setStrategy(new RandomPlayer());
+							cout << (*(*players)[i].getName()) << " has been set to a Random Player" << endl;
+							break;
+						case 5:
+							(*players)[i].setStrategy(new CheaterPlayer());
+							cout << (*(*players)[i].getName()) << " has been set to a Cheater Player" << endl;
+						}
+					}
+				}
+
+				ownsAllCountries = true;
+
+				for (Country country : *(map->getCountries())) {
+					if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+						ownsAllCountries = false;
 						break;
-					case 2:
-						(*players)[i].setStrategy(new AggressivePlayer());
-						cout << (*(*players)[i].getName()) << " has been set to a Aggressive Player" << endl;
-						break;
-					case 3:
-						(*players)[i].setStrategy(new BenevolentPlayer());
-						cout << (*(*players)[i].getName()) << " has been set to a Benevolent Player" << endl;
-						break;
-					case 4:
-						(*players)[i].setStrategy(new RandomPlayer());
-						cout << (*(*players)[i].getName()) << " has been set to a Random Player" << endl;
-						break;
-					case 5:
-						(*players)[i].setStrategy(new CheaterPlayer());
-						cout << (*(*players)[i].getName()) << " has been set to a Cheater Player" << endl;
+					}
+				}
+				if (ownsAllCountries == true) {
+					winner = *((*players)[i].getName());
+					finished = true;
+					break;
+				}
+
+				// Remove any player from the game if they don't have any countries left
+				for (int j = 0; j < (*players).size(); j++) {
+					if ((*players)[j].getCountries()->size() == 0) {
+						(*players)[j].setLostAllCountries(true);
 					}
 				}
 			}
-
-			ownsAllCountries = true;
-
-			for (Country country : *(map->getCountries())) {
-				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
-					ownsAllCountries = false;
-					break;
-				}
-			}
-			if (ownsAllCountries == true) {
-				winner = *((*players)[i].getName());
-				finished = true;
-				break;
+			else {
+				cout << "\n" << *(*players)[i].getName() << "'s turn will be skipped as he/she lost all countries" << endl;
 			}
 		}
+
 		if (finished) {
 			break;
 		}
@@ -521,25 +551,39 @@ void GameEngine::runGameCpu()
 	while (numTurn != 0) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
-			bool ownsAllCountries = true;
-			(*players)[i].reinforce();
-			(*players)[i].attack();
-			(*players)[i].fortify();
+			// Skips the plyer's turn if they lost all their countries
+			if (!(*(*players)[i].getLostAllCountries())) {
+				bool ownsAllCountries = true;
+				(*players)[i].reinforce();
+				(*players)[i].attack();
+				(*players)[i].fortify();
 
-			ownsAllCountries = true;
+				ownsAllCountries = true;
 
-			for (Country country : *(map->getCountries())) {
-				if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
-					ownsAllCountries = false;
+				for (Country country : *(map->getCountries())) {
+					if (*(country.getCountryPlayerOwned()) != *((*players)[i].getName())) {
+						ownsAllCountries = false;
+						break;
+					}
+				}
+				if (ownsAllCountries == true) {
+					winner = *((*players)[i].getName());
+					finished = true;
 					break;
 				}
+
+				// Remove any player from the game if they don't have any countries left
+				for (int j = 0; j < (*players).size(); j++) {
+					if ((*players)[j].getCountries()->size() == 0) {
+						(*players)[j].setLostAllCountries(true);
+					}
+				}
 			}
-			if (ownsAllCountries == true) {
-				winner = *((*players)[i].getName());
-				finished = true;
-				break;
+			else {
+				cout << "\n" << *(*players)[i].getName() << "'s turn will be skipped as he/she lost all countries" << endl;
 			}
 		}
+
 		numTurn--;
 	}
 	//cout << winner << " owns all the countries and wins the game!" << endl;
@@ -586,7 +630,7 @@ int GameEngine::choosingNumOfMaps()
 	int numOfMaps;
 	bool valid = false;
 	cin >> numOfMaps;
-	while(!valid){
+	while (!valid) {
 		if (numOfMaps > 0 && numOfMaps <= 5) {
 			valid = true;
 		}
@@ -618,11 +662,11 @@ void GameEngine::choosingNumOfPlayers()
 
 	cout << "\nNow choose your " << numCpuPlayers << " player types" << endl;
 	vector<string> cpuPlayersType = { "Aggressive", "Benevolent", "Random", "Cheater" };
-	while(numCpuPlayers != 0){
+	while (numCpuPlayers != 0) {
 		string choice;
 		int selection;
 		for (int i = 0; i < cpuPlayersType.size(); i++) {
-			cout << i+1 << ": " << cpuPlayersType[i] << endl;
+			cout << i + 1 << ": " << cpuPlayersType[i] << endl;
 		}
 		int stringSize = cpuPlayersType.size();
 		bool validSelection = false;
@@ -687,19 +731,19 @@ void GameEngine::selectingMaps(int& mapsNum)
 
 	for (auto& p : fs::recursive_directory_iterator(path))
 	{
-		if (p.path().extension() == ext){
+		if (p.path().extension() == ext) {
 			availableMaps.push_back(p.path().stem().string());
 			remainingMaps->push_back(p.path().stem().string());
 		}
 	}
-	while(mapsNum > 0)
+	while (mapsNum > 0)
 	{
 		cout << "Please select maps from the following list:" << endl;
 		for (int i = 0; i < remainingMaps->size(); i++)
 		{
 			cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
 		}
-		
+
 		// checking USER'S input
 		int n;
 		cout << ">";
@@ -712,12 +756,13 @@ void GameEngine::selectingMaps(int& mapsNum)
 				}
 				else
 					throw n;
-			}catch(int e){
-				cout << e <<" isn't a between 1 and "<< remainingMaps->size() <<" Please choose a valid number\n>";
+			}
+			catch (int e) {
+				cout << e << " isn't a between 1 and " << remainingMaps->size() << " Please choose a valid number\n>";
 				cin >> n;
 			}
 		}
-	
+
 		mapPath = new string(path + (*remainingMaps)[n - 1] + ext);
 		cout << "You have chosen " << *mapPath << endl;
 
@@ -750,8 +795,8 @@ void GameEngine::selectingMaps(int& mapsNum)
 		map = nullptr;
 		delete mapPath;
 		mapPath = nullptr;
-		if(mapsNum != 0)
-		cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
+		if (mapsNum != 0)
+			cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
 	}
 }
 
@@ -781,7 +826,7 @@ void GameEngine::choosingNumOfMaxTurns()
 	cin >> numOfTurns;
 	while (!valid) {
 		if (numOfTurns > 9 && numOfTurns <= 50) {
-			numOfMaxTurns = new int (numOfTurns);
+			numOfMaxTurns = new int(numOfTurns);
 			valid = true;
 		}
 		else {
@@ -801,7 +846,7 @@ void GameEngine::choosingNumOfGames()
 	cin >> gameNum;
 	while (!valid) {
 		if (gameNum > 0 && gameNum <= 5) {
-			numOfGames = new int (gameNum);
+			numOfGames = new int(gameNum);
 			valid = true;
 		}
 		else {
@@ -812,7 +857,7 @@ void GameEngine::choosingNumOfGames()
 	}
 }
 
-void GameEngine::startupCpu(){
+void GameEngine::startupCpu() {
 	randomizeOrder();
 	cout << "The order of the play will be: " << endl;
 	for (int i = 0; i < *numOfPlayers; i++) {
@@ -884,7 +929,7 @@ GameEngine* GameEngineDriver::runGameStart()
 	int numOfPlayers = *g.getNumOfPlayers();
 	cout << "\n" << numOfPlayers << " players have been created:" << endl;
 	for (int i = 0; i < numOfPlayers; i++) {
-		cout << (i+1) << ". " << (*(*g.getPlayers())[i].getName()) << endl;
+		cout << (i + 1) << ". " << (*(*g.getPlayers())[i].getName()) << endl;
 	}
 
 	int strategyChoice;
@@ -920,7 +965,7 @@ GameEngine* GameEngineDriver::runGameStart()
 			(*g.getPlayers())[i].setStrategy(new RandomPlayer());
 			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Random Player" << endl;
 			break;
-		case 5: 
+		case 5:
 			(*g.getPlayers())[i].setStrategy(new CheaterPlayer());
 			cout << (*(*g.getPlayers())[i].getName()) << " has been set to a Cheater Player" << endl;
 		}
@@ -996,18 +1041,18 @@ void GameEngineDriver::runTournamentStart()
 				slashPos = it->find("/");
 				pointPos = it->find(".");
 				map = *it;
-				map = string(&map[slashPos+1], &map[pointPos]);
+				map = string(&map[slashPos + 1], &map[pointPos]);
 				printf("%-20s", map.c_str());
-			}	
+			}
 			else
 			{
 				printf("%-20s", g.getWinners()->at(i).c_str());
 			}
-			
+
 		}
 		cout << endl;
 	}
-	
+
 }
 
 GameEngine* GameEngineDriver::runPlayerVsCpu() {

@@ -25,6 +25,9 @@ private:
 	string* name; // A player needs a name
 	int* availableArmies;
 	Strategy *strategy;
+	// When a player loses all their countries this will be set to true so we know 
+	// that they are out of the game
+	bool* lostAllCountries;
 
 	vector<string>* viewBuffer; // This can be considered as the 'view' it will store the things it will print
 	bool* newPhase; // To indicate if the player has entered a new phase
@@ -46,6 +49,8 @@ public:
 	vector<string>* getViewBuffer();
 	Map* getMap();
 	Strategy* getStrategy();
+	bool* getLostAllCountries();
+	void setLostAllCountries(bool lost);
 	void setAvailableArmies(int armies);
 	void changeHand(Hand* c);
 	void printCountries();

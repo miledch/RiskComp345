@@ -189,6 +189,10 @@ int AggressivePlayer::getDefenceDice(int maxDice)
 
 int AggressivePlayer::getTransferArmies(int maxArmies)
 {
+	if (maxArmies == 1) {
+		return maxArmies; // return 1
+	}
+
 	return (maxArmies/2);
 }
 

@@ -13,6 +13,7 @@ Player::Player()
 	availableArmies = new int(0);
 	viewBuffer = new vector<string>();
 	newPhase = new bool(false);
+	lostAllCountries = new bool(false);
 }
 
 Player::Player(Strategy* s) {
@@ -32,6 +33,7 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->viewBuffer = new vector<string>();
 	this->newPhase = new bool(false);
 	this->strategy = new HumanPlayer();
+	this->lostAllCountries = new bool(false);
 }
 
 Player::Player(const Player& p2)
@@ -46,6 +48,7 @@ Player::Player(const Player& p2)
 	this->viewBuffer = new vector<string>(*p2.viewBuffer);
 	this->newPhase = new bool(*p2.newPhase);
 	this->strategy = p2.strategy;
+	this->lostAllCountries = new bool(false);
 }
 
 Player& Player::operator=(const Player& rhs)
@@ -61,6 +64,7 @@ Player& Player::operator=(const Player& rhs)
 		*(this->availableArmies) = *(rhs.availableArmies);
 		*(this->viewBuffer) = *(rhs.viewBuffer);
 		*(this->newPhase) = *(rhs.newPhase);
+		*(this->lostAllCountries) = *(rhs.lostAllCountries);
 	}
 	return *this;
 }
@@ -86,6 +90,8 @@ Player::~Player()
 	viewBuffer = NULL;
 	delete newPhase;
 	newPhase = NULL;
+	delete lostAllCountries;
+	lostAllCountries = NULL;
 
 }
 
@@ -135,6 +141,16 @@ Map* Player::getMap()
 Strategy* Player::getStrategy()
 {
 	return strategy;
+}
+
+bool* Player::getLostAllCountries()
+{
+	return lostAllCountries;
+}
+
+void Player::setLostAllCountries(bool lost)
+{
+	*this->lostAllCountries = lost;
 }
 
 void Player::setAvailableArmies(int armies)
@@ -207,17 +223,12 @@ void Player::attack()
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
 
-		 playerDecision = this->strategy->getAttackDecision(*this);
-		 if (playerDecision == 1) {
-			 attackPhase(keepAttacking);
-		 }
-
-		//playerDecision = this->strategy->getAttackDecision(*this);
-		//if (playerDecision == 1) {
-		//	viewBuffer->push_back("You have chosen 1");
-		//	NotifyPhase();
-		//	attackPhase();
-		//}
+		playerDecision = this->strategy->getAttackDecision(*this);
+		if (playerDecision == 1) {
+			viewBuffer->push_back("You have chosen 1");
+			NotifyPhase();
+			attackPhase(keepAttacking);
+		}
 		else if (playerDecision == 2) {
 			viewBuffer->push_back("You have chosen 2");
 			NotifyPhase();
@@ -234,6 +245,7 @@ void Player::attackPhase(bool& keepAttacking)
 	int countrySelected;
 	bool validSelection = false;
 	vector<Country*>::iterator it;
+	vector<Country*> possibleSource;
 	//The player selects one of its countries to attack from, The attacking country must have at least 2 armies on it
 	do
 	{
@@ -244,29 +256,37 @@ void Player::attackPhase(bool& keepAttacking)
 		{
 			if (*((*it)->getCountryNumberArmies()) >= 2 && hasEnemyNeibour(**it))
 			{
+				possibleSource.push_back(*it);
 				viewBuffer->push_back(to_string(*(*it)->getCountryID()) + "\tCountry " + *(*it)->getCountryName() + " has " + to_string(*(*it)->getCountryNumberArmies()) + " armies available");
 				NotifyPhase();
 			}
 		}
 		viewBuffer->push_back(">");
 		NotifyPhase();
-		countrySelected = this->strategy->getAttackSource(*this->countries);
-		for (it = countries->begin(); it != countries->end(); ++it)
-		{
-			if (*(*it)->getCountryNumberArmies() >= 2)
+		if (possibleSource.size() > 0) {
+			countrySelected = this->strategy->getAttackSource(possibleSource);
+			for (it = countries->begin(); it != countries->end(); ++it)
 			{
-				if (countrySelected == *(*it)->getCountryID())
+				if (*(*it)->getCountryNumberArmies() >= 2)
 				{
-					attackCountry = &(*(*it));
-					validSelection = true;
-					viewBuffer->push_back("You have chosen " + *attackCountry->getCountryName());
-					NotifyPhase();
+					if (countrySelected == *(*it)->getCountryID())
+					{
+						attackCountry = &(*(*it));
+						validSelection = true;
+						viewBuffer->push_back("You have chosen " + *attackCountry->getCountryName());
+						NotifyPhase();
+					}
 				}
 			}
+			if (!validSelection) {
+				viewBuffer->push_back("Enter a valid country ID ");
+				NotifyPhase();
+			}
 		}
-		if (!validSelection) {
-			viewBuffer->push_back("Enter a valid country ID ");
+		else {
+			viewBuffer->push_back("Sorry, no country to attack from");
 			NotifyPhase();
+			return;
 		}
 	} while (!validSelection);
 
@@ -1057,6 +1077,7 @@ void Player::resetPlayer(Map* map)
 	this->availableArmies = new int(0);
 	this->viewBuffer = new vector<string>();
 	this->newPhase = new bool(false);
+	this->lostAllCountries = new bool(false);
 }
 
 
