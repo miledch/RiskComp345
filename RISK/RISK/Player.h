@@ -25,7 +25,7 @@ private:
 	string* name; // A player needs a name
 	int* availableArmies;
 	Strategy *strategy;
-
+	bool hasAttaked;
 	vector<string>* viewBuffer; // This can be considered as the 'view' it will store the things it will print
 	bool* newPhase; // To indicate if the player has entered a new phase
 
@@ -77,6 +77,13 @@ public:
 	void fortifyToWeakest();
 	bool hasEnemyNeibour(Country& c);
 	Strategy* getStrategy();
+	void drawCard() {
+		if (hasAttaked) {
+			cout << "card has been drawn" << endl;
+			this->getHand()->draw();
+			hasAttaked = false;
+		}
+	}
 };
 
 class PlayerDriver 

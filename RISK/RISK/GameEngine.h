@@ -36,13 +36,15 @@ public:
 	void choosingNumOfPlayers();
 	void selectingMaps(int&); // for tournament
 	void loadTournamentMaps(string mapPath); // for tournament
+	
 	void choosingNumOfMaxTurns();
 	void choosingNumOfGames();
-	void startupCpu();
-	void runGameCpu(int);
+	void startupCpu(int);
+	void runGameCpu(int, vector<string>& );
 	bool isIncludeHuman();
 	void createPlayers(vector<string>& , string);
-
+	void assignCountries(int); // Randomly assign countries to players in round-robin fashion
+	void assignArmies(int);
 	~GameEngine();
 
 private:
@@ -55,10 +57,9 @@ private:
 	int* numOfPlayers; // This is needed for the copy constructor
 
 	void randomizeOrder(); // Shuffle the vector of players to randomize the order of play
-	void assignCountries(); // Randomly assign countries to players in round-robin fashion
-	void assignArmies(); // Players assign armies to their countries in round-robin fashion
+	 // Players assign armies to their countries in round-robin fashion
 
-	void autoPlaceArmies(); /* Place armies automatically in the startup phase 
+	void autoPlaceArmies(int); /* Place armies automatically in the startup phase 
 							 instead of choosing manually */
 
 	int *numOfMaxTurns;
@@ -73,8 +74,9 @@ private:
 class GameEngineDriver : public GameEngine
 {
 public:
-	static GameEngine* runGameStart();
-	static void runTournamentStart();
-	static GameEngine* runModeSelection();
+	static GameEngine* runGameStart1();
+	static void runTournamentStart1();
+	static GameEngine* runModeSelection1();
 	static GameEngine* runPlayerVsCpu();
+	static MapLoader* LoadLoader(string& mapPath);
 };

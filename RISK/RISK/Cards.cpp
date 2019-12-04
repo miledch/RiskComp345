@@ -219,10 +219,10 @@ bool Hand::exchange()
 {
 	this->displayExchangeOptions();
 
-	size_t optionId;
+	size_t optionId =1;
 
-	cout << "Enter exchange option #: ";
-	cin >> optionId;
+	/*cout << "Enter exchange option #: ";
+	cin >> optionId;*/
 
 	if (optionId <= this->exchangeOptions.size()) {
 		auto optionIt = this->exchangeOptions.begin();
@@ -240,6 +240,7 @@ bool Hand::exchange()
 		cout << "(" << optionId << ") is an invalid exchange #";
 		return false;
 	}
+	
 }
 // prints the cards in the hand
 void Hand::printCards()

@@ -246,7 +246,7 @@ void GameEngine::randomizeOrder()
 	shuffle(begin(*players), end(*players), randomEngine);
 }
 
-void GameEngine::assignCountries()
+void GameEngine::assignCountries(int num)
 {
 	random_device rd;
 	auto randomEngine = default_random_engine{ rd() };
@@ -264,7 +264,7 @@ void GameEngine::assignCountries()
 	int j = 0;
 
 	for (int i = 0; i < countries->size(); i++, j++) {
-		if (j == *numOfPlayers) {
+		if (j == num) {
 			j = 0; // Once j surpasses the player count, set it back to 0 (round-robin)
 			cout << endl;
 		}
@@ -278,11 +278,11 @@ void GameEngine::assignCountries()
 	}
 }
 
-void GameEngine::assignArmies()
+void GameEngine::assignArmies(int numOfPlayers)
 {
 	int A; // # of armies per player
 
-	switch (*numOfPlayers) {
+	switch (numOfPlayers) {
 	case 2:
 		A = 40;
 		break;
@@ -299,7 +299,7 @@ void GameEngine::assignArmies()
 		A = 20;
 	}
 
-	for (int i = 0; i < *numOfPlayers; i++) {
+	for (int i = 0; i < numOfPlayers; i++) {
 		(*players)[i].setAvailableArmies(A); // # of armies that each player has left to place
 	}
 
@@ -323,10 +323,10 @@ void GameEngine::assignArmies()
 		if (decision == 1) {
 
 			int countryChosenIdx;
-			int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / *numOfPlayers); // 'floor' to get the max value
+			int maxAvailableArmies = A - floor((double)(map->getCountries()->size()) / numOfPlayers); // 'floor' to get the max value
 
 			for (int k = 0; k < maxAvailableArmies; k++) {
-				for (int i = 0; i < *numOfPlayers; i++) {
+				for (int i = 0; i < numOfPlayers; i++) {
 
 					if (*(*players)[i].getAvailableArmies() == 0) {
 						continue;
@@ -353,20 +353,20 @@ void GameEngine::assignArmies()
 			}
 		}
 		else {
-			this->autoPlaceArmies();
+			this->autoPlaceArmies(numOfPlayers);
 		}
 	}else
-		this->autoPlaceArmies();
+		this->autoPlaceArmies(numOfPlayers);
 }
 
-void GameEngine::autoPlaceArmies()
+void GameEngine::autoPlaceArmies(int numOfPlayers)
 {
 	int firstCountryArmies; // Each player's first country will have 30% of its total armies to begin with
 	int secondCountryArmies; // Each player's second country will have 20% of its total armies to begin with
 	int randArmies; // The 50% of armies left will be placed randomly
 	int* availableArmies;
 
-	for (int i = 0; i < *numOfPlayers; i++) {
+	for (int i = 0; i < numOfPlayers; i++) {
 		availableArmies = (*players)[i].getAvailableArmies();
 		vector<int> randomCountries(*availableArmies);
 		firstCountryArmies = (*(*players)[i].getAvailableArmies()) * 0.3;
@@ -429,8 +429,8 @@ void GameEngine::startup()
 		cout << (i + 1) << ". " << *((*players)[i].getName()) << endl;
 	}
 	cout << endl;
-	assignCountries();
-	assignArmies();
+	//assignCountries();
+	//assignArmies();
 }
 
 void GameEngine::runGame() {
@@ -464,7 +464,7 @@ void GameEngine::runGame() {
 	cout << winner << " owns all the countries and wins the game!" << endl;
 }
 
-void GameEngine::runGameCpu(int num)
+void GameEngine::runGameCpu(int num , vector<string>& results)
 {
 	int numTurn = num;
 	string winner = "draw";
@@ -476,6 +476,7 @@ void GameEngine::runGameCpu(int num)
 			(*players)[i].reinforce();
 			(*players)[i].attack();
 			(*players)[i].fortify();
+			(*players)[i].drawCard();
 
 			ownsAllCountries = true;
 
@@ -494,7 +495,7 @@ void GameEngine::runGameCpu(int num)
 		numTurn--;
 	}
 	cout << winner << " owns all the countries and wins the game!" << endl;
-	winners->push_back(winner);
+	results.push_back(winner);
 }
 
 bool GameEngine::isIncludeHuman()
@@ -511,8 +512,9 @@ bool GameEngine::isIncludeHuman()
 
 void GameEngine::createPlayers(vector<string>& playerStrings , string mapStr)
 {
+	players->clear();
 	loadTournamentMaps(mapStr);
-	this->deck = new Deck(map->getcontinents()->size());
+	this->deck = new Deck(map->getCountries()->size());
 	for (int i = 0; i < playerStrings.size(); i++) {
 		if (playerStrings[i] == "Aggressive")
 		{
@@ -672,19 +674,19 @@ void GameEngine::selectingMaps(int& mapsNum)
 
 	for (auto& p : fs::recursive_directory_iterator(path))
 	{
-		if (p.path().extension() == ext){
+		if (p.path().extension() == ext) {
 			availableMaps.push_back(p.path().stem().string());
 			remainingMaps->push_back(p.path().stem().string());
 		}
 	}
-	while(mapsNum > 0)
+	while (mapsNum > 0)
 	{
 		cout << "Please select maps from the following list:" << endl;
 		for (int i = 0; i < remainingMaps->size(); i++)
 		{
 			cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
 		}
-		
+
 		// checking USER'S input
 		int n;
 		cout << ">";
@@ -697,12 +699,13 @@ void GameEngine::selectingMaps(int& mapsNum)
 				}
 				else
 					throw n;
-			}catch(int e){
-				cout << e <<" isn't a between 1 and "<< remainingMaps->size() <<" Please choose a valid number\n>";
+			}
+			catch (int e) {
+				cout << e << " isn't a between 1 and " << remainingMaps->size() << " Please choose a valid number\n>";
 				cin >> n;
 			}
 		}
-	
+
 		mapPath = new string(path + (*remainingMaps)[n - 1] + ext);
 		cout << "You have chosen " << *mapPath << endl;
 
@@ -735,10 +738,12 @@ void GameEngine::selectingMaps(int& mapsNum)
 		map = nullptr;
 		delete mapPath;
 		mapPath = nullptr;
-		if(mapsNum != 0)
-		cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
+		if (mapsNum != 0)
+			cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
 	}
 }
+
+
 
 void GameEngine::loadTournamentMaps(string mapPath)
 {
@@ -788,15 +793,13 @@ void GameEngine::choosingNumOfGames()
 	}
 }
 
-void GameEngine::startupCpu(){
+void GameEngine::startupCpu(int numOfPlayers){
 	randomizeOrder();
 	cout << "The order of the play will be: " << endl;
-	for (int i = 0; i < *numOfPlayers; i++) {
+	for (int i = 0; i < numOfPlayers; i++) {
 		cout << (i + 1) << ". " << *((*players)[i].getName()) << endl;
 	}
 	cout << endl;
-	assignCountries();
-	assignArmies();
 }
 
 void GameEngine::run1vs1() {
@@ -849,7 +852,7 @@ GameEngine::~GameEngine()
 	numOfPlayers = NULL;
 }
 
-GameEngine* GameEngineDriver::runGameStart()
+GameEngine* GameEngineDriver::runGameStart1()
 {
 	static GameEngine g;
 	vector<PlayerObserver*> playerObservers;
@@ -887,13 +890,14 @@ GameEngine* GameEngineDriver::runGameStart()
 	return &g;
 }
 
-void GameEngineDriver::runTournamentStart()
+void GameEngineDriver::runTournamentStart1()
 {
-	MapLoader* LoadLoader(string * mapPath);
+	vector<string> availableMaps;
+	vector<string> remainingMaps;
+	vector<string> selectedMapsPath;
 	vector<string> cpuPlayers;
+	vector<string> results;
 	int numOfMaps;
-	vector<string>* remainingMaps = nullptr;
-	vector<string>* selectedMaps = nullptr;
 	int numOfTurns;
 	int gameNum;
 
@@ -912,6 +916,86 @@ void GameEngineDriver::runTournamentStart()
 			cin >> numOfMaps;
 		}
 	}
+	
+
+	/////  Selecting maps ///// 
+	string path("maps/");
+	string ext(".map");
+
+	for (auto& p : fs::recursive_directory_iterator(path))
+	{
+		if (p.path().extension() == ext) {
+			availableMaps.push_back(p.path().stem().string());
+			remainingMaps.push_back(p.path().stem().string());
+		}
+	}
+	int mapsNum = numOfMaps;
+	while (mapsNum > 0)
+	{
+		cout << "Please select maps from the following list:" << endl;
+		for (int i = 0; i < remainingMaps.size(); i++)
+		{
+			cout << (i + 1) << ": " << (remainingMaps)[i] << endl;
+		}
+
+		// checking USER'S input
+		int n;
+		cout << ">";
+		cin >> n;
+		bool valid = false;
+		while (!valid) {
+			try {
+				if (n > 0 && n <= remainingMaps.size()) {
+					valid = true;
+				}
+				else
+					throw n;
+			}
+			catch (int e) {
+				cout << e << " isn't a between 1 and " << remainingMaps.size() << " Please choose a valid number\n>";
+				cin >> n;
+			}
+		}
+
+		string* mapPath = new string(path + (remainingMaps)[n - 1] + ext);
+		cout << "You have chosen " << *mapPath << endl;
+
+		Map* map = new Map;
+		MapLoader* loader = LoadLoader(*mapPath);// LoadLoader will load the correct map between domination and conquest map types
+		loader->LoadMap(*map, *mapPath);
+		bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+		while (!validMap) {
+			cout << "Please choose another map" << endl;
+			for (int i = 0; i < remainingMaps.size(); i++)
+			{
+				cout << (i + 1) << ": " << (remainingMaps)[i] << endl;
+			}
+			cin >> n;
+
+			*mapPath = path + (remainingMaps)[n - 1] + ext;
+			cout << "You have chosen " << *mapPath << endl;
+			map = nullptr;
+			map = new Map();
+			loader = LoadLoader(*mapPath);// LoadLoader will load the correct map between domination and conquest map types
+			loader->LoadMap(*map, *mapPath);
+			validMap = map->ConnectedGraph(); // To check if the map is a connected graph
+		}
+		selectedMapsPath.push_back(*mapPath); // adding map
+		remainingMaps.erase(remainingMaps.begin() + n - 1); // removing map from the options
+		mapsNum -= 1;
+		delete loader;
+		loader = nullptr;
+		delete map;
+		map = nullptr;
+		delete mapPath;
+		mapPath = nullptr;
+		if (mapsNum != 0)
+			cout << "You still have " << mapsNum << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
+
+	}
+
+
+
 
 	///// chosing number of Players /////
 	cout << "Choose the number of Cumputer Players between 2 to 4:" << endl;
@@ -931,7 +1015,7 @@ void GameEngineDriver::runTournamentStart()
 	}
 
 
-
+	
 	////// chosing Players' cpu types //////
 	cout << "\nNow choose your " << numCpuPlayers << " player types" << endl;
 	vector<string> cpuPlayersType = { "Aggressive", "Benevolent", "Random", "Cheater" };
@@ -987,90 +1071,7 @@ void GameEngineDriver::runTournamentStart()
 	}
 
 
-
-	/////  Selecting maps ///// 
-	string path("maps/");
-	string ext(".map");
-	vector<string> availableMaps;
-
-	for (auto& p : fs::recursive_directory_iterator(path))
-	{
-		if (p.path().extension() == ext) {
-			availableMaps.push_back(p.path().stem().string());
-			remainingMaps->push_back(p.path().stem().string());
-		}
-	}
-	while (numOfMaps != 0) {
-		cout << "Please select maps from the following list:" << endl;
-		for (int i = 0; i < remainingMaps->size(); i++)
-		{
-			cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
-		}
-
-		// checking USER'S input
-		int n;
-		cout << ">";
-		cin >> n;
-		bool valid = false;
-		while (!valid) {
-			try {
-				if (n > 0 && n <= remainingMaps->size()) {
-					valid = true;
-				}
-				else
-					throw n;
-			}
-			catch (int e) {
-				cout << e << " isn't a between 1 and " << remainingMaps->size() << " Please choose a valid number\n>";
-				cin >> n;
-			}
-		}
-
-		string* mapPath = new string(path + (*remainingMaps)[n - 1] + ext);
-		cout << "You have chosen " << *mapPath << endl;
-
-		Map* map = new Map();
-		MapLoader* loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
-		loader->LoadMap(*map, *mapPath);
-		bool validMap = map->ConnectedGraph(); // To check if the map is a connected graph
-		while (!validMap) {
-			cout << "Please choose another map" << endl;
-			for (int i = 0; i < remainingMaps->size(); i++)
-			{
-				cout << (i + 1) << ": " << (*remainingMaps)[i] << endl;
-			}
-			cin >> n;
-
-			// checking USER'S input
-			int n;
-			cin >> n;
-			bool valid = false;
-			while (!valid) {
-				if (n > 0 || n <= remainingMaps->size()) {
-					valid = true;
-				}
-				else {
-					cout << "Please choose a valid number" << endl;
-					cin >> n;
-				}
-			}
-
-			*mapPath = path + (*remainingMaps)[n - 1] + ext;
-			cout << "You have chosen " << *mapPath << endl;
-			delete map;
-			map = new Map();
-			loader = LoadLoader(mapPath);// LoadLoader will load the correct map between domination and conquest map types
-			loader->LoadMap(*map, *mapPath);
-			validMap = map->ConnectedGraph(); // To check if the map is a connected graph
-		}
-		selectedMaps->push_back((*remainingMaps)[n - 1]); // adding map
-		remainingMaps->erase(remainingMaps->begin() + n - 1); // removing map from the options
-		numOfMaps -= 1;
-		delete loader;
-		if (numOfMaps != 0)
-			cout << "You still have " << numOfMaps << " to choose ." << endl; // TO BE MOVED TO ANOTHER PLACE
-	}
-
+	
 	///// Choose the number games to be played on each map //////
 	cout << "Choose the number games to be played on each map 1 to 5:" << endl;
 	cout << "> ";
@@ -1104,11 +1105,13 @@ void GameEngineDriver::runTournamentStart()
 		}
 	}
 
-	for(int m = 0; m< selectedMaps->size() ;m++)
+	for(int m = 0; m< selectedMapsPath.size() ;m++)
 		for(int n = 0 ; n < gameNum ; n++){
-			GameEngine g(cpuPlayers, (*selectedMaps)[m]);
-			g.startupCpu();
-			g.runGameCpu(numOfTurns);
+			GameEngine g(cpuPlayers, (selectedMapsPath)[m]);
+			g.startupCpu(cpuPlayers.size());
+			g.assignCountries(cpuPlayers.size());
+			g.assignArmies(cpuPlayers.size());
+			g.runGameCpu(numOfTurns , results);
 		}
 
 	// play a game on each maps
@@ -1120,7 +1123,7 @@ void GameEngineDriver::runTournamentStart()
 	//	g.startupCpu();
 	//	g.runGameCpu();
 	//}
-
+	
 }
 
 GameEngine* GameEngineDriver::runPlayerVsCpu() {
@@ -1159,7 +1162,31 @@ GameEngine* GameEngineDriver::runPlayerVsCpu() {
 	return g;
 }
 
-GameEngine* GameEngineDriver::runModeSelection()
+
+
+MapLoader* GameEngineDriver::LoadLoader(string& mapPath)
+{
+	// Determine if it is a conquest map or not. If it is conquest map, open using the map adapter
+	ifstream mapFile(mapPath);
+	string line;
+	bool conquestMap = false;
+	while (getline(mapFile, line))
+	{
+		if (line == "[Territories]")
+			conquestMap = true;
+	}
+	mapFile.close();
+
+	MapLoader* loader;
+	if (conquestMap)
+		loader = new MapAdapter();
+	else
+		loader = new MapLoader();
+
+	return loader;
+}
+
+GameEngine* GameEngineDriver::runModeSelection1()
 {
 	cout << "Please select a game mode !" << endl;
 	cout << "1: single game mode " << endl;
@@ -1172,11 +1199,11 @@ GameEngine* GameEngineDriver::runModeSelection()
 		{
 			cin >> choice;
 			if (choice == 1) {
-				runGameStart();
+				runGameStart1();
 				validInput = true;
 			}
 			else if (choice == 2) {
-				runTournamentStart();
+				runTournamentStart1();
 				validInput = true;
 			}
 			else

@@ -196,6 +196,7 @@ void Player::attack()
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
+		hasAttaked = true;
 		playerDecision = this->strategy->getAttackDecision();
 		if (playerDecision == 1) {
 			attackPhase(keepAttacking);
@@ -534,7 +535,6 @@ void Player::attackPhase(bool& keepAttacking)
 	attackCountry = nullptr;
 	targetedCountry = nullptr;
 
-
 }
 //moving army from a contry to a neighbour counrty
 void Player::fortify()
@@ -706,9 +706,9 @@ int Player::getArmyByExchangingCards()
 		doExchange = true;
 	}
 	else if (h->hasExchange()) {
-		cout << "Would you like to do an exchange? ('y' for yes, 'n' for no)\n";
-		cin >> exchnageOption;
-		if (exchnageOption == 'y')
+		//cout << "Would you like to do an exchange? ('y' for yes, 'n' for no)\n";
+		/*cin >> exchnageOption;
+		if (exchnageOption == 'y')*/
 			doExchange = true;
 	}
 
