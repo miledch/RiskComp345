@@ -1046,7 +1046,7 @@ void GameEngineDriver::runTournamentStart()
 			}
 			else
 			{
-				printf("%-20s", g.getWinners()->at(i).c_str());
+				printf("%-20s", g.getWinners()->at(i-1).c_str());
 			}
 
 		}
