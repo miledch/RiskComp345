@@ -702,7 +702,7 @@ void GameEngine::choosingNumOfPlayers()
 		{
 			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
 			Player aggressivePlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Aggressive Player"));
-			aggressivePlayer.setStrategy(new AggressivePlayer());
+			aggressivePlayer.setStrategy(new CheaterPlayer());
 			players->push_back(aggressivePlayer);
 		}
 		else if (choice == "Benevolent")
