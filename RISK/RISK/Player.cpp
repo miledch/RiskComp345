@@ -1071,7 +1071,8 @@ void Player::resetPlayer(Map* map)
 {
 	this->map = map;
 	this->continents = new vector<Continent>();
-	this->countries = new vector<Country*>();
+	//this->countries = new vector<Country*>();
+	this->countries->clear();
 	this->dice = new Dice_Rolling_Facility();
 	this->h = new Hand(*(new Deck(0)));
 	this->availableArmies = new int(0);

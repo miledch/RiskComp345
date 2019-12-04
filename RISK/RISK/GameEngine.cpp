@@ -698,6 +698,9 @@ void GameEngine::choosingNumOfPlayers()
 			}
 		}
 
+		int numOfCountries = map->getCountries()->size(); // Get the number of countries in the map
+		deck = new Deck(numOfCountries);
+
 		if (choice == "Aggressive")
 		{
 			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
@@ -1003,6 +1006,11 @@ GameEngine* GameEngineDriver::runGameStart()
 void GameEngineDriver::runTournamentStart()
 {
 	GameEngine g(true);
+	vector<PlayerObserver*> playerObservers;
+	for (int i = 0; i < *(g.getNumOfPlayers()); i++) 
+	{
+		playerObservers.push_back(new PlayerObserver(&(*g.getPlayers())[i]));
+	}
 	// play a game on each maps
 	vector<string>::iterator it;
 	for (it = g.getSelectedMapsPath()->begin(); it < g.getSelectedMapsPath()->end(); it++)
