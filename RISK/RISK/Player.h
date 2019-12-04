@@ -20,7 +20,7 @@ private:
 	vector<Continent>* continents;
 	vector<Country*>* countries;
 	Dice_Rolling_Facility* dice;
-	Hand* h;
+	Hand* hand;
 	Map *map; // player needs visibility to the map
 	string* name; // A player needs a name
 	int* availableArmies;
@@ -52,6 +52,7 @@ public:
 	bool* getLostAllCountries();
 	void setLostAllCountries(bool lost);
 	void setAvailableArmies(int armies);
+	void setHand(Deck* deck);
 	void changeHand(Hand* c);
 	void printCountries();
 	void reinforce();

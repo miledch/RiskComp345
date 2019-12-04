@@ -8,7 +8,7 @@ Player::Player()
 	continents = new vector<Continent>();
 	countries = new vector<Country*>();
 	dice = new Dice_Rolling_Facility();
-	h = new Hand(*(new Deck(0)));
+	hand = new Hand(*(new Deck(0)));
 	name = new string("DefaultPlayer");
 	availableArmies = new int(0);
 	viewBuffer = new vector<string>();
@@ -27,7 +27,7 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->continents = new vector<Continent>();
 	this->countries = c;
 	this->dice = d;
-	this->h = h;
+	this->hand = h;
 	this->name = name;
 	this->availableArmies = new int(0);
 	this->viewBuffer = new vector<string>();
@@ -42,7 +42,7 @@ Player::Player(const Player& p2)
 	this->continents = new vector<Continent>(*p2.continents);
 	this->countries = new vector<Country*>(*p2.countries);
 	this->dice = new Dice_Rolling_Facility(*p2.dice);
-	this->h = new Hand(*p2.h);
+	this->hand = new Hand(*p2.hand);
 	this->name = new string(*p2.name);
 	this->availableArmies = new int(*p2.availableArmies);
 	this->viewBuffer = new vector<string>(*p2.viewBuffer);
@@ -59,7 +59,7 @@ Player& Player::operator=(const Player& rhs)
 		*(this->continents) = *(rhs.continents);
 		*(this->countries) = *(rhs.countries);
 		*(this->dice) = *(rhs.dice);
-		*(this->h) = *(rhs.h);
+		*(this->hand) = *(rhs.hand);
 		*(this->name) = *(rhs.name);
 		*(this->availableArmies) = *(rhs.availableArmies);
 		*(this->viewBuffer) = *(rhs.viewBuffer);
@@ -78,8 +78,8 @@ Player::~Player()
 	//}
 
 	// Don't delete map and countries because all the players use the same map
-	delete h;
-	h = NULL;
+	delete hand;
+	hand = NULL;
 	delete dice;
 	dice = NULL;
 	delete name;
@@ -104,7 +104,7 @@ Dice_Rolling_Facility* Player::getDice()
 // Get player's hand of cards
 Hand* Player::getHand()
 {
-	return this->h;
+	return this->hand;
 }
 
 // Get player's vector of countries
@@ -158,6 +158,11 @@ void Player::setAvailableArmies(int armies)
 	*(this->availableArmies) = armies;
 }
 
+void Player::setHand(Deck* deck)
+{
+	this->hand = new Hand(*deck);
+}
+
 // Change the set of player's countries
 void Player::changeCountries(vector<Country*>* c)
 {
@@ -167,7 +172,7 @@ void Player::changeCountries(vector<Country*>* c)
 // Change the hand of cards
 void Player::changeHand(Hand* hd)
 {
-	this->h = hd;
+	this->hand = hd;
 }
 
 // Print player's countries
@@ -794,11 +799,11 @@ int Player::getArmyByExchangingCards()
 	bool doExchange{ false };
 	char exchnageOption = 'n';
 
-	if (h->getNumHandCards() == 5) {
+	if (hand->getNumHandCards() == 5) {
 		cout << "you have 5 cards. you must exchange some of your cards.\n";
 		doExchange = true;
 	}
-	else if (h->hasExchange()) {
+	else if (hand->hasExchange()) {
 		cout << "Would you like to do an exchange? ('y' for yes, 'n' for no)\n";
 		cin >> exchnageOption;
 		if (exchnageOption == 'y')
@@ -806,15 +811,15 @@ int Player::getArmyByExchangingCards()
 	}
 
 	while (doExchange) {
-		if (h->exchange()) {
+		if (hand->exchange()) {
 			doExchange = false;
-			rewardedArmies = h->getNumberOfExchanges() * 5;
+			rewardedArmies = hand->getNumberOfExchanges() * 5;
 		}
 		else {
-			if (h->getNumHandCards() == 5)
+			if (hand->getNumHandCards() == 5)
 				doExchange = true;
 
-			else if (h->hasExchange()) {
+			else if (hand->hasExchange()) {
 				cout << "Would you like to do an exchange? ('y' for yes, 'n' for no)\n";
 				cin >> exchnageOption;
 				if (exchnageOption == 'y')
@@ -900,7 +905,7 @@ void Player::addContinent(Continent c) {
 //used to test the code for assignment 2
 void Player::initializeHand(Hand& hand)
 {
-	*(this->h) = hand;
+	*(this->hand) = hand;
 }
 
 int Player::getNumPlayerCountries()
@@ -1074,7 +1079,7 @@ void Player::resetPlayer(Map* map)
 	//this->countries = new vector<Country*>();
 	this->countries->clear();
 	this->dice = new Dice_Rolling_Facility();
-	this->h = new Hand(*(new Deck(0)));
+	this->hand = new Hand(*(new Deck(0)));
 	this->availableArmies = new int(0);
 	this->viewBuffer = new vector<string>();
 	this->newPhase = new bool(false);

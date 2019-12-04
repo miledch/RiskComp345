@@ -698,31 +698,28 @@ void GameEngine::choosingNumOfPlayers()
 			}
 		}
 
-		int numOfCountries = map->getCountries()->size(); // Get the number of countries in the map
-		deck = new Deck(numOfCountries);
-
 		if (choice == "Aggressive")
 		{
 			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
-			Player aggressivePlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
+			Player aggressivePlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Aggressive Player"));
 			aggressivePlayer.setStrategy(new AggressivePlayer());
 			players->push_back(aggressivePlayer);
 		}
 		else if (choice == "Benevolent")
 		{
-			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Benevolent Player"));
+			Player benevolentPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Benevolent Player"));
 			benevolentPlayer.setStrategy(new BenevolentPlayer());
 			players->push_back(benevolentPlayer);
 		}
 		else if (choice == "Random")
 		{
-			Player randomPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Random Player"));
+			Player randomPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Random Player"));
 			randomPlayer.setStrategy(new RandomPlayer());
 			players->push_back(randomPlayer);
 		}
 		else if (choice == "Cheater")
 		{
-			Player cheaterPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Cheater Player"));
+			Player cheaterPlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Cheater Player"));
 			cheaterPlayer.setStrategy(new CheaterPlayer());
 			players->push_back(cheaterPlayer);
 		}
@@ -814,9 +811,12 @@ void GameEngine::loadTournamentMaps(string mapPath)
 	this->mapPath = new string(mapPath);
 	MapLoader* loader = LoadLoader(this->mapPath);// LoadLoader will load the correct map between domination and conquest map types
 	loader->LoadMap(*map, *this->mapPath);
+	int numOfCountries = map->getCountries()->size(); // Get the number of countries in the map
+	deck = new Deck(numOfCountries);
 	for (int i = 0; i < *getNumOfPlayers(); i++)
 	{
 		(*players)[i].resetPlayer(map);
+		(*players)[i].setHand(deck);
 	}
 }
 
