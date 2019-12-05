@@ -548,7 +548,7 @@ void GameEngine::runGameCpu()
 	string winner = "draw";
 	int numTurn = *numOfMaxTurns;
 	int count = 0;
-	while (numTurn != 0) {
+	while (numTurn > 0) {
 		bool finished = false;
 		for (int i = 0; i < (*players).size(); i++) {
 			// Skips the plyer's turn if they lost all their countries
@@ -702,7 +702,7 @@ void GameEngine::choosingNumOfPlayers()
 		{
 			//Player* aggressivePlayer = new Player(map, new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(*deck), new string("Aggressive Player"));
 			Player aggressivePlayer = Player(new Map(), new vector<Country*>(), new Dice_Rolling_Facility(), new Hand(), new string("Aggressive Player"));
-			aggressivePlayer.setStrategy(new CheaterPlayer());
+			aggressivePlayer.setStrategy(new AggressivePlayer());
 			players->push_back(aggressivePlayer);
 		}
 		else if (choice == "Benevolent")

@@ -8,7 +8,7 @@ void HumanPlayer::execute(Player* p) {
 	p->fortify();
 }
 
-Country* HumanPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+Country* HumanPlayer::chooseCountryToReinforce(Player& player, vector<Country*>* countries)
 {
 	int in;
 	while (true) {
@@ -119,8 +119,12 @@ void AggressivePlayer::execute(Player* p) {
 	p->fortify();
 }
 
-Country* AggressivePlayer::chooseCountryToReinforce(vector<Country*>* countries)
+Country* AggressivePlayer::chooseCountryToReinforce(Player& player, vector<Country*>* countries)
 {
+	if (player.deadEnd)
+	{
+		return weakestCountry(*countries);
+	}
 	return strongestCountry(*countries); // Reinforce the strongest country
 }
 
@@ -208,7 +212,7 @@ void BenevolentPlayer::execute(Player* p) {
 	p->fortify();
 }
 
-Country* BenevolentPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+Country* BenevolentPlayer::chooseCountryToReinforce(Player& player, vector<Country*>* countries)
 {
 	return weakestCountry(*countries); // Always reinforce the weaker countries
 }
@@ -293,7 +297,7 @@ void RandomPlayer::execute(Player* p)
 }
 
 // All decisions for RandomPlayer CPU are chosen randomly
-Country* RandomPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+Country* RandomPlayer::chooseCountryToReinforce(Player& player, vector<Country*>* countries)
 {
 	int index = rand() % countries->size();
 	return (*countries)[index];
@@ -385,7 +389,7 @@ void CheaterPlayer::execute(Player* p)
 {
 }
 
-Country* CheaterPlayer::chooseCountryToReinforce(vector<Country*>* countries)
+Country* CheaterPlayer::chooseCountryToReinforce(Player& player, vector<Country*>* countries)
 {
 	return strongestCountry(*countries);
 }

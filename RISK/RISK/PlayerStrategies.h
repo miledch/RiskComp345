@@ -9,7 +9,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	virtual Country* chooseCountryToReinforce(vector<Country*>* countries) = 0;
+	virtual Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries) = 0;
 
 	// Returns number of reinforce armies 
 	virtual int getReinforceArmy(int rewardedArmy, Player& player) = 0;
@@ -52,7 +52,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries);
 	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
@@ -80,7 +80,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries);
 	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
@@ -107,7 +107,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries);
 	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
@@ -134,7 +134,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries);
 	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////
@@ -162,7 +162,7 @@ public:
 
 	//////////////////// REINFORCE DECISIONS ////////////////////
 
-	Country* chooseCountryToReinforce(vector<Country*>* countries);
+	Country* chooseCountryToReinforce(Player& player, vector<Country*>* countries);
 	int getReinforceArmy(int rewardedArmy, Player& player);
 
 	//////////////////// FORTIFY DECISIONS ////////////////////

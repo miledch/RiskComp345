@@ -13,10 +13,13 @@ void Subject::Detach(GameObserver* o) {
 	observers->erase(remove(observers->begin(), observers->end(), o), observers->end());
 };
 void Subject::Notify() {
-	vector<GameObserver*>::iterator i = observers->begin();
-	for (; i != observers->end(); ++i){
-		(*i)->Update();
+	if (observers->size() > 0)
+	{
+		vector<GameObserver*>::iterator i = observers->begin();
+		for (; i != observers->end(); ++i) {
+			(*i)->Update();
 
+		}
 	}
 };
 

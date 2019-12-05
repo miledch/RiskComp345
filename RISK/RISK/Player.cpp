@@ -34,6 +34,7 @@ Player::Player(Map* map, vector<Country*>* c, Dice_Rolling_Facility* d, Hand* h,
 	this->newPhase = new bool(false);
 	this->strategy = new HumanPlayer();
 	this->lostAllCountries = new bool(false);
+	
 }
 
 Player::Player(const Player& p2)
@@ -227,12 +228,15 @@ void Player::attack()
 		NotifyPhase();
 		viewBuffer->push_back("Press 1 for yes or 2 for no: \n>");
 		NotifyPhase();
+		deadEnd = new bool(false);
 
 		playerDecision = this->strategy->getAttackDecision(*this);
 		if (playerDecision == 1) {
 			viewBuffer->push_back("You have chosen 1");
 			NotifyPhase();
 			attackPhase(keepAttacking);
+			if (*deadEnd)
+				break;
 		}
 		else if (playerDecision == 2) {
 			viewBuffer->push_back("You have chosen 2");
@@ -291,6 +295,7 @@ void Player::attackPhase(bool& keepAttacking)
 		else {
 			viewBuffer->push_back("Sorry, no country to attack from");
 			NotifyPhase();
+			*deadEnd = true;
 			return;
 		}
 	} while (!validSelection);
@@ -850,7 +855,7 @@ void Player::placingArmy(int& rewardedArmy)
 			cout << ++i << ". " << *(*it)->getCountryName() << " with " << *(*it)->getCountryNumberArmies() << " troops." << endl;
 		}
 
-		chosenCountry = this->strategy->chooseCountryToReinforce(countries);
+		chosenCountry = this->strategy->chooseCountryToReinforce(*this, countries);
 		viewBuffer->push_back("\nYou have chosen " + *(chosenCountry->getCountryName()));
 		NotifyPhase();
 
@@ -955,7 +960,7 @@ void PlayerObserver::Update()
 	}
 	else if (iWorldPercentage == float(100)) {
 		cout << *(player->getName()) << " controls " << iWorldPercentage << "%  of the word. won the game!" << endl;
-		this->player->Detach(this);
+		//this->player->Detach(this);
 	}
 	else
 		cout << *(player->getName()) << " controls " << iWorldPercentage << "%  of the word." << endl;

@@ -31,6 +31,7 @@ private:
 
 	vector<string>* viewBuffer; // This can be considered as the 'view' it will store the things it will print
 	bool* newPhase; // To indicate if the player has entered a new phase
+	
 
 public:
 	Player();
@@ -50,6 +51,7 @@ public:
 	Map* getMap();
 	Strategy* getStrategy();
 	bool* getLostAllCountries();
+	bool* deadEnd;
 	void setLostAllCountries(bool lost);
 	void setAvailableArmies(int armies);
 	void setHand(Deck* deck);
